@@ -11,7 +11,7 @@ final class SettingsView: UIView {
 
     private let screenLabel: UILabel = {
         let label = UILabel()
-        label.text = Resources.Settings.labelText
+        label.text = Titles.Settings.labelText
         label.font  = UIFont(name: "RubikRoman-Medium", size: 18)
         return label
     }()
@@ -22,13 +22,13 @@ final class SettingsView: UIView {
         stack.spacing = 20
         return stack
     }()
-    private let temperatureStack = SettingsStack(title: Resources.Settings.temp, leftSegment: "C", rightSegment: "F", selected: 0)
-    private let windStack = SettingsStack(title: Resources.Settings.wind, leftSegment: "Mi", rightSegment: "Km", selected: 1)
-    private let timeStack = SettingsStack(title: Resources.Settings.time, leftSegment: "12", rightSegment: "24", selected: 1)
-    private let notificationStack = SettingsStack(title: Resources.Settings.not, leftSegment: "On", rightSegment: "Off", selected: 0)
+    private let temperatureStack = SettingsStack(title: Titles.Settings.temp, leftSegment: "C", rightSegment: "F", selected: 0)
+    private let windStack = SettingsStack(title: Titles.Settings.wind, leftSegment: "Mi", rightSegment: "Km", selected: 1)
+    private let timeStack = SettingsStack(title: Titles.Settings.time, leftSegment: "12", rightSegment: "24", selected: 1)
+    private let notificationStack = SettingsStack(title: Titles.Settings.not, leftSegment: "On", rightSegment: "Off", selected: 0)
     private lazy var okButton: LocationButton = {
         let button = LocationButton()
-        button.setTitle(Resources.Settings.buttonText, for: .normal)
+        button.setTitle(Titles.Settings.buttonText, for: .normal)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = UIFont(name: "RubikRoman-Regular", size: 16)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -45,7 +45,6 @@ final class SettingsView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
 
         let elements = [screenLabel, mainVStack, temperatureStack, windStack, timeStack, notificationStack, okButton]
-//        addSubviews(view: self, elements: [temperatureStack])
         addSubviews(view: self, elements: [screenLabel, mainVStack, okButton])
         mainVStack.addArrangedSubviews(stack: mainVStack, elements: [temperatureStack, windStack, timeStack, notificationStack])
         enableConstraints(elements: elements)
@@ -59,12 +58,11 @@ final class SettingsView: UIView {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             screenLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            screenLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
+            screenLabel.topAnchor.constraint(equalTo: topAnchor, constant: 26),
 
             mainVStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             mainVStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-            mainVStack.topAnchor.constraint(equalTo: topAnchor, constant: 57),
-//            mainVStack.bottomAnchor.constraint(equalTo: okButton.topAnchor, constant: -37),
+            mainVStack.topAnchor.constraint(equalTo: topAnchor, constant: 60),
 
             okButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             okButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35),

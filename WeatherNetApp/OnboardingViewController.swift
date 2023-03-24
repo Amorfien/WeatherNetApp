@@ -13,7 +13,7 @@ final class OnboardingViewController: UIViewController {
 
     private let firstLabel: UILabel = {
         let label = UILabel()
-        label.text = Resources.Onboarding.text1
+        label.text = Titles.Onboarding.text1
         label.textColor = #colorLiteral(red: 0.9725490196, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         label.textAlignment = .center
         label.font = UIFont(name: "Rubik-SemiBold", size: 16)
@@ -23,7 +23,7 @@ final class OnboardingViewController: UIViewController {
 
     private let secondLabel: UILabel = {
         let label = UILabel()
-        label.text = Resources.Onboarding.text2
+        label.text = Titles.Onboarding.text2
         label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont(name: "RubikRoman-Regular", size: 14)
@@ -33,7 +33,7 @@ final class OnboardingViewController: UIViewController {
 
     private let thirdLabel: UILabel = {
         let label = UILabel()
-        label.text = Resources.Onboarding.text3
+        label.text = Titles.Onboarding.text3
         label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont(name: "RubikRoman-Regular", size: 14)
@@ -43,7 +43,7 @@ final class OnboardingViewController: UIViewController {
 
     private lazy var locationButton: LocationButton = {
         let button = LocationButton()
-        button.setTitle(Resources.Onboarding.okText, for: .normal)
+        button.setTitle(Titles.Onboarding.okText, for: .normal)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = UIFont(name: "RubikRoman-Medium", size: 12)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -55,7 +55,7 @@ final class OnboardingViewController: UIViewController {
 
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle(Resources.Onboarding.cancelText, for: .normal)
+        button.setTitle(Titles.Onboarding.cancelText, for: .normal)
         button.titleLabel?.textAlignment = .right
         button.titleLabel?.font = UIFont(name: "RubikRoman-Regular", size: 16)
         button.addTarget(self, action: #selector(cancelTap), for: .touchUpInside)
@@ -98,7 +98,6 @@ final class OnboardingViewController: UIViewController {
             cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -77),
             cancelButton.trailingAnchor.constraint(equalTo: locationButton.trailingAnchor),
             cancelButton.heightAnchor.constraint(equalToConstant: 40),
-
         ])
     }
 

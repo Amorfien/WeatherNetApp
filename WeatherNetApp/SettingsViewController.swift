@@ -43,18 +43,16 @@ final class SettingsViewController: UIViewController {
             cloudTwo.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
             cloudThree.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cloudThree.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -95)
+            cloudThree.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -140)
         ])
     }
 
     private func animation() {
-
         UIView.animate(withDuration: 25) {
-            self.cloudOne.frame.origin.x -= 400
+            self.cloudOne.frame.origin.x -= 330
             self.cloudTwo.frame.origin.x += 200
-            self.cloudThree.frame.origin.y -= 30
+            self.cloudThree.frame.origin.y -= 80
         }
-
     }
 
 

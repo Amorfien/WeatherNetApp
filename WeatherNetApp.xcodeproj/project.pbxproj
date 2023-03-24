@@ -74,9 +74,9 @@
 		1818192129CB3D07008C1FA5 /* WeatherNetApp */ = {
 			isa = PBXGroup;
 			children = (
-				184626BC29CDD18E00831A98 /* CustomUI */,
-				184626BB29CDD13B00831A98 /* Resources */,
 				1841528329CDD03B007D357A /* App */,
+				184626BB29CDD13B00831A98 /* Resources */,
+				184626BC29CDD18E00831A98 /* CustomUI */,
 				1818192629CB3D07008C1FA5 /* OnboardingViewController.swift */,
 				181EC3B329CCFE7000912050 /* SettingsViewController.swift */,
 				181EC3B729CD077E00912050 /* SettingsView.swift */,
