@@ -12,7 +12,7 @@ final class SettingsView: UIView {
     private let screenLabel: UILabel = {
         let label = UILabel()
         label.text = Titles.Settings.labelText
-        label.font  = UIFont(name: "RubikRoman-Medium", size: 18)
+        label.font  = UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)
         return label
     }()
     private let mainVStack: UIStackView = {
@@ -26,23 +26,14 @@ final class SettingsView: UIView {
     private let windStack = SettingsStack(title: Titles.Settings.wind, leftSegment: "Mi", rightSegment: "Km", selected: 1)
     private let timeStack = SettingsStack(title: Titles.Settings.time, leftSegment: "12", rightSegment: "24", selected: 1)
     private let notificationStack = SettingsStack(title: Titles.Settings.not, leftSegment: "On", rightSegment: "Off", selected: 0)
-    private lazy var okButton: LocationButton = {
-        let button = LocationButton()
-        button.setTitle(Titles.Settings.buttonText, for: .normal)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.font = UIFont(name: "RubikRoman-Regular", size: 16)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.431372549, blue: 0.06666666667, alpha: 1)
-        button.layer.cornerRadius = 10
-//        button.addTarget(self, action: #selector(locationTap), for: .touchUpInside)
-        return button
-    }()
+    private lazy var okButton = OrangeButton(title: Titles.Settings.buttonText,
+                                             font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 16)!,
+                                             action: okBtnDidTap)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
         layer.cornerRadius = 10
-        translatesAutoresizingMaskIntoConstraints = false
 
         let elements = [screenLabel, mainVStack, temperatureStack, windStack, timeStack, notificationStack, okButton]
         addSubviews(view: self, elements: [screenLabel, mainVStack, okButton])
@@ -70,5 +61,7 @@ final class SettingsView: UIView {
             okButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
+
+    private func okBtnDidTap() {}
 
 }

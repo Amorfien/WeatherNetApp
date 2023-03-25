@@ -22,8 +22,7 @@ final class SettingsViewController: UIViewController {
         let elements = [grayView, cloudOne, cloudTwo, cloudThree]
         addSubviews(view: view, elements: elements)
         enableConstraints(elements: elements)
-
-        navigationController?.navigationBar.topItem?.hidesBackButton = true
+        navigationController?.navigationBar.tintColor = .white
         setupConstraints()
         animation()
     }

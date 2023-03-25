@@ -1,5 +1,5 @@
 //
-//  UIResponder+extension.swift
+//  UIResponder+extensions.swift
 //  WeatherNetApp
 //
 //  Created by Pavel Grigorev on 24.03.2023.
@@ -14,7 +14,6 @@ extension UIResponder {
         }
     }
     func addSubviews(view: UIView, elements: [UIView]) {
-
         for element in elements {
             view.addSubview(element)
         }

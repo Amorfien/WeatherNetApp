@@ -20,7 +20,7 @@ final class SettingsStack: UIStackView {
     init(title: String, leftSegment: String, rightSegment: String, selected: Int) {
         super.init(frame: .zero)
         titleLabel.text = title
-        titleLabel.font = UIFont(name: "RubikRoman-Regular", size: 16)
+        titleLabel.font = UIFont(name: Fonts.Rubik.regular.rawValue, size: 16)
         titleLabel.textColor = #colorLiteral(red: 0.6039215686, green: 0.5882352941, blue: 0.5882352941, alpha: 1)
         segmentedControl = UISegmentedControl(items: [leftSegment, rightSegment])
         segmentedControl.selectedSegmentTintColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)

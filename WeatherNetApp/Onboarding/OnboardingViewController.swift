@@ -16,7 +16,7 @@ final class OnboardingViewController: UIViewController {
         label.text = Titles.Onboarding.text1
         label.textColor = #colorLiteral(red: 0.9725490196, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         label.textAlignment = .center
-        label.font = UIFont(name: "Rubik-SemiBold", size: 16)
+        label.font = UIFont(name: Fonts.Rubik.semiBold.rawValue, size: 16)
         label.numberOfLines = 0
         return label
     }()
@@ -26,7 +26,7 @@ final class OnboardingViewController: UIViewController {
         label.text = Titles.Onboarding.text2
         label.textColor = .white
         label.textAlignment = .center
-        label.font = UIFont(name: "RubikRoman-Regular", size: 14)
+        label.font = UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)
         label.numberOfLines = 0
         return label
     }()
@@ -36,28 +36,20 @@ final class OnboardingViewController: UIViewController {
         label.text = Titles.Onboarding.text3
         label.textColor = .white
         label.textAlignment = .center
-        label.font = UIFont(name: "RubikRoman-Regular", size: 14)
+        label.font = UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)
         label.numberOfLines = 0
         return label
     }()
 
-    private lazy var locationButton: LocationButton = {
-        let button = LocationButton()
-        button.setTitle(Titles.Onboarding.okText, for: .normal)
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.font = UIFont(name: "RubikRoman-Medium", size: 12)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.431372549, blue: 0.06666666667, alpha: 1)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(locationTap), for: .touchUpInside)
-        return button
-    }()
+    private lazy var locationButton = OrangeButton(title: Titles.Onboarding.okText,
+                                                   font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 12)!,
+                                                   action: locationTap)
 
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle(Titles.Onboarding.cancelText, for: .normal)
         button.titleLabel?.textAlignment = .right
-        button.titleLabel?.font = UIFont(name: "RubikRoman-Regular", size: 16)
+        button.titleLabel?.font = UIFont(name: Fonts.Rubik.regular.rawValue, size: 16)
         button.addTarget(self, action: #selector(cancelTap), for: .touchUpInside)
         return button
     }()
@@ -101,12 +93,14 @@ final class OnboardingViewController: UIViewController {
         ])
     }
 
-    @objc private func cancelTap() {
-        let settingsVC = SettingsViewController()
-        navigationController?.pushViewController(settingsVC, animated: true)
+    private func locationTap() {
+//        let settingsVC = SettingsViewController()
+//        navigationController?.pushViewController(settingsVC, animated: true)
     }
-    @objc private func locationTap() {
+
+    @objc private func cancelTap() {
+//        let mainVC = MainScreenViewController()
+//        navigationController?.pushViewController(mainVC, animated: true)
     }
 
 }
-

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180A627329CE333F006EF6A2 /* WeatherCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180A627229CE333F006EF6A2 /* WeatherCardCell.swift */; };
 		1818192329CB3D07008C1FA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1818192229CB3D07008C1FA5 /* AppDelegate.swift */; };
 		1818192529CB3D07008C1FA5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1818192429CB3D07008C1FA5 /* SceneDelegate.swift */; };
 		1818192729CB3D07008C1FA5 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1818192629CB3D07008C1FA5 /* OnboardingViewController.swift */; };
@@ -16,15 +17,24 @@
 		1818193C29CB66B2008C1FA5 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1818193B29CB66B2008C1FA5 /* Rubik-Regular.ttf */; };
 		1818193E29CB66CC008C1FA5 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1818193D29CB66CC008C1FA5 /* Rubik-Medium.ttf */; };
 		1818194029CB66EE008C1FA5 /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1818193F29CB66EE008C1FA5 /* Rubik-SemiBold.ttf */; };
-		181EC3B229CCF5A700912050 /* UIResponder+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181EC3B129CCF5A700912050 /* UIResponder+extension.swift */; };
+		181EC3B229CCF5A700912050 /* UIResponder+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181EC3B129CCF5A700912050 /* UIResponder+extensions.swift */; };
 		181EC3B429CCFE7000912050 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181EC3B329CCFE7000912050 /* SettingsViewController.swift */; };
-		181EC3B629CD016D00912050 /* LocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181EC3B529CD016D00912050 /* LocationButton.swift */; };
+		181EC3B629CD016D00912050 /* OrangeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181EC3B529CD016D00912050 /* OrangeButton.swift */; };
 		181EC3B829CD077E00912050 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181EC3B729CD077E00912050 /* SettingsView.swift */; };
+		18246D0029CDEF8100516B01 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18246CFF29CDEF8100516B01 /* MainScreenViewController.swift */; };
+		18246D0229CE04AD00516B01 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18246D0129CE04AD00516B01 /* DailyView.swift */; };
+		183DA4DB29CF23E700821AB1 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4DA29CF23E700821AB1 /* Fonts.swift */; };
+		183DA4DD29CF25D500821AB1 /* UIButton+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4DC29CF25D500821AB1 /* UIButton+extensions.swift */; };
+		183DA4DF29CF2A5900821AB1 /* WeatherCardsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4DE29CF2A5900821AB1 /* WeatherCardsCollectionView.swift */; };
+		183DA4E329CF2D2C00821AB1 /* DailyCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4E229CF2D2C00821AB1 /* DailyCollectionView.swift */; };
+		183DA4E529CF50F900821AB1 /* CurrentCityPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4E429CF50F900821AB1 /* CurrentCityPageView.swift */; };
 		1841528229CDB90E007D357A /* SettingsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841528129CDB90E007D357A /* SettingsStack.swift */; };
+		1864692829CE51E800E14CE0 /* DailyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */; };
 		18F47A1229CB6F4F0087A53A /* Rubik.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18F47A1129CB6F4F0087A53A /* Rubik.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180A627229CE333F006EF6A2 /* WeatherCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCardCell.swift; sourceTree = "<group>"; };
 		1818191F29CB3D07008C1FA5 /* WeatherNetApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherNetApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1818192229CB3D07008C1FA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1818192429CB3D07008C1FA5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -36,11 +46,19 @@
 		1818193B29CB66B2008C1FA5 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		1818193D29CB66CC008C1FA5 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Medium.ttf"; sourceTree = "<group>"; };
 		1818193F29CB66EE008C1FA5 /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-SemiBold.ttf"; sourceTree = "<group>"; };
-		181EC3B129CCF5A700912050 /* UIResponder+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+extension.swift"; sourceTree = "<group>"; };
+		181EC3B129CCF5A700912050 /* UIResponder+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+extensions.swift"; sourceTree = "<group>"; };
 		181EC3B329CCFE7000912050 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		181EC3B529CD016D00912050 /* LocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationButton.swift; sourceTree = "<group>"; };
+		181EC3B529CD016D00912050 /* OrangeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrangeButton.swift; sourceTree = "<group>"; };
 		181EC3B729CD077E00912050 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		18246CFF29CDEF8100516B01 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
+		18246D0129CE04AD00516B01 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
+		183DA4DA29CF23E700821AB1 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		183DA4DC29CF25D500821AB1 /* UIButton+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+extensions.swift"; sourceTree = "<group>"; };
+		183DA4DE29CF2A5900821AB1 /* WeatherCardsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCardsCollectionView.swift; sourceTree = "<group>"; };
+		183DA4E229CF2D2C00821AB1 /* DailyCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCollectionView.swift; sourceTree = "<group>"; };
+		183DA4E429CF50F900821AB1 /* CurrentCityPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentCityPageView.swift; sourceTree = "<group>"; };
 		1841528129CDB90E007D357A /* SettingsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStack.swift; sourceTree = "<group>"; };
+		1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCollectionViewCell.swift; sourceTree = "<group>"; };
 		18F47A1129CB6F4F0087A53A /* Rubik.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rubik.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,11 +93,11 @@
 			isa = PBXGroup;
 			children = (
 				1841528329CDD03B007D357A /* App */,
+				18246CFC29CDEF4000516B01 /* Onboarding */,
+				18246CFD29CDEF5000516B01 /* Settings */,
+				18246CFE29CDEF6700516B01 /* MainScreen */,
 				184626BB29CDD13B00831A98 /* Resources */,
 				184626BC29CDD18E00831A98 /* CustomUI */,
-				1818192629CB3D07008C1FA5 /* OnboardingViewController.swift */,
-				181EC3B329CCFE7000912050 /* SettingsViewController.swift */,
-				181EC3B729CD077E00912050 /* SettingsView.swift */,
 				1818192B29CB3D08008C1FA5 /* Assets.xcassets */,
 			);
 			path = WeatherNetApp;
@@ -92,8 +110,56 @@
 				1818193B29CB66B2008C1FA5 /* Rubik-Regular.ttf */,
 				1818193D29CB66CC008C1FA5 /* Rubik-Medium.ttf */,
 				1818193F29CB66EE008C1FA5 /* Rubik-SemiBold.ttf */,
+				183DA4DA29CF23E700821AB1 /* Fonts.swift */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		18246CFC29CDEF4000516B01 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				1818192629CB3D07008C1FA5 /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		18246CFD29CDEF5000516B01 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				181EC3B329CCFE7000912050 /* SettingsViewController.swift */,
+				181EC3B729CD077E00912050 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		18246CFE29CDEF6700516B01 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				18246CFF29CDEF8100516B01 /* MainScreenViewController.swift */,
+				183DA4E029CF2CE100821AB1 /* View */,
+				183DA4E129CF2CF600821AB1 /* Cell */,
+			);
+			path = MainScreen;
+			sourceTree = "<group>";
+		};
+		183DA4E029CF2CE100821AB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				18246D0129CE04AD00516B01 /* DailyView.swift */,
+				183DA4DE29CF2A5900821AB1 /* WeatherCardsCollectionView.swift */,
+				183DA4E229CF2D2C00821AB1 /* DailyCollectionView.swift */,
+				183DA4E429CF50F900821AB1 /* CurrentCityPageView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		183DA4E129CF2CF600821AB1 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				180A627229CE333F006EF6A2 /* WeatherCardCell.swift */,
+				1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		1841528329CDD03B007D357A /* App */ = {
@@ -120,8 +186,9 @@
 			isa = PBXGroup;
 			children = (
 				1841528129CDB90E007D357A /* SettingsStack.swift */,
-				181EC3B529CD016D00912050 /* LocationButton.swift */,
-				181EC3B129CCF5A700912050 /* UIResponder+extension.swift */,
+				181EC3B529CD016D00912050 /* OrangeButton.swift */,
+				181EC3B129CCF5A700912050 /* UIResponder+extensions.swift */,
+				183DA4DC29CF25D500821AB1 /* UIButton+extensions.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -200,14 +267,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				183DA4DD29CF25D500821AB1 /* UIButton+extensions.swift in Sources */,
+				183DA4DB29CF23E700821AB1 /* Fonts.swift in Sources */,
+				1864692829CE51E800E14CE0 /* DailyCollectionViewCell.swift in Sources */,
 				1818192729CB3D07008C1FA5 /* OnboardingViewController.swift in Sources */,
 				1818193729CB4F40008C1FA5 /* Titles.swift in Sources */,
-				181EC3B229CCF5A700912050 /* UIResponder+extension.swift in Sources */,
+				18246D0229CE04AD00516B01 /* DailyView.swift in Sources */,
+				181EC3B229CCF5A700912050 /* UIResponder+extensions.swift in Sources */,
 				1818192329CB3D07008C1FA5 /* AppDelegate.swift in Sources */,
-				181EC3B629CD016D00912050 /* LocationButton.swift in Sources */,
+				183DA4E529CF50F900821AB1 /* CurrentCityPageView.swift in Sources */,
+				181EC3B629CD016D00912050 /* OrangeButton.swift in Sources */,
+				18246D0029CDEF8100516B01 /* MainScreenViewController.swift in Sources */,
 				181EC3B829CD077E00912050 /* SettingsView.swift in Sources */,
+				183DA4E329CF2D2C00821AB1 /* DailyCollectionView.swift in Sources */,
 				1818192529CB3D07008C1FA5 /* SceneDelegate.swift in Sources */,
 				1841528229CDB90E007D357A /* SettingsStack.swift in Sources */,
+				180A627329CE333F006EF6A2 /* WeatherCardCell.swift in Sources */,
+				183DA4DF29CF2A5900821AB1 /* WeatherCardsCollectionView.swift in Sources */,
 				181EC3B429CCFE7000912050 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
