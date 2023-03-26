@@ -11,9 +11,11 @@ final class DailyCollectionViewCell: UICollectionViewCell {
 
     static let id = "DailyCard"
 
+    private let textLabel = UILabel(text: "Местами дождь ")
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
-
+        addSubview(textLabel)
 
         setupView()
         setupConstraints()
@@ -29,7 +31,16 @@ final class DailyCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-        
+        NSLayoutConstraint.activate([
+            textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 19),
+            textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 66),
+            textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -72),
+
+        ])
+    }
+
+    func fillCell(text: String) {
+        textLabel.text?.append(text)
     }
 
 

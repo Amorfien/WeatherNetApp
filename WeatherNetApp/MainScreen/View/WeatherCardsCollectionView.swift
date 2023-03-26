@@ -38,6 +38,7 @@ extension WeatherCardsCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherCardCell.id, for: indexPath) as? WeatherCardCell {
+            cell.fillCell(index: indexPath.row)
             return cell
         } else {
             return UICollectionViewCell()

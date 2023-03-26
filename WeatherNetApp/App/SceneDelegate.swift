@@ -18,8 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         self.window = UIWindow(windowScene: windowScene)
 
-        self.window?.rootViewController = UINavigationController(rootViewController: MainScreenViewController())
+        self.window?.rootViewController = UINavigationController(rootViewController: MainScreenWithCollectionView())
+        self.window?.overrideUserInterfaceStyle = .light    //запрет тёмной темы
         self.window?.makeKeyAndVisible()
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

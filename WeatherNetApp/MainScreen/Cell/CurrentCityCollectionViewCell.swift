@@ -1,19 +1,19 @@
 //
-//  CurrentCityPageView.swift
+//  CurrentCityCollectionViewCell.swift
 //  WeatherNetApp
 //
-//  Created by Pavel Grigorev on 25.03.2023.
+//  Created by Pavel Grigorev on 26.03.2023.
 //
 
 import UIKit
 
-final class CurrentCityPageView: UIView {
+final class CurrentCityCollectionViewCell: UICollectionViewCell {
+
+    static let id = "CityScreen"
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = .white
-//        scrollView.isPagingEnabled = true
-//        scrollView.contentSize.height = 1200
+//        scrollView.backgroundColor = .brown
         return scrollView
     }()
 
@@ -37,7 +37,7 @@ final class CurrentCityPageView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .white
+//        backgroundColor = .green
         let elements = [scrollView, dailyView, detailButton, weatherCardsCollectionView, stackView, dailyLable, moreDaysButton, dailyCollectionView]
         addSubview(scrollView)
         scrollView.addSubviews(view: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, stackView, dailyCollectionView])
@@ -59,7 +59,7 @@ final class CurrentCityPageView: UIView {
         for view in scrollView.subviews {
             contentRect = contentRect.union(view.frame)
         }
-        scrollView.contentSize.height = contentRect.maxY
+        scrollView.contentSize.height = contentRect.maxY + 70
         print("---", contentRect.maxY)
     }
 
@@ -67,13 +67,13 @@ final class CurrentCityPageView: UIView {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
 
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 //            scrollView.heightAnchor.constraint(equalToConstant: 2000),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            dailyView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            dailyView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100),
             dailyView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             dailyView.centerXAnchor.constraint(equalTo: centerXAnchor),
             dailyView.heightAnchor.constraint(equalToConstant: 212),
@@ -99,5 +99,5 @@ final class CurrentCityPageView: UIView {
         ])
     }
 
-    
+
 }

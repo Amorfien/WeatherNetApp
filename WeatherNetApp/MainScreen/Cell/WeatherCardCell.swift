@@ -73,4 +73,9 @@ final class WeatherCardCell: UICollectionViewCell {
         ])
     }
 
+    func fillCell(index: Int) {
+        tempLabel.text = " \(Int.random(in: -30...40))°"
+        timeLabel.text = "\(index + 8):00"
+    }
+
 }

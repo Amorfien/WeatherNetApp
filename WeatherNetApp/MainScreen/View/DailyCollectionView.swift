@@ -36,6 +36,7 @@ extension DailyCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
+            cell.fillCell(text: "\(indexPath.item)")
             return cell
         } else {
             return UICollectionViewCell()

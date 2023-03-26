@@ -16,11 +16,13 @@ extension UIResponder {
     func addSubviews(view: UIView, elements: [UIView]) {
         for element in elements {
             view.addSubview(element)
+            element.translatesAutoresizingMaskIntoConstraints = false
         }
     }
     func addArrangedSubviews(stack: UIStackView, elements: [UIView]) {
         for element in elements {
             stack.addArrangedSubview(element)
+            element.translatesAutoresizingMaskIntoConstraints = false
         }
     }
 
