@@ -37,7 +37,7 @@ final class WeatherCardCell: UICollectionViewCell {
         return label
     }()
 
-    let icons = ["colorSun", "colorSunRain", "colorCloudy", "colorMoon", "colorRain", "colorRaindrops", "colorStorm"]
+    let icons = ["colorSun", "colorSunRain", "colorCloudy", "colorRain", "colorRaindrops", "colorStorm"]
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -55,7 +55,7 @@ final class WeatherCardCell: UICollectionViewCell {
     private func setupView() {
         let elements = [stackView, timeLabel, weatherImageView, tempLabel]
         contentView.addSubview(stackView)
-        stackView.addArrangedSubviews(stack: stackView, elements: [timeLabel, weatherImageView, tempLabel])
+        stackView.addArrangedSubviews(to: stackView, elements: [timeLabel, weatherImageView, tempLabel])
         enableConstraints(elements: elements)
 //        backgroundColor = .systemBlue
         layer.borderWidth = 0.5

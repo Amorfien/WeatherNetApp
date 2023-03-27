@@ -29,7 +29,12 @@
 		183DA4E529CF50F900821AB1 /* CurrentCityPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4E429CF50F900821AB1 /* CurrentCityPageView.swift */; };
 		183DA4EB29CF9A5400821AB1 /* UILabel+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183DA4EA29CF9A5400821AB1 /* UILabel+extensions.swift */; };
 		1841528229CDB90E007D357A /* SettingsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841528129CDB90E007D357A /* SettingsStack.swift */; };
+		185858AC29D1E75200EF8192 /* TodayDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858AB29D1E75200EF8192 /* TodayDetailsScreen.swift */; };
+		185858B229D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858B129D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift */; };
+		185858B429D1FAC700EF8192 /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858B329D1FAC700EF8192 /* ChartViewCell.swift */; };
+		185858B629D20B9500EF8192 /* SimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858B529D20B9500EF8192 /* SimpleButton.swift */; };
 		1864692829CE51E800E14CE0 /* DailyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */; };
+		18A9182229D1B90300DCD4B2 /* UnderlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A9182129D1B90300DCD4B2 /* UnderlinedButton.swift */; };
 		18AB62E829D0542E00EFE563 /* MainScreenWithCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB62E729D0542E00EFE563 /* MainScreenWithCollectionView.swift */; };
 		18AB62EA29D056F700EFE563 /* CurrentCityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB62E929D056F700EFE563 /* CurrentCityCollectionViewCell.swift */; };
 		18F47A1229CB6F4F0087A53A /* Rubik.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18F47A1129CB6F4F0087A53A /* Rubik.ttf */; };
@@ -60,7 +65,12 @@
 		183DA4E429CF50F900821AB1 /* CurrentCityPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentCityPageView.swift; sourceTree = "<group>"; };
 		183DA4EA29CF9A5400821AB1 /* UILabel+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extensions.swift"; sourceTree = "<group>"; };
 		1841528129CDB90E007D357A /* SettingsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStack.swift; sourceTree = "<group>"; };
+		185858AB29D1E75200EF8192 /* TodayDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDetailsScreen.swift; sourceTree = "<group>"; };
+		185858B129D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
+		185858B329D1FAC700EF8192 /* ChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewCell.swift; sourceTree = "<group>"; };
+		185858B529D20B9500EF8192 /* SimpleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButton.swift; sourceTree = "<group>"; };
 		1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCollectionViewCell.swift; sourceTree = "<group>"; };
+		18A9182129D1B90300DCD4B2 /* UnderlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedButton.swift; sourceTree = "<group>"; };
 		18AB62E729D0542E00EFE563 /* MainScreenWithCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenWithCollectionView.swift; sourceTree = "<group>"; };
 		18AB62E929D056F700EFE563 /* CurrentCityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentCityCollectionViewCell.swift; sourceTree = "<group>"; };
 		18F47A1129CB6F4F0087A53A /* Rubik.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rubik.ttf; sourceTree = "<group>"; };
@@ -97,9 +107,10 @@
 			isa = PBXGroup;
 			children = (
 				1841528329CDD03B007D357A /* App */,
-				18246CFC29CDEF4000516B01 /* Onboarding */,
-				18246CFD29CDEF5000516B01 /* Settings */,
+				18246CFC29CDEF4000516B01 /* OnboardingScreen */,
+				18246CFD29CDEF5000516B01 /* SettingsScreen */,
 				18246CFE29CDEF6700516B01 /* MainScreen */,
+				18A9182329D1C81E00DCD4B2 /* TodayDetailsScreen */,
 				184626BB29CDD13B00831A98 /* Resources */,
 				184626BC29CDD18E00831A98 /* CustomUI */,
 				1818192B29CB3D08008C1FA5 /* Assets.xcassets */,
@@ -119,21 +130,21 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		18246CFC29CDEF4000516B01 /* Onboarding */ = {
+		18246CFC29CDEF4000516B01 /* OnboardingScreen */ = {
 			isa = PBXGroup;
 			children = (
 				1818192629CB3D07008C1FA5 /* OnboardingViewController.swift */,
 			);
-			path = Onboarding;
+			path = OnboardingScreen;
 			sourceTree = "<group>";
 		};
-		18246CFD29CDEF5000516B01 /* Settings */ = {
+		18246CFD29CDEF5000516B01 /* SettingsScreen */ = {
 			isa = PBXGroup;
 			children = (
 				181EC3B329CCFE7000912050 /* SettingsViewController.swift */,
 				181EC3B729CD077E00912050 /* SettingsView.swift */,
 			);
-			path = Settings;
+			path = SettingsScreen;
 			sourceTree = "<group>";
 		};
 		18246CFE29CDEF6700516B01 /* MainScreen */ = {
@@ -190,13 +201,41 @@
 		184626BC29CDD18E00831A98 /* CustomUI */ = {
 			isa = PBXGroup;
 			children = (
+				181EC3B129CCF5A700912050 /* UIResponder+extensions.swift */,
 				1841528129CDB90E007D357A /* SettingsStack.swift */,
 				181EC3B529CD016D00912050 /* OrangeButton.swift */,
-				181EC3B129CCF5A700912050 /* UIResponder+extensions.swift */,
+				18A9182129D1B90300DCD4B2 /* UnderlinedButton.swift */,
+				185858B529D20B9500EF8192 /* SimpleButton.swift */,
 				183DA4DC29CF25D500821AB1 /* UIButton+extensions.swift */,
 				183DA4EA29CF9A5400821AB1 /* UILabel+extensions.swift */,
 			);
 			path = CustomUI;
+			sourceTree = "<group>";
+		};
+		185858AD29D1EA7000EF8192 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		185858AE29D1EA7700EF8192 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				185858B329D1FAC700EF8192 /* ChartViewCell.swift */,
+				185858B129D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		18A9182329D1C81E00DCD4B2 /* TodayDetailsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				185858AB29D1E75200EF8192 /* TodayDetailsScreen.swift */,
+				185858AD29D1EA7000EF8192 /* View */,
+				185858AE29D1EA7700EF8192 /* Cell */,
+			);
+			path = TodayDetailsScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,9 +316,13 @@
 				183DA4DB29CF23E700821AB1 /* Fonts.swift in Sources */,
 				1864692829CE51E800E14CE0 /* DailyCollectionViewCell.swift in Sources */,
 				18AB62EA29D056F700EFE563 /* CurrentCityCollectionViewCell.swift in Sources */,
+				185858B629D20B9500EF8192 /* SimpleButton.swift in Sources */,
 				1818192729CB3D07008C1FA5 /* OnboardingViewController.swift in Sources */,
 				1818193729CB4F40008C1FA5 /* Titles.swift in Sources */,
+				185858AC29D1E75200EF8192 /* TodayDetailsScreen.swift in Sources */,
 				18246D0229CE04AD00516B01 /* DailyView.swift in Sources */,
+				185858B229D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift in Sources */,
+				185858B429D1FAC700EF8192 /* ChartViewCell.swift in Sources */,
 				181EC3B229CCF5A700912050 /* UIResponder+extensions.swift in Sources */,
 				1818192329CB3D07008C1FA5 /* AppDelegate.swift in Sources */,
 				183DA4E529CF50F900821AB1 /* CurrentCityPageView.swift in Sources */,
@@ -290,6 +333,7 @@
 				183DA4E329CF2D2C00821AB1 /* DailyCollectionView.swift in Sources */,
 				1818192529CB3D07008C1FA5 /* SceneDelegate.swift in Sources */,
 				1841528229CDB90E007D357A /* SettingsStack.swift in Sources */,
+				18A9182229D1B90300DCD4B2 /* UnderlinedButton.swift in Sources */,
 				180A627329CE333F006EF6A2 /* WeatherCardCell.swift in Sources */,
 				183DA4DF29CF2A5900821AB1 /* WeatherCardsCollectionView.swift in Sources */,
 				181EC3B429CCFE7000912050 /* SettingsViewController.swift in Sources */,

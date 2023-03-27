@@ -44,17 +44,27 @@ final class MainScreenWithCollectionView: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setupUI()
+        setupNavigationController()
+
+        setupConstraints()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        navigationItem.title = nil
+//    }
+
+    private func setupUI() {
         view.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         whiteView.backgroundColor = .white
-        let elements = [whiteView, pageControl, pagingCollectionView]
-//        view.addSubviews(view: view, elements: elements)
-        view.addSubview(whiteView)
-        view.addSubview(pagingCollectionView)
-        view.addSubview(pageControl)
-
+        let elements = [whiteView, pagingCollectionView, pageControl]
+        view.addSubviews(to: view, elements: elements)
         enableConstraints(elements: elements)
-        setupNavigationController()
-        setupConstraints()
     }
 
     private func setupNavigationController() {
@@ -122,6 +132,7 @@ extension MainScreenWithCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentCityCollectionViewCell.id, for: indexPath) as? CurrentCityCollectionViewCell {
+            cell.detailDelegate = self
             return cell
         } else {
             return UICollectionViewCell()
@@ -137,6 +148,13 @@ extension MainScreenWithCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         pageControl.currentPage = indexPath.item
 //        print(indexPath.row)
+    }
+}
+
+extension MainScreenWithCollectionView: DetailDelegate {
+    func showDetail() {
+        let todayDetailsScreen = TodayDetailsScreen()
+        navigationController?.pushViewController(todayDetailsScreen, animated: true)
     }
 }
 

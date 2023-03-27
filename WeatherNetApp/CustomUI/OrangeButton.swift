@@ -19,6 +19,7 @@ final class OrangeButton: UIButton {
         backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.431372549, blue: 0.06666666667, alpha: 1)
 
         titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.minimumScaleFactor = 0.5
         layer.cornerRadius = 10
         addTarget(self, action: #selector(changeState), for: .touchDown)
         addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)

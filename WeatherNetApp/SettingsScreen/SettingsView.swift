@@ -36,8 +36,8 @@ final class SettingsView: UIView {
         layer.cornerRadius = 10
 
         let elements = [screenLabel, mainVStack, temperatureStack, windStack, timeStack, notificationStack, okButton]
-        addSubviews(view: self, elements: [screenLabel, mainVStack, okButton])
-        mainVStack.addArrangedSubviews(stack: mainVStack, elements: [temperatureStack, windStack, timeStack, notificationStack])
+        addSubviews(to: self, elements: [screenLabel, mainVStack, okButton])
+        mainVStack.addArrangedSubviews(to: mainVStack, elements: [temperatureStack, windStack, timeStack, notificationStack])
         enableConstraints(elements: elements)
         setupConstraints()
     }

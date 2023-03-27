@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol DetailDelegate: AnyObject {
+    func showDetail()
+}
+
 final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     static let id = "CityScreen"
+
+    weak var detailDelegate: DetailDelegate?
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -19,20 +25,18 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
 
     private let dailyView = DailyView()
-    private let detailButton = UIButton(underlined: "Подробнее на 24 часа")
+//    private let detailButton = UIButton(underlined: "Подробнее на 24 часа")
+    private lazy var detailButton = UnderlinedButton(underlined: "Подробнее на 24 часа", action: detailDidTap)
 
     private let weatherCardsCollectionView = WeatherCardsCollectionView()
 
     private let stackView = UIStackView()
-    private let dailyLable: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)
-        label.text = "Ежедневный прогноз"
-        return label
-    }()
-    private let moreDaysButton = UIButton(underlined: "25 дней")
+    private let dailyLable = UILabel(text: "Ежедневный прогноз", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)!)
 
-    private let dailyCollectionView = DailyCollectionView()
+//    private var moreDaysButton = UIButton(underlined: "25 дней")
+    private lazy var moreDaysButton = UnderlinedButton(underlined: "25 дней", action: moreDaysDidTap)
+
+    private var dailyCollectionView = DailyCollectionView()
 
 
     override init(frame: CGRect) {
@@ -40,8 +44,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 //        backgroundColor = .green
         let elements = [scrollView, dailyView, detailButton, weatherCardsCollectionView, stackView, dailyLable, moreDaysButton, dailyCollectionView]
         addSubview(scrollView)
-        scrollView.addSubviews(view: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, stackView, dailyCollectionView])
-        stackView.addArrangedSubviews(stack: stackView, elements: [dailyLable, moreDaysButton])
+        scrollView.addSubviews(to: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, stackView, dailyCollectionView])
+        stackView.addArrangedSubviews(to: stackView, elements: [dailyLable, moreDaysButton])
         enableConstraints(elements: elements)
         setupConstraints()
         DispatchQueue.main.async {
@@ -97,6 +101,24 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 //            dailyCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
 
         ])
+    }
+
+
+    private func detailDidTap() {
+        detailDelegate?.showDetail()
+
+    }
+
+    private func moreDaysDidTap() {
+        if moreDaysButton.titleLabel?.text == "25 дней" {
+            dailyCollectionView.numberOfCells = 25
+            moreDaysButton.setTitle("7 дней", for: .normal)
+        } else if moreDaysButton.titleLabel?.text == "7 дней" {
+            dailyCollectionView.numberOfCells = 7
+            moreDaysButton.setTitle("25 дней", for: .normal)
+        }
+        dailyCollectionView.reloadData()
+        setContentSize()//??
     }
 
 

@@ -4,10 +4,16 @@
 //
 //  Created by Pavel Grigorev on 25.03.2023.
 //
-
+/*
 import UIKit
 
+protocol DetailedButtonDelegate: AnyObject {
+    func detailButtonDidTap(sender: UIButton)
+}
+
 final class CurrentCityPageView: UIView {
+
+    weak var detailedButtonDelegate: DetailedButtonDelegate?
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -30,7 +36,8 @@ final class CurrentCityPageView: UIView {
         label.text = "Ежедневный прогноз"
         return label
     }()
-    private let moreDaysButton = UIButton(underlined: "25 дней")
+//    private var moreDaysButton = UIButton(underlined: "25 дней")
+    private lazy var moreDaysButton = UnderlinedButton(underlined: "25 дней", action: moreDaysDidTap)
 
     private let dailyCollectionView = DailyCollectionView()
 
@@ -40,13 +47,15 @@ final class CurrentCityPageView: UIView {
 //        backgroundColor = .white
         let elements = [scrollView, dailyView, detailButton, weatherCardsCollectionView, stackView, dailyLable, moreDaysButton, dailyCollectionView]
         addSubview(scrollView)
-        scrollView.addSubviews(view: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, stackView, dailyCollectionView])
-        stackView.addArrangedSubviews(stack: stackView, elements: [dailyLable, moreDaysButton])
+        scrollView.addSubviews(to: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, stackView, dailyCollectionView])
+        stackView.addArrangedSubviews(to: stackView, elements: [dailyLable, moreDaysButton])
         enableConstraints(elements: elements)
         setupConstraints()
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             self.setContentSize()
-        }
+//        }
+        detailButton.addTarget(self, action: #selector(detailDidTap), for: .touchUpInside)
+//        moreDaysButton.addTarget(self, action: #selector(moreDaysDidTap), for: .touchUpInside)
     }
 
     required init?(coder: NSCoder) {
@@ -99,5 +108,20 @@ final class CurrentCityPageView: UIView {
         ])
     }
 
+//    @objc
+    private func moreDaysDidTap() {
+        print(25)
+        detailedButtonDelegate?.detailButtonDidTap(sender: moreDaysButton.self)
+        dailyCollectionView.numberOfCells = 25
+        dailyCollectionView.reloadData()
+    }
+
+    @objc private func detailDidTap() {
+        print(25)
+        detailedButtonDelegate?.detailButtonDidTap(sender: detailButton.self)
+//        dailyCollectionView.numberOfCells = 25
+//        dailyCollectionView.reloadData()
+    }
     
 }
+*/

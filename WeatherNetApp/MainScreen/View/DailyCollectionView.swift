@@ -11,7 +11,7 @@ final class DailyCollectionView: UICollectionView {
 
     let cellHeight: CGFloat = 56
     let inset: CGFloat = 10
-    var numberOfCells: CGFloat = 25
+    var numberOfCells: CGFloat = 7
 
     private let dailyLayout = UICollectionViewFlowLayout()
 
@@ -36,7 +36,7 @@ extension DailyCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
-            cell.fillCell(text: "\(indexPath.item)")
+            cell.fillCell(text: "Местами дождь - \(indexPath.item + 1)")
             return cell
         } else {
             return UICollectionViewCell()

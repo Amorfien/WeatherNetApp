@@ -33,7 +33,7 @@ final class WeatherCardsCollectionView: UICollectionView {
 
 extension WeatherCardsCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        12
+        24
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

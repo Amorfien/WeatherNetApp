@@ -28,7 +28,7 @@ final class SettingsStack: UIStackView {
         segmentedControl.setTitleTextAttributes([.foregroundColor: #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)], for: .selected)
         segmentedControl.selectedSegmentIndex = selected
         let elements = [titleLabel, segmentedControl]
-        addArrangedSubviews(stack: self, elements: elements)
+        addArrangedSubviews(to: self, elements: elements)
         enableConstraints(elements: elements)
         setupConstraints()
     }

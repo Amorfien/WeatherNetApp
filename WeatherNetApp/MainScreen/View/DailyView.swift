@@ -15,7 +15,7 @@ final class DailyView: UIView {
         let sunFrame = UIScreen.main.bounds.width - (16 + 33) * 2
         let radius = sunFrame / 2
 //        let screenCenter = UIScreen.main.bounds.width / 2
-        let center = CGPoint(x: radius + 32, y: radius + 17)
+        let center = CGPoint(x: radius + 32, y: radius + 20)
         let startAngle = -CGFloat.pi// * 0.95
         let endAngle = -CGFloat.pi * 0.0
 
@@ -30,12 +30,19 @@ final class DailyView: UIView {
         return layer
     }()
 
-    let curendDateLabel = UILabel(text: "17:48, пт 16 апреля", textColor: #colorLiteral(red: 0.9647058824, green: 0.8666666667, blue: 0.003921568627, alpha: 1), center: true)
-    let weatherLabel = UILabel(text: "Возможен небольшой дождь", textColor: .white, center: true)
-    let tempLabel = UILabel(text: " 13°", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 36)!, textColor: .white, center: true)
-    let rangeTempLabel = UILabel(text: " 7°/13°", textColor: .white, center: true)
+    let sum1Label = UILabel(ico: UIImage(named: "colorSunCloud")!, value: "0", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+    let sum2Label = UILabel(ico: UIImage(named: "colorWind")!, value: "3 м/с", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+    let sum3Label = UILabel(ico: UIImage(named: "colorRaindrops")!, value: "75%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+    private lazy var summaryStack = UIStackView(arrangedSubviews: [sum1Label, sum2Label, sum3Label])
+
+    let curentDateLabel = UILabel(text: "17:48, пт 16 апреля", textColor: #colorLiteral(red: 0.9647058824, green: 0.8666666667, blue: 0.003921568627, alpha: 1), alignment: .center)
+    let weatherLabel = UILabel(text: "Возможен небольшой дождь", textColor: .white, alignment: .center)
+    let tempLabel = UILabel(text: " 13°", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 36)!, textColor: .white, alignment: .center)
+    let rangeTempLabel = UILabel(text: " 7°/13°", textColor: .white, alignment: .center)
     let sunriseIco = UIImageView(image: UIImage(named: "sunrise_yellow"))
     let sunsetIco = UIImageView(image: UIImage(named: "sunset_yellow"))
+    let sunriseLabel = UILabel(text: "05:41", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
+    let sunsetLabel = UILabel(text: "19:31", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
 
 
     override init(frame: CGRect) {
@@ -43,10 +50,15 @@ final class DailyView: UIView {
         backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         layer.cornerRadius = 5
 
+        summaryStack.distribution = .fillEqually
+        summaryStack.spacing = 19
+
 
         layer.addSublayer(sunLayer)
-        addSubviews(view: self, elements: [curendDateLabel, weatherLabel, tempLabel, rangeTempLabel, sunriseIco, sunsetIco])
+        addSubviews(to: self, elements: [curentDateLabel, summaryStack, weatherLabel, tempLabel, rangeTempLabel,
+                                         sunriseIco, sunsetIco, sunriseLabel, sunsetLabel])
         setupConstraints()
+        dateFormat()
 
     }
     
@@ -56,9 +68,14 @@ final class DailyView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            curendDateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            curendDateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            curendDateLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            curentDateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            curentDateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            curentDateLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+
+            summaryStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+            summaryStack.bottomAnchor.constraint(equalTo: curentDateLabel.topAnchor, constant: -10),
+            summaryStack.heightAnchor.constraint(equalToConstant: 30),
+//            summaryStack.widthAnchor.constraint(equalToConstant: 188),
 
             weatherLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             weatherLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 6),
@@ -77,7 +94,22 @@ final class DailyView: UIView {
 
             sunsetIco.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25),
             sunsetIco.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
+
+            sunriseLabel.centerXAnchor.constraint(equalTo: sunriseIco.centerXAnchor),
+            sunriseLabel.topAnchor.constraint(equalTo: sunriseIco.bottomAnchor, constant: 5),
+
+            sunsetLabel.centerXAnchor.constraint(equalTo: sunsetIco.centerXAnchor),
+            sunsetLabel.topAnchor.constraint(equalTo: sunsetIco.bottomAnchor, constant: 5),
+
         ])
+    }
+
+    private func dateFormat() {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm, E d MMM"
+        let text = formatter.string(from: date)
+        curentDateLabel.text = text
     }
 
 }
