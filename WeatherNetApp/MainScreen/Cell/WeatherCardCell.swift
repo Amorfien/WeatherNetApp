@@ -11,6 +11,14 @@ final class WeatherCardCell: UICollectionViewCell {
 
     static let id = "WeatherCard"
 
+    override var isSelected: Bool {
+        didSet {
+            backgroundColor = isSelected ? #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1) : .white
+            timeLabel.textColor = isSelected ? .white : #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
+            tempLabel.textColor = isSelected ? .white : #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
+        }
+    }
+
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical

@@ -33,10 +33,14 @@
 		185858B229D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858B129D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift */; };
 		185858B429D1FAC700EF8192 /* ChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858B329D1FAC700EF8192 /* ChartViewCell.swift */; };
 		185858B629D20B9500EF8192 /* SimpleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185858B529D20B9500EF8192 /* SimpleButton.swift */; };
+		18605B1E29D2FEE500B9EEEE /* WeatherStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18605B1D29D2FEE500B9EEEE /* WeatherStack.swift */; };
 		1864692829CE51E800E14CE0 /* DailyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */; };
 		18A9182229D1B90300DCD4B2 /* UnderlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A9182129D1B90300DCD4B2 /* UnderlinedButton.swift */; };
 		18AB62E829D0542E00EFE563 /* MainScreenWithCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB62E729D0542E00EFE563 /* MainScreenWithCollectionView.swift */; };
 		18AB62EA29D056F700EFE563 /* CurrentCityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB62E929D056F700EFE563 /* CurrentCityCollectionViewCell.swift */; };
+		18D1439529D2411300C24EF3 /* DailySummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D1439429D2411300C24EF3 /* DailySummaryViewController.swift */; };
+		18D1439829D24BD000C24EF3 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D1439729D24BD000C24EF3 /* CalendarCollectionViewCell.swift */; };
+		18D1439B29D250EA00C24EF3 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D1439A29D250EA00C24EF3 /* SummaryView.swift */; };
 		18F47A1229CB6F4F0087A53A /* Rubik.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 18F47A1129CB6F4F0087A53A /* Rubik.ttf */; };
 /* End PBXBuildFile section */
 
@@ -69,10 +73,14 @@
 		185858B129D1EE6400EF8192 /* TodayDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
 		185858B329D1FAC700EF8192 /* ChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewCell.swift; sourceTree = "<group>"; };
 		185858B529D20B9500EF8192 /* SimpleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleButton.swift; sourceTree = "<group>"; };
+		18605B1D29D2FEE500B9EEEE /* WeatherStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStack.swift; sourceTree = "<group>"; };
 		1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCollectionViewCell.swift; sourceTree = "<group>"; };
 		18A9182129D1B90300DCD4B2 /* UnderlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedButton.swift; sourceTree = "<group>"; };
 		18AB62E729D0542E00EFE563 /* MainScreenWithCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenWithCollectionView.swift; sourceTree = "<group>"; };
 		18AB62E929D056F700EFE563 /* CurrentCityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentCityCollectionViewCell.swift; sourceTree = "<group>"; };
+		18D1439429D2411300C24EF3 /* DailySummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySummaryViewController.swift; sourceTree = "<group>"; };
+		18D1439729D24BD000C24EF3 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		18D1439A29D250EA00C24EF3 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		18F47A1129CB6F4F0087A53A /* Rubik.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rubik.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +119,7 @@
 				18246CFD29CDEF5000516B01 /* SettingsScreen */,
 				18246CFE29CDEF6700516B01 /* MainScreen */,
 				18A9182329D1C81E00DCD4B2 /* TodayDetailsScreen */,
+				18D1439329D240E900C24EF3 /* DailySummaryScreen */,
 				184626BB29CDD13B00831A98 /* Resources */,
 				184626BC29CDD18E00831A98 /* CustomUI */,
 				1818192B29CB3D08008C1FA5 /* Assets.xcassets */,
@@ -151,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				18AB62E729D0542E00EFE563 /* MainScreenWithCollectionView.swift */,
+				18AB62E929D056F700EFE563 /* CurrentCityCollectionViewCell.swift */,
 				183DA4E029CF2CE100821AB1 /* View */,
 				183DA4E129CF2CF600821AB1 /* Cell */,
 			);
@@ -171,7 +181,6 @@
 		183DA4E129CF2CF600821AB1 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				18AB62E929D056F700EFE563 /* CurrentCityCollectionViewCell.swift */,
 				180A627229CE333F006EF6A2 /* WeatherCardCell.swift */,
 				1864692729CE51E800E14CE0 /* DailyCollectionViewCell.swift */,
 			);
@@ -203,6 +212,7 @@
 			children = (
 				181EC3B129CCF5A700912050 /* UIResponder+extensions.swift */,
 				1841528129CDB90E007D357A /* SettingsStack.swift */,
+				18605B1D29D2FEE500B9EEEE /* WeatherStack.swift */,
 				181EC3B529CD016D00912050 /* OrangeButton.swift */,
 				18A9182129D1B90300DCD4B2 /* UnderlinedButton.swift */,
 				185858B529D20B9500EF8192 /* SimpleButton.swift */,
@@ -236,6 +246,32 @@
 				185858AE29D1EA7700EF8192 /* Cell */,
 			);
 			path = TodayDetailsScreen;
+			sourceTree = "<group>";
+		};
+		18D1439329D240E900C24EF3 /* DailySummaryScreen */ = {
+			isa = PBXGroup;
+			children = (
+				18D1439429D2411300C24EF3 /* DailySummaryViewController.swift */,
+				18D1439929D250D000C24EF3 /* View */,
+				18D1439629D24B9100C24EF3 /* Cell */,
+			);
+			path = DailySummaryScreen;
+			sourceTree = "<group>";
+		};
+		18D1439629D24B9100C24EF3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				18D1439729D24BD000C24EF3 /* CalendarCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		18D1439929D250D000C24EF3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				18D1439A29D250EA00C24EF3 /* SummaryView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,6 +349,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				183DA4DD29CF25D500821AB1 /* UIButton+extensions.swift in Sources */,
+				18605B1E29D2FEE500B9EEEE /* WeatherStack.swift in Sources */,
+				18D1439B29D250EA00C24EF3 /* SummaryView.swift in Sources */,
 				183DA4DB29CF23E700821AB1 /* Fonts.swift in Sources */,
 				1864692829CE51E800E14CE0 /* DailyCollectionViewCell.swift in Sources */,
 				18AB62EA29D056F700EFE563 /* CurrentCityCollectionViewCell.swift in Sources */,
@@ -326,6 +364,7 @@
 				181EC3B229CCF5A700912050 /* UIResponder+extensions.swift in Sources */,
 				1818192329CB3D07008C1FA5 /* AppDelegate.swift in Sources */,
 				183DA4E529CF50F900821AB1 /* CurrentCityPageView.swift in Sources */,
+				18D1439529D2411300C24EF3 /* DailySummaryViewController.swift in Sources */,
 				183DA4EB29CF9A5400821AB1 /* UILabel+extensions.swift in Sources */,
 				181EC3B629CD016D00912050 /* OrangeButton.swift in Sources */,
 				181EC3B829CD077E00912050 /* SettingsView.swift in Sources */,
@@ -335,6 +374,7 @@
 				1841528229CDB90E007D357A /* SettingsStack.swift in Sources */,
 				18A9182229D1B90300DCD4B2 /* UnderlinedButton.swift in Sources */,
 				180A627329CE333F006EF6A2 /* WeatherCardCell.swift in Sources */,
+				18D1439829D24BD000C24EF3 /* CalendarCollectionViewCell.swift in Sources */,
 				183DA4DF29CF2A5900821AB1 /* WeatherCardsCollectionView.swift in Sources */,
 				181EC3B429CCFE7000912050 /* SettingsViewController.swift in Sources */,
 			);

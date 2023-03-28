@@ -33,6 +33,7 @@ final class DailyCollectionViewCell: UICollectionViewCell {
     private func setupView() {
         backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
         layer.cornerRadius = 5
+        detailButton.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
         let elements = [dateLabel, icoLabel, textLabel, tempRangeLabel, detailButton]
         addSubviews(to: self, elements: elements)
 

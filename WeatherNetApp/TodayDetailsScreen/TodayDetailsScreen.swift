@@ -45,7 +45,6 @@ final class TodayDetailsScreen: UIViewController {
         navigationItem.rightBarButtonItem = secondaryTitle
         navigationItem.title = "Saint-Petersburg, Russia"
         navigationController?.navigationBar.prefersLargeTitles = true
-//        navigationItem.
     }
 
     private func setupUI() {

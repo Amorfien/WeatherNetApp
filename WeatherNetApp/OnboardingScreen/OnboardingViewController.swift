@@ -57,6 +57,7 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.125, green: 0.3059999943, blue: 0.7799999714, alpha: 1)
+        navigationController?.navigationBar.tintColor = .white
         let elements = [logoImageView, firstLabel, secondLabel, thirdLabel, locationButton, cancelButton]
         addSubviews(to: view, elements: elements)
         enableConstraints(elements: elements)

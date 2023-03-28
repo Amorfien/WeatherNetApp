@@ -107,6 +107,7 @@ final class DailyView: UIView {
     private func dateFormat() {
         let date = Date()
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "HH:mm, E d MMM"
         let text = formatter.string(from: date)
         curentDateLabel.text = text

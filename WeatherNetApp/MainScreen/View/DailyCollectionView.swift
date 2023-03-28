@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol SummaryDelegate: AnyObject {
+    func tapToSummary()
+}
+
 final class DailyCollectionView: UICollectionView {
+
+    weak var summaryDelegate: SummaryDelegate?
 
     let cellHeight: CGFloat = 56
     let inset: CGFloat = 10
@@ -49,5 +55,6 @@ extension DailyCollectionView: UICollectionViewDelegateFlowLayout {
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)
+        summaryDelegate?.tapToSummary()
     }
 }

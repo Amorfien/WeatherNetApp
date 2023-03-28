@@ -53,7 +53,8 @@ final class MainScreenWithCollectionView: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
-    }
+        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
+}
 //    override func viewWillDisappear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)
 //        navigationItem.title = nil
@@ -147,11 +148,18 @@ extension MainScreenWithCollectionView: UICollectionViewDelegateFlowLayout {
     // FIXME: срабатывает раньше времени
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         pageControl.currentPage = indexPath.item
+        navigationItem.title = cities[indexPath.item]
 //        print(indexPath.row)
     }
 }
 
 extension MainScreenWithCollectionView: DetailDelegate {
+    func showSummary() {
+        print("peredacha #2")
+        let dailySummaryViewController = DailySummaryViewController()
+        navigationController?.pushViewController(dailySummaryViewController, animated: true)
+    }
+
     func showDetail() {
         let todayDetailsScreen = TodayDetailsScreen()
         navigationController?.pushViewController(todayDetailsScreen, animated: true)
