@@ -60,7 +60,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
             contentRect = contentRect.union(view.frame)
         }
         scrollView.contentSize.height = contentRect.maxY + 70
-        print("---", contentRect.maxY)
+//        print("---", contentRect.maxY)
     }
 
 

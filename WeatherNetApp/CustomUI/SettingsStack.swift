@@ -7,13 +7,14 @@
 
 import UIKit
 
+protocol SettingsSegmentValueChange: AnyObject {
+    func segmentValueChange(key: String)
+}
+
 final class SettingsStack: UIStackView {
 
-//    private let segmentedControl: UISegmentedControl = {
-//        let segment = UISegmentedControl(items: [leftSegment, "78"])
-//
-//        return segment
-//    }()
+    weak var segmentDelegate: SettingsSegmentValueChange?
+
     let titleLabel = UILabel()
     var segmentedControl = UISegmentedControl()
 
@@ -27,6 +28,7 @@ final class SettingsStack: UIStackView {
         segmentedControl.backgroundColor = #colorLiteral(red: 0.9960784314, green: 0.9294117647, blue: 0.9137254902, alpha: 1)
         segmentedControl.setTitleTextAttributes([.foregroundColor: #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)], for: .selected)
         segmentedControl.selectedSegmentIndex = selected
+        segmentedControl.addTarget(self, action: #selector(chooseSegment), for: .valueChanged)
         let elements = [titleLabel, segmentedControl]
         addArrangedSubviews(to: self, elements: elements)
         enableConstraints(elements: elements)
@@ -42,6 +44,11 @@ final class SettingsStack: UIStackView {
             segmentedControl.widthAnchor.constraint(equalToConstant: 80),
             segmentedControl.heightAnchor.constraint(equalToConstant: 30)
         ])
+    }
+
+    @objc private func chooseSegment() {
+        let key = segmentedControl.titleForSegment(at: segmentedControl.selectedSegmentIndex)!
+        segmentDelegate?.segmentValueChange(key: key)
     }
 
 

@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import CoreLocation
 
 final class OnboardingViewController: UIViewController {
+
+    let locationManager = CLLocationManager()
 
     private let logoImageView = UIImageView(image: UIImage(named: "onboardGirl"))
 
@@ -95,13 +98,49 @@ final class OnboardingViewController: UIViewController {
     }
 
     private func locationTap() {
-//        let settingsVC = SettingsViewController()
-//        navigationController?.pushViewController(settingsVC, animated: true)
+
+        locationManager.delegate = self
+        if locationManager.authorizationStatus != .authorizedAlways || locationManager.authorizationStatus != .authorizedWhenInUse {
+            locationManager.requestWhenInUseAuthorization()
+        } else {
+            let mainVC = MainScreenWithCollectionView(isGeoTracking: true)
+            navigationController?.pushViewController(mainVC, animated: true)
+        }
+        
+//        let mainVC = MainScreenWithCollectionView()
+//        navigationController?.pushViewController(mainVC, animated: true)
+
+//        if CLLocationManager.locationServicesEnabled() {
+//            print(locationManager.location)
+//
+////            locationManager.requestWhenInUseAuthorization()
+//
+//        } else {
+//            let alertController = UIAlertController(title: "Геолокация недостуна", message: "Включите службы геолокации в настройках телефона \nНастройки -> \nКонфиденциальность и безопасность -> \nСлужбы геолокации", preferredStyle: .alert)
+//            let cancelAction = UIAlertAction(title: "Ok", style: .default) {_ in
+//                self.dismiss(animated: true)
+//            }
+//            alertController.addAction(cancelAction)
+//            present(alertController, animated: true)
+//        }
+
     }
 
     @objc private func cancelTap() {
-//        let mainVC = MainScreenViewController()
-//        navigationController?.pushViewController(mainVC, animated: true)
+//        UserSettings.isOnboarding = true
+        let mainVC = MainScreenWithCollectionView(isGeoTracking: false)
+        navigationController?.pushViewController(mainVC, animated: true)
     }
 
+}
+
+extension OnboardingViewController: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorizedWhenInUse {
+//            UserSettings.isOnboarding = true
+            let mainVC = MainScreenWithCollectionView(isGeoTracking: true)
+            navigationController?.pushViewController(mainVC, animated: true)
+        }
+
+    }
 }

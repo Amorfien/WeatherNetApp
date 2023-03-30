@@ -7,7 +7,20 @@
 
 import UIKit
 
+protocol PopSettingsProtocol: AnyObject {
+    func popToRoot()
+}
+
 final class SettingsView: UIView {
+
+    weak var popDelegate: PopSettingsProtocol?
+
+    private var unsavedSettings: [UserSettings.SettingsKeys: Bool] = [
+        .isFahrenheit: UserSettings.isFahrenheit,
+        .isImperial: UserSettings.isImperial,
+        .isTwelve: UserSettings.isTwelve,
+        .isNotification: UserSettings.isNotification
+    ]
 
     private let screenLabel: UILabel = {
         let label = UILabel()
@@ -22,10 +35,14 @@ final class SettingsView: UIView {
         stack.spacing = 20
         return stack
     }()
-    private let temperatureStack = SettingsStack(title: Titles.Settings.temp, leftSegment: "C", rightSegment: "F", selected: 0)
-    private let windStack = SettingsStack(title: Titles.Settings.wind, leftSegment: "Mi", rightSegment: "Km", selected: 1)
-    private let timeStack = SettingsStack(title: Titles.Settings.time, leftSegment: "12", rightSegment: "24", selected: 1)
-    private let notificationStack = SettingsStack(title: Titles.Settings.not, leftSegment: "On", rightSegment: "Off", selected: 0)
+    private let temperatureStack = SettingsStack(title: Titles.Settings.temp, leftSegment: "C", rightSegment: "F",
+                                                 selected: UserSettings.isFahrenheit ? 1 : 0)
+    private let windStack = SettingsStack(title: Titles.Settings.wind, leftSegment: "Mi", rightSegment: "Km",
+                                          selected: UserSettings.isImperial ? 0 : 1)
+    private let timeStack = SettingsStack(title: Titles.Settings.time, leftSegment: "12", rightSegment: "24",
+                                          selected: UserSettings.isTwelve ? 0 : 1)
+    private let notificationStack = SettingsStack(title: Titles.Settings.not, leftSegment: "On", rightSegment: "Off",
+                                                  selected: UserSettings.isNotification ? 0 : 1)
     private lazy var okButton = OrangeButton(title: Titles.Settings.buttonText,
                                              font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 16)!,
                                              action: okBtnDidTap)
@@ -40,6 +57,11 @@ final class SettingsView: UIView {
         mainVStack.addArrangedSubviews(to: mainVStack, elements: [temperatureStack, windStack, timeStack, notificationStack])
         enableConstraints(elements: elements)
         setupConstraints()
+
+        temperatureStack.segmentDelegate = self
+        windStack.segmentDelegate = self
+        timeStack.segmentDelegate = self
+        notificationStack.segmentDelegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -62,6 +84,30 @@ final class SettingsView: UIView {
         ])
     }
 
-    private func okBtnDidTap() {}
+    private func okBtnDidTap() {
+        UserSettings.isFahrenheit = unsavedSettings[.isFahrenheit]!
+        UserSettings.isImperial = unsavedSettings[.isImperial]!
+        UserSettings.isTwelve = unsavedSettings[.isTwelve]!
+        UserSettings.isNotification = unsavedSettings[.isNotification]!
+        popDelegate?.popToRoot()
+    }
 
+}
+
+extension SettingsView: SettingsSegmentValueChange {
+    func segmentValueChange(key: String) {
+        switch key {
+        case "F": unsavedSettings[.isFahrenheit] = true
+        case "C": unsavedSettings[.isFahrenheit] = false
+        case "Mi": unsavedSettings[.isImperial] = true
+        case "Km": unsavedSettings[.isImperial] = false
+        case "12": unsavedSettings[.isTwelve] = true
+        case "24": unsavedSettings[.isTwelve] = false
+        case "On": unsavedSettings[.isNotification] = true
+        case "Off": unsavedSettings[.isNotification] = false
+        default: return
+        }
+    }
+
+    
 }

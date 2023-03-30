@@ -25,6 +25,7 @@ final class SettingsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
         setupConstraints()
         animation()
+        grayView.popDelegate = self
     }
 
     private func setupConstraints() {
@@ -54,5 +55,10 @@ final class SettingsViewController: UIViewController {
         }
     }
 
+}
 
+extension SettingsViewController: PopSettingsProtocol {
+    func popToRoot() {
+        navigationController?.popViewController(animated: true)
+    }
 }

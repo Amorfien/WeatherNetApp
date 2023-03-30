@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import CoreLocation
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    let locationManager = CLLocationManager()
+    var geoTracking = false
+
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -18,7 +22,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         self.window = UIWindow(windowScene: windowScene)
 
-        self.window?.rootViewController = UINavigationController(rootViewController: MainScreenWithCollectionView())
+//        let isOnboarding = UserSettings.isOnboarding
+        if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .authorizedAlways {
+            geoTracking = true
+        }
+
+
+        self.window?.rootViewController = UINavigationController(rootViewController: geoTracking ? MainScreenWithCollectionView(isGeoTracking: true) : OnboardingViewController())
         self.window?.overrideUserInterfaceStyle = .light    //запрет тёмной темы
         self.window?.makeKeyAndVisible()
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 final class MainScreenWithCollectionView: UIViewController {
 
@@ -40,8 +41,60 @@ final class MainScreenWithCollectionView: UIViewController {
         return pageControl
     }()
 
-    private let cities = ["Saint-Petersburg", "Moscow", "New-York", "London"]
+    private var locationManager: CLLocationManager? = nil
+    var weatherData: CurrentWeatherData?
+    var currentCity: CityElement?
 
+    private var cities = ["Saint-Petersburg", "Moscow", "New-York", "London"] {
+        didSet {
+            pagingCollectionView.reloadData()
+            pageControl.numberOfPages = cities.count
+        }
+    }
+
+    init(isGeoTracking: Bool) {
+        if isGeoTracking {
+            locationManager = CLLocationManager()
+            locationManager?.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            locationManager?.pausesLocationUpdatesAutomatically = false
+            locationManager?.startUpdatingLocation()
+        } else {
+            locationManager = nil
+        }
+//        currentCity = City(name: "", lat: 0, lon: 0, country: "", state: "")
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
+        super.loadView()
+        let apiManager = APImanager()
+        let lat = locationManager?.location?.coordinate.latitude
+        let long = locationManager?.location?.coordinate.longitude
+
+        apiManager.getCurrentWeather(latitude: lat ?? 0, longitude: long ?? 0) { result in
+            switch result {
+            case .success(let data): print(data)
+                self.weatherData = try? JSONDecoder().decode(CurrentWeatherData.self, from: data)
+            case .failure(let error): print(error)
+            }
+        }
+        apiManager.getCityName(latitude: lat ?? 0, longitude: long ?? 0) { city in
+            self.currentCity = city
+            print(self.cities.count)
+            self.cities.insert(city.name, at: 0)
+            DispatchQueue.main.async {
+                self.setupNavigationController()
+            }
+            print(self.cities.count)
+        }
+
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,6 +105,7 @@ final class MainScreenWithCollectionView: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationController()
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
 }
@@ -69,7 +123,7 @@ final class MainScreenWithCollectionView: UIViewController {
     }
 
     private func setupNavigationController() {
-        navigationItem.title = "Saint-Petersburg"
+        self.navigationItem.title = (self.currentCity?.name ?? "n/d") + ", " + (self.currentCity?.country ?? "n/d")//"Saint-Petersburg"
 
         let burgerItem = UIBarButtonItem(image: UIImage(named: "burger"),
                                          style: .plain, target: self,
@@ -103,12 +157,21 @@ final class MainScreenWithCollectionView: UIViewController {
     }
 
     @objc private func burgerButtonDidTapp() {
+//        print(self.currentCity.name, self.currentCity.country)
         navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
     @objc private func locationButtonDidTapp() {
         let alertController = UIAlertController(title: "Добавьте город", message: "Введите название", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) {_ in
-            self.navigationController?.pushViewController(OnboardingViewController(), animated: true)
+            let apiManager = APImanager()
+            guard let cityName = alertController.textFields?.first?.text else {return}
+            apiManager.getCityLocation(name: cityName) { result in
+                switch result {
+                case .success(let data): print(data)
+                case .failure(let error): print(error)
+                }
+            }
+            self.dismiss(animated: true)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) {_ in
             self.dismiss(animated: true)

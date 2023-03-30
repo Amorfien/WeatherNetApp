@@ -34,10 +34,10 @@ final class OrangeButton: UIButton {
     }
     @objc private func buttonDidTap() {
         backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.431372549, blue: 0.06666666667, alpha: 1)
-        layer.shadowColor = #colorLiteral(red: 0.9490196078, green: 0.431372549, blue: 0.06666666667, alpha: 1)
-        layer.shadowOpacity = 1
-        layer.shadowRadius = 45
-        layer.shadowOffset = CGSize(width: -5, height: 5)
+//        layer.shadowColor = #colorLiteral(red: 0.9490196078, green: 0.431372549, blue: 0.06666666667, alpha: 1)
+//        layer.shadowOpacity = 1
+//        layer.shadowRadius = 45
+//        layer.shadowOffset = CGSize(width: -5, height: 5)
         buttonAction()
     }
 
