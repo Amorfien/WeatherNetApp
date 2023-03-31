@@ -42,13 +42,15 @@ final class MainScreenWithCollectionView: UIViewController {
     }()
 
     private var locationManager: CLLocationManager? = nil
-    var weatherData: CurrentWeatherData?
+    var currentWeather: CurrentWeatherData?
     var currentCity: CityElement?
 
     private var cities = ["Saint-Petersburg", "Moscow", "New-York", "London"] {
         didSet {
-            pagingCollectionView.reloadData()
-            pageControl.numberOfPages = cities.count
+            DispatchQueue.main.async {
+                self.pagingCollectionView.reloadData()
+                self.pageControl.numberOfPages = self.cities.count
+            }
         }
     }
 
@@ -71,16 +73,13 @@ final class MainScreenWithCollectionView: UIViewController {
 
     override func loadView() {
         super.loadView()
-        let apiManager = APImanager()
+        let apiManager = APImanager.shared
         let lat = locationManager?.location?.coordinate.latitude
         let long = locationManager?.location?.coordinate.longitude
 
-        apiManager.getCurrentWeather(latitude: lat ?? 0, longitude: long ?? 0) { result in
-            switch result {
-            case .success(let data): print(data)
-                self.weatherData = try? JSONDecoder().decode(CurrentWeatherData.self, from: data)
-            case .failure(let error): print(error)
-            }
+        apiManager.getCurrentWeather(latitude: lat ?? 0, longitude: long ?? 0) { weather in
+            self.currentWeather = weather
+            print("🐱  ", self.currentWeather?.weather.first?.description)
         }
         apiManager.getCityName(latitude: lat ?? 0, longitude: long ?? 0) { city in
             self.currentCity = city
@@ -89,7 +88,7 @@ final class MainScreenWithCollectionView: UIViewController {
             DispatchQueue.main.async {
                 self.setupNavigationController()
             }
-            print(self.cities.count)
+            print("🏘️", self.cities.count)
         }
 
 
@@ -163,13 +162,10 @@ final class MainScreenWithCollectionView: UIViewController {
     @objc private func locationButtonDidTapp() {
         let alertController = UIAlertController(title: "Добавьте город", message: "Введите название", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) {_ in
-            let apiManager = APImanager()
+            let apiManager = APImanager.shared
             guard let cityName = alertController.textFields?.first?.text else {return}
-            apiManager.getCityLocation(name: cityName) { result in
-                switch result {
-                case .success(let data): print(data)
-                case .failure(let error): print(error)
-                }
+            apiManager.getCityLocation(name: cityName) { searchCity in
+                print(searchCity.lat, searchCity.lon)
             }
             self.dismiss(animated: true)
         }

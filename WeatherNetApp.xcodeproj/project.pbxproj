@@ -249,10 +249,18 @@
 		185D349729D4549100C09248 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				1888C77629D64B9400BFEF89 /* Model */,
 				185D349829D454A800C09248 /* APImanager.swift */,
-				185D349A29D4697600C09248 /* CurrentWeatherData.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		1888C77629D64B9400BFEF89 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				185D349A29D4697600C09248 /* CurrentWeatherData.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		18A9182329D1C81E00DCD4B2 /* TodayDetailsScreen */ = {
