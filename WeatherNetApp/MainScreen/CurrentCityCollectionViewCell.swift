@@ -16,6 +16,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     static let id = "CityScreen"
 
+    private var currentWeather: CurrentWeatherData?
+
 
     weak var detailDelegate: DetailDelegate?
 
@@ -36,7 +38,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .green
+        backgroundColor = .white
         let elements = [scrollView, dailyView, detailButton, weatherCardsCollectionView, dailyLable, moreDaysButton, dailyCollectionView]
         addSubview(scrollView)
         scrollView.addSubviews(to: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, dailyLable, moreDaysButton, dailyCollectionView])
@@ -47,6 +49,12 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         }
         moreDaysButton.titleLabel?.textAlignment = .right
         dailyCollectionView.summaryDelegate = self
+
+        DispatchQueue.main.async {
+            self.dailyView.fillView(currentWeather: self.currentWeather)
+            print(self.currentWeather)
+
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -103,8 +111,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func fillCell() {
-
+    func fillCell(currentWeather: CurrentWeatherData?) {
+        self.currentWeather = currentWeather
     }
 
 

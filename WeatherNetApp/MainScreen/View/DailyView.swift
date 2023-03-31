@@ -30,9 +30,9 @@ final class DailyView: UIView {
         return layer
     }()
 
-    let sum1Label = UILabel(ico: UIImage(named: "colorSunCloud")!, value: "0", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-    let sum2Label = UILabel(ico: UIImage(named: "colorWind")!, value: "3 м/с", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-    let sum3Label = UILabel(ico: UIImage(named: "colorRaindrops")!, value: "75%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+    var sum1Label = UILabel(ico: UIImage(named: "colorSunCloud")!, value: "0", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+    var sum2Label = UILabel(ico: UIImage(named: "colorWind")!, value: "3 м/с", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+    var sum3Label = UILabel(ico: UIImage(named: "colorRaindrops")!, value: "75%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
     private lazy var summaryStack = UIStackView(arrangedSubviews: [sum1Label, sum2Label, sum3Label])
 
     let curentDateLabel = UILabel(text: "17:48, пт 16 апреля", textColor: #colorLiteral(red: 0.9647058824, green: 0.8666666667, blue: 0.003921568627, alpha: 1), alignment: .center)
@@ -111,6 +111,19 @@ final class DailyView: UIView {
         formatter.dateFormat = "HH:mm, E d MMM"
         let text = formatter.string(from: date)
         curentDateLabel.text = text
+    }
+
+    func fillView(currentWeather: CurrentWeatherData?) {
+        guard let currentWeather else { return }
+        tempLabel.text = "\(currentWeather.main?.temp?.rounded() ?? 0)°"
+        weatherLabel.text = currentWeather.weather?[0].description?.capitalized
+        rangeTempLabel.text = "\(currentWeather.main?.tempMin?.rounded() ?? 0)°/\(currentWeather.main?.tempMax?.rounded() ?? 0)°"
+//        sum2Label.text = "\(currentWeather.wind?.speed?.rounded() ?? 0) м/с"
+        sum1Label = UILabel(ico: UIImage(named: "colorSunCloud")!, value: "0", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+        sum2Label = UILabel(ico: UIImage(named: "colorWind")!, value: "\(currentWeather.wind?.speed?.rounded() ?? 0) м/с", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+//        sum3Label.text = "\(currentWeather.main?.humidity ?? 0)%"
+        sum3Label = UILabel(ico: UIImage(named: "colorRaindrops")!, value: "\(currentWeather.main?.humidity ?? 0)%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
+        self.reloadInputViews()
     }
 
 }

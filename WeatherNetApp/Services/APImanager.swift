@@ -56,12 +56,14 @@ final class APImanager {
 
     func getCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (CurrentWeatherData) -> ()) {
 
-        let endpoint = "data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(myAPIkey)"
+//        let endpoint = "data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(myAPIkey)"
+        let endpoint = "data/2.5/weather?lat=\(latitude)&lon=\(longitude)&lang=ru&units=metric&appid=\(myAPIkey)"
         session(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
                 do {
                     let weather = try JSONDecoder().decode(CurrentWeatherData.self, from: data)
+                    completion(weather)
                 } catch {
 
                 }
@@ -73,7 +75,7 @@ final class APImanager {
     }
 
     func getCityName(latitude: Double, longitude: Double, completion: @escaping (CityElement) -> ()) {
-        let endpoint = "geo/1.0/reverse?lat=\(latitude)&lon=\(longitude)&limit=1&appid=\(myAPIkey)"
+        let endpoint = "geo/1.0/reverse?lat=\(latitude)&lon=\(longitude)&limit=1&lang=ru&appid=\(myAPIkey)"
 
         session(endpoint: endpoint) { result in
             switch result {
@@ -91,7 +93,7 @@ final class APImanager {
     }
 
     func getCityLocation(name: String, completion: @escaping (CityElement) -> ()) {
-        let endpoint = "geo/1.0/direct?q=\(name)&limit=1&appid=\(myAPIkey)"
+        let endpoint = "geo/1.0/direct?q=\(name)&limit=1&lang=ru&appid=\(myAPIkey)"
         session(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
