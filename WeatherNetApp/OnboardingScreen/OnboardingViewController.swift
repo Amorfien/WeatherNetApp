@@ -67,6 +67,10 @@ final class OnboardingViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.tintColor = .darkText
+    }
+
     private func setupConstraints() {
 
         NSLayoutConstraint.activate([

@@ -38,12 +38,15 @@ final class TodayDetailsScreen: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         setupNavigationController()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
 
     private func setupNavigationController() {
         let secondaryTitle = UIBarButtonItem(title: "Прогноз на 24 часа")
         secondaryTitle.isEnabled = false
         navigationItem.rightBarButtonItem = secondaryTitle
-        navigationItem.title = "Saint-Petersburg, Russia"
+//        navigationItem.title = "Saint-Petersburg, Russia"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 

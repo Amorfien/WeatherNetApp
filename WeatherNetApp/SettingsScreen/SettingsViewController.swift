@@ -27,6 +27,10 @@ final class SettingsViewController: UIViewController {
         animation()
         grayView.popDelegate = self
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.tintColor = .darkText
+    }
 
     private func setupConstraints() {
 

@@ -33,8 +33,13 @@ final class DailySummaryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupNavigationController()
         setupConstraints()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        setupNavigationController()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
 
     private func setupUI() {
@@ -50,7 +55,7 @@ final class DailySummaryViewController: UIViewController {
         let secondaryTitle = UIBarButtonItem(title: "Дневная погода")
         secondaryTitle.isEnabled = false
         navigationItem.rightBarButtonItem = secondaryTitle
-        navigationItem.title = "Saint-Petersburg, Russia"
+//        navigationItem.title = "Saint-Petersburg, Russia"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 

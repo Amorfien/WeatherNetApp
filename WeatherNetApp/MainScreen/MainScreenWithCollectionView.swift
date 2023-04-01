@@ -45,9 +45,6 @@ final class MainScreenWithCollectionView: UIViewController {
     private let zeroCitiesLabel = UILabel(text: "Добавьте город вручную ⤴︎", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 24)!, textColor: .white, alignment: .center)
 
     private var locationManager: CLLocationManager? = nil
-//    private var currentWeather: CurrentWeatherData?
-//    private var newCityCurrentWeather: CurrentWeatherData?
-//    var currentCity: CityElement?
 
     private var cities: [CurrentWeatherData] = [] {
         didSet {
@@ -112,38 +109,24 @@ final class MainScreenWithCollectionView: UIViewController {
 
         setupConstraints()
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationController()
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
 
-        pagingCollectionView.reloadData()
-}
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationItem.title = nil
-//    }
 
     // MARK: - NavigationController
     private func setupNavigationController() {
 //        self.navigationItem.title = self.cities[pageControl.currentPage].name
 
-        navigationController?.navigationBar.tintColor = .red
+        navigationController?.navigationBar.tintColor = .darkText
 
         let burgerItem = UIBarButtonItem(image: UIImage(systemName: "text.justify.trailing"),
                                          style: .plain, target: self,
                                          action: #selector(burgerButtonDidTapp))
-        burgerItem.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
         navigationItem.leftBarButtonItem = burgerItem
         let geoItem = UIBarButtonItem(image: UIImage(systemName: "location.magnifyingglass"),
                                      style: .plain, target: self,
                                      action: #selector(locationButtonDidTapp))
-        geoItem.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
         let cityList = UIBarButtonItem(image: UIImage(systemName: "list.bullet.circle"),
                                      style: .plain, target: self,
                                      action: #selector(cityListButtonDidTapp))
-        cityList.tintColor = .darkText
         cityList.isEnabled = false
         navigationItem.rightBarButtonItems = [geoItem, cityList]
     }
@@ -188,8 +171,18 @@ final class MainScreenWithCollectionView: UIViewController {
             guard let cityName = alertController.textFields?.first?.text else {return}
             apiManager.getCityLocation(name: cityName) { searchCity in
                 apiManager.getCurrentWeather(latitude: searchCity.lat ?? 0, longitude: searchCity.lon ?? 0) { weather in
+
+                    for city in self.cities {
+                        if city.id == weather.id { return } // проверка на одинаковые города
+                    }
+
                     self.cities.append(weather)
-//                    self.newCityCurrentWeather = weather
+
+                    DispatchQueue.main.async {              // перескок на добавленный город
+                        self.pageControl.currentPage = self.cities.count - 1
+                        let offsetX = UIScreen.main.bounds.width * CGFloat(self.pageControl.currentPage)
+                        self.pagingCollectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+                    }
                 }
             }
             self.dismiss(animated: true)
@@ -208,12 +201,16 @@ final class MainScreenWithCollectionView: UIViewController {
         let cityListVC = CityListViewController()
         cityListVC.deleteCityDelegate = self
         for city in cities {
-            cityListVC.cityList.append(city.name ?? "")
+            let temp = "\(Int(city.main?.temp?.rounded() ?? 0))°"
+            cityListVC.cityList.append((city.name ?? "--", temp))
         }
         if let sheet = cityListVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false
             sheet.prefersGrabberVisible = true
+        }
+        if locationManager != nil {
+            cityListVC.firstCityIsTracking = true
         }
         present(cityListVC, animated: true)
     }
@@ -250,8 +247,11 @@ extension MainScreenWithCollectionView: UICollectionViewDelegateFlowLayout {
     // FIXME: срабатывает раньше времени
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         pageControl.currentPage = indexPath.item
-        navigationItem.title = (cities[indexPath.item].name ?? "--") + ", " + (cities[indexPath.item].sys?.country ?? "--")
-//        print(indexPath.row)
+        let title = (cities[indexPath.item].name ?? "--") + ", " + (cities[indexPath.item].sys?.country ?? "--")
+        navigationItem.title = title
+        if locationManager != nil && indexPath.item == 0 {
+            navigationItem.title = "⦿ " + title
+        }
     }
 }
 
