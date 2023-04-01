@@ -99,7 +99,9 @@ final class APImanager {
             case .success(let data):
                 do {
                     let cities = try JSONDecoder().decode([CityElement].self, from: data)
-                    completion(cities.first!)
+                    if let city = cities.first {
+                        completion(city)
+                    }
                 } catch {
 
                 }

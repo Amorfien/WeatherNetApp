@@ -52,13 +52,21 @@ final class MainScreenWithCollectionView: UIViewController {
     private var cities: [CurrentWeatherData] = [] {
         didSet {
             DispatchQueue.main.async {
-                self.zeroCitiesLabel.isHidden = true
                 self.pageControl.numberOfPages = self.cities.count
                 self.pagingCollectionView.reloadData()
+                if self.cities.count > 0 {
+                    self.zeroCitiesLabel.isHidden = true
+                    self.navigationItem.rightBarButtonItems?[1].isEnabled = true
+                } else {
+                    self.zeroCitiesLabel.isHidden = false
+                    self.navigationItem.title = nil
+                    self.navigationItem.rightBarButtonItems?[1].isEnabled = false
+                }
             }
         }
     }
 
+    // MARK: - Init
     init(isGeoTracking: Bool) {
         if isGeoTracking {
             locationManager = CLLocationManager()
@@ -76,6 +84,7 @@ final class MainScreenWithCollectionView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
         let apiManager = APImanager.shared
@@ -116,6 +125,30 @@ final class MainScreenWithCollectionView: UIViewController {
 //        navigationItem.title = nil
 //    }
 
+    // MARK: - NavigationController
+    private func setupNavigationController() {
+//        self.navigationItem.title = self.cities[pageControl.currentPage].name
+
+        navigationController?.navigationBar.tintColor = .red
+
+        let burgerItem = UIBarButtonItem(image: UIImage(systemName: "text.justify.trailing"),
+                                         style: .plain, target: self,
+                                         action: #selector(burgerButtonDidTapp))
+        burgerItem.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
+        navigationItem.leftBarButtonItem = burgerItem
+        let geoItem = UIBarButtonItem(image: UIImage(systemName: "location.magnifyingglass"),
+                                     style: .plain, target: self,
+                                     action: #selector(locationButtonDidTapp))
+        geoItem.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
+        let cityList = UIBarButtonItem(image: UIImage(systemName: "list.bullet.circle"),
+                                     style: .plain, target: self,
+                                     action: #selector(cityListButtonDidTapp))
+        cityList.tintColor = .darkText
+        cityList.isEnabled = false
+        navigationItem.rightBarButtonItems = [geoItem, cityList]
+    }
+
+    // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         whiteView.backgroundColor = .white
@@ -124,23 +157,6 @@ final class MainScreenWithCollectionView: UIViewController {
         enableConstraints(elements: elements)
     }
 
-    private func setupNavigationController() {
-//        self.navigationItem.title = self.cities[pageControl.currentPage].name
-
-        let burgerItem = UIBarButtonItem(image: UIImage(named: "burger"),
-                                         style: .plain, target: self,
-                                         action: #selector(burgerButtonDidTapp))
-        burgerItem.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
-        burgerItem.width = 34
-        navigationItem.leftBarButtonItem = burgerItem
-        let geoItem = UIBarButtonItem(image: UIImage(named: "location"),
-                                     style: .plain, target: self,
-                                     action: #selector(locationButtonDidTapp))
-        geoItem.tintColor = #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1)
-        geoItem.width = 20
-        navigationItem.rightBarButtonItem = geoItem
-    }
-//
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             whiteView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -157,12 +173,12 @@ final class MainScreenWithCollectionView: UIViewController {
             pagingCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
             zeroCitiesLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            zeroCitiesLabel.topAnchor.constraint(equalTo: whiteView.bottomAnchor, constant: 90)
+            zeroCitiesLabel.topAnchor.constraint(equalTo: whiteView.bottomAnchor, constant: 60)
         ])
     }
 
+    // MARK: - Buttons actions
     @objc private func burgerButtonDidTapp() {
-//        print(self.currentCity.name, self.currentCity.country)
         navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
     @objc private func locationButtonDidTapp() {
@@ -187,6 +203,21 @@ final class MainScreenWithCollectionView: UIViewController {
         alertController.addAction(cancelAction)
         present(alertController, animated: true)
     }
+
+    @objc private func cityListButtonDidTapp() {
+        let cityListVC = CityListViewController()
+        cityListVC.deleteCityDelegate = self
+        for city in cities {
+            cityListVC.cityList.append(city.name ?? "")
+        }
+        if let sheet = cityListVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+            sheet.prefersGrabberVisible = true
+        }
+        present(cityListVC, animated: true)
+    }
+
     @objc private func pageDidChange() {
         let offsetX = UIScreen.main.bounds.width * CGFloat(pageControl.currentPage)
         pagingCollectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
@@ -195,6 +226,7 @@ final class MainScreenWithCollectionView: UIViewController {
 
 }
 
+// MARK: - Extensions
 extension MainScreenWithCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cities.count
@@ -239,5 +271,11 @@ extension MainScreenWithCollectionView: DetailDelegate {
 extension MainScreenWithCollectionView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+    }
+}
+
+extension MainScreenWithCollectionView: DeleteCityProtocol {
+    func deleteCity(index: Int) {
+        cities.remove(at: index)
     }
 }
