@@ -39,7 +39,7 @@ final class APImanager {
             print("some Error")
             return
         }
-        print(apiURL)
+//        print(apiURL)
         let session = URLSession.shared
 
         let task = session.dataTask(with: apiURL) { data, response, error in

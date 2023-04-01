@@ -32,9 +32,9 @@ struct CurrentWeatherData: Codable {
     let wind: Wind?
     let rain: Rain?
     let clouds: Clouds?
-    let dt: Int?
+    let dt: Double? //
     let sys: Sys?
-    let timezone, id: Int?
+    let timezone, id: Double? //
     let name: String?
     let cod: Int?
 }
@@ -78,7 +78,7 @@ struct Rain: Codable {
 struct Sys: Codable {
     let type, id: Int?
     let country: String?
-    let sunrise, sunset: Int?
+    let sunrise, sunset: Double? //
 }
 
 // MARK: - Weather
@@ -93,3 +93,4 @@ struct Wind: Codable {
     let deg: Int?
     let gust: Double?
 }
+

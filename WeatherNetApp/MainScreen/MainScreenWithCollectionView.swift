@@ -45,16 +45,16 @@ final class MainScreenWithCollectionView: UIViewController {
     private let zeroCitiesLabel = UILabel(text: "Добавьте город вручную ⤴︎", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 24)!, textColor: .white, alignment: .center)
 
     private var locationManager: CLLocationManager? = nil
-    private var currentWeather: CurrentWeatherData?
-    private var newCityCurrentWeather: CurrentWeatherData?
+//    private var currentWeather: CurrentWeatherData?
+//    private var newCityCurrentWeather: CurrentWeatherData?
 //    var currentCity: CityElement?
 
-    private var cities: [String] = [] {
+    private var cities: [CurrentWeatherData] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.zeroCitiesLabel.isHidden = true
-                self.pagingCollectionView.reloadData()
                 self.pageControl.numberOfPages = self.cities.count
+                self.pagingCollectionView.reloadData()
             }
         }
     }
@@ -84,9 +84,8 @@ final class MainScreenWithCollectionView: UIViewController {
 
         if locationManager != nil {
             apiManager.getCurrentWeather(latitude: lat ?? 0, longitude: long ?? 0) { weather in
-                self.currentWeather = weather
-                print("🐱  ", weather.name ?? "no name")
-                self.cities.insert(weather.name ?? "no name", at: 0)
+
+                self.cities.insert(weather, at: 0)
                 DispatchQueue.main.async {
                     self.pageControl.setIndicatorImage(UIImage(systemName: "location.circle"), forPage: 0)
                     self.pageControl.setCurrentPageIndicatorImage(UIImage(systemName: "location.circle.fill"), forPage: 0)
@@ -109,6 +108,8 @@ final class MainScreenWithCollectionView: UIViewController {
         setupNavigationController()
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
+
+        pagingCollectionView.reloadData()
 }
 //    override func viewWillDisappear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)
@@ -124,7 +125,7 @@ final class MainScreenWithCollectionView: UIViewController {
     }
 
     private func setupNavigationController() {
-        self.navigationItem.title = self.currentWeather?.name ?? "n/d"
+//        self.navigationItem.title = self.cities[pageControl.currentPage].name
 
         let burgerItem = UIBarButtonItem(image: UIImage(named: "burger"),
                                          style: .plain, target: self,
@@ -171,8 +172,8 @@ final class MainScreenWithCollectionView: UIViewController {
             guard let cityName = alertController.textFields?.first?.text else {return}
             apiManager.getCityLocation(name: cityName) { searchCity in
                 apiManager.getCurrentWeather(latitude: searchCity.lat ?? 0, longitude: searchCity.lon ?? 0) { weather in
-                    self.cities.append(searchCity.localNames?["ru"] ?? "--")
-                    self.newCityCurrentWeather = weather
+                    self.cities.append(weather)
+//                    self.newCityCurrentWeather = weather
                 }
             }
             self.dismiss(animated: true)
@@ -181,6 +182,7 @@ final class MainScreenWithCollectionView: UIViewController {
             self.dismiss(animated: true)
         }
         alertController.addTextField()
+        alertController.textFields?.first?.delegate = self
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         present(alertController, animated: true)
@@ -200,12 +202,8 @@ extension MainScreenWithCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentCityCollectionViewCell.id, for: indexPath) as? CurrentCityCollectionViewCell {
+            cell.fillCell(currentWeather: cities[indexPath.item])
             cell.detailDelegate = self
-            if cities.count == 1 {
-                cell.fillCell(currentWeather: currentWeather)
-            } else {
-                cell.fillCell(currentWeather: newCityCurrentWeather)
-            }
             return cell
         } else {
             return UICollectionViewCell()
@@ -220,7 +218,7 @@ extension MainScreenWithCollectionView: UICollectionViewDelegateFlowLayout {
     // FIXME: срабатывает раньше времени
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         pageControl.currentPage = indexPath.item
-        navigationItem.title = cities[indexPath.item]
+        navigationItem.title = (cities[indexPath.item].name ?? "--") + ", " + (cities[indexPath.item].sys?.country ?? "--")
 //        print(indexPath.row)
     }
 }
@@ -238,3 +236,8 @@ extension MainScreenWithCollectionView: DetailDelegate {
     }
 }
 
+extension MainScreenWithCollectionView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+}

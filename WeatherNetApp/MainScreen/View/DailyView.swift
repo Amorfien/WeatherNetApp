@@ -115,15 +115,25 @@ final class DailyView: UIView {
 
     func fillView(currentWeather: CurrentWeatherData?) {
         guard let currentWeather else { return }
-        tempLabel.text = "\(currentWeather.main?.temp?.rounded() ?? 0)°"
+        tempLabel.text = "\(Int(currentWeather.main?.temp?.rounded() ?? 0))°"
         weatherLabel.text = currentWeather.weather?[0].description?.capitalized
-        rangeTempLabel.text = "\(currentWeather.main?.tempMin?.rounded() ?? 0)°/\(currentWeather.main?.tempMax?.rounded() ?? 0)°"
+        rangeTempLabel.text = "\(Int(currentWeather.main?.tempMin?.rounded() ?? 0))°/\(Int(currentWeather.main?.tempMax?.rounded() ?? 0))°"
 //        sum2Label.text = "\(currentWeather.wind?.speed?.rounded() ?? 0) м/с"
-        sum1Label = UILabel(ico: UIImage(named: "colorSunCloud")!, value: "0", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-        sum2Label = UILabel(ico: UIImage(named: "colorWind")!, value: "\(currentWeather.wind?.speed?.rounded() ?? 0) м/с", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
 //        sum3Label.text = "\(currentWeather.main?.humidity ?? 0)%"
-        sum3Label = UILabel(ico: UIImage(named: "colorRaindrops")!, value: "\(currentWeather.main?.humidity ?? 0)%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-        self.reloadInputViews()
+//        sum2Label.text?.append("123")
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let sunriseText = formatter.string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunrise)! + currentWeather.timezone!))
+        let sunsetText = formatter.string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunset)! + currentWeather.timezone!))
+        sunriseLabel.text = sunriseText
+        sunsetLabel.text = sunsetText
+
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "HH:mm, E d MMM"
+        let currentDateText = formatter.string(from: Date(timeIntervalSince1970: currentWeather.dt! ))
+
+        curentDateLabel.text = currentDateText
     }
 
 }

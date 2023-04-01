@@ -52,7 +52,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
         DispatchQueue.main.async {
             self.dailyView.fillView(currentWeather: self.currentWeather)
-            print(self.currentWeather)
+//            print(self.currentWeather)
 
         }
     }
@@ -111,8 +111,14 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         ])
     }
 
+//    override func prepareForReuse() {
+////        self.dailyView.fillView(currentWeather: self.currentWeather)
+//        self.dailyView.prepareForReuseCell()
+//    }
+
     func fillCell(currentWeather: CurrentWeatherData?) {
-        self.currentWeather = currentWeather
+//        self.currentWeather = currentWeather
+        dailyView.fillView(currentWeather: currentWeather)
     }
 
 
