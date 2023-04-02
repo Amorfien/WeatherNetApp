@@ -179,9 +179,7 @@ final class MainScreenWithCollectionView: UIViewController {
                     self.cities.append(weather)
 
                     DispatchQueue.main.async {              // перескок на добавленный город
-                        self.pageControl.currentPage = self.cities.count - 1
-                        let offsetX = UIScreen.main.bounds.width * CGFloat(self.pageControl.currentPage)
-                        self.pagingCollectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+                        self.selectCity(index: self.cities.count - 1)
                     }
                 }
             }
@@ -199,7 +197,7 @@ final class MainScreenWithCollectionView: UIViewController {
 
     @objc private func cityListButtonDidTapp() {
         let cityListVC = CityListViewController()
-        cityListVC.deleteCityDelegate = self
+        cityListVC.cityListDelegate = self
         for city in cities {
             let temp = "\(Int(city.main?.temp?.rounded() ?? 0))°"
             cityListVC.cityList.append((city.name ?? "--", temp))
@@ -274,7 +272,12 @@ extension MainScreenWithCollectionView: UITextFieldDelegate {
     }
 }
 
-extension MainScreenWithCollectionView: DeleteCityProtocol {
+extension MainScreenWithCollectionView: CityListProtocol {
+    func selectCity(index: Int) {
+        pageControl.currentPage = index
+        let offsetX = UIScreen.main.bounds.width * CGFloat(self.pageControl.currentPage)
+        self.pagingCollectionView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
+    }
     func deleteCity(index: Int) {
         cities.remove(at: index)
     }

@@ -7,7 +7,8 @@
 
 import UIKit
 
-protocol DeleteCityProtocol: AnyObject {
+protocol CityListProtocol: AnyObject {
+    func selectCity(index: Int)
     func deleteCity(index: Int)
 }
 
@@ -26,7 +27,7 @@ final class CityListViewController: UIViewController {
 
     var firstCityIsTracking: Bool = false
 
-    weak var deleteCityDelegate: DeleteCityProtocol?
+    weak var cityListDelegate: CityListProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,8 +60,10 @@ extension CityListViewController: UITableViewDataSource {
 
 }
 extension CityListViewController: UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        cityListDelegate?.selectCity(index: indexPath.section)
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -74,7 +77,7 @@ extension CityListViewController: UITableViewDelegate {
                 //            let post = self.favoritesPosts[indexPath.row]
                 //            self.coreDataServiceLite.deletePost(predicate: NSPredicate(format: "id == %ld", post.id))
                 
-                self.deleteCityDelegate?.deleteCity(index: indexPath.section)
+                self.cityListDelegate?.deleteCity(index: indexPath.section)
                 self.cityList.remove(at: indexPath.section)
                 self.cityListTableView.deleteSections([indexPath.section], with: .right)
                 if self.cityList.count == 0 {

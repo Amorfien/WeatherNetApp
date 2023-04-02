@@ -146,6 +146,4 @@ extension CurrentCityCollectionViewCell: SummaryDelegate {
         print("peredacha #1")
         detailDelegate?.showSummary()
     }
-
-
 }
