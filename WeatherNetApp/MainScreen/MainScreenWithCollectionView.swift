@@ -46,7 +46,7 @@ final class MainScreenWithCollectionView: UIViewController {
 
     private var locationManager: CLLocationManager? = nil
 
-    private var cities: [CurrentWeatherData] = [] {
+    private var cities: [CurrentWeatherModel] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.pageControl.numberOfPages = self.cities.count
@@ -73,7 +73,6 @@ final class MainScreenWithCollectionView: UIViewController {
         } else {
             locationManager = nil
         }
-//        currentCity = City(name: "", lat: 0, lon: 0, country: "", state: "")
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -97,6 +96,13 @@ final class MainScreenWithCollectionView: UIViewController {
                     self.pageControl.setCurrentPageIndicatorImage(UIImage(systemName: "location.circle.fill"), forPage: 0)
                 }
             }
+
+            apiManager.get5dayForecast(latitude: lat ?? 0, longitude: long ?? 0) { forecast in
+                print("---", forecast.list?.count)
+                print("---", forecast.list?.first?.main?.temp)
+                print("---", forecast.list?.last?.main?.temp)
+            }
+
         }
 
     }
@@ -108,6 +114,11 @@ final class MainScreenWithCollectionView: UIViewController {
         setupNavigationController()
 
         setupConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.pagingCollectionView.reloadData()
     }
 
 

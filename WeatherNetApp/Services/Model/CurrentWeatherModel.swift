@@ -1,5 +1,5 @@
 //
-//  WeatherData.swift
+//  CurrentWeatherModel.swift
 //  WeatherNetApp
 //
 //  Created by Pavel Grigorev on 29.03.2023.
@@ -7,23 +7,7 @@
 
 import Foundation
 
-struct CityElement: Codable {
-    let name: String?
-    let localNames: [String: String]?
-    let lat, lon: Double?
-    let country: String?
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case localNames = "local_names"
-        case lat, lon, country
-    }
-
-}
-//typealias City = [CityElement]
-
-// MARK: - CurrentWeatherData
-struct CurrentWeatherData: Codable {
+struct CurrentWeatherModel: Codable {
     let coord: Coord?
     let weather: [Weather]?
     let base: String?

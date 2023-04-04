@@ -10,10 +10,14 @@ import UIKit
 protocol PopSettingsProtocol: AnyObject {
     func popToRoot()
 }
+protocol ReloadSettingsProtocol: AnyObject {
+    func reloadWeatheData()
+}
 
 final class SettingsView: UIView {
 
     weak var popDelegate: PopSettingsProtocol?
+    weak var reloadDelegate: ReloadSettingsProtocol?
 
     private var unsavedSettings: [UserSettings.SettingsKeys: Bool] = [
         .isFahrenheit: UserSettings.isFahrenheit,
@@ -37,7 +41,7 @@ final class SettingsView: UIView {
     }()
     private let temperatureStack = SettingsStack(title: Titles.Settings.temp, leftSegment: "C", rightSegment: "F",
                                                  selected: UserSettings.isFahrenheit ? 1 : 0)
-    private let windStack = SettingsStack(title: Titles.Settings.wind, leftSegment: "Mi", rightSegment: "Km",
+    private let windStack = SettingsStack(title: Titles.Settings.wind, leftSegment: "mph", rightSegment: "м/с",
                                           selected: UserSettings.isImperial ? 0 : 1)
     private let timeStack = SettingsStack(title: Titles.Settings.time, leftSegment: "12", rightSegment: "24",
                                           selected: UserSettings.isTwelve ? 0 : 1)
@@ -62,6 +66,8 @@ final class SettingsView: UIView {
         windStack.segmentDelegate = self
         timeStack.segmentDelegate = self
         notificationStack.segmentDelegate = self
+
+        notificationStack.isUserInteractionEnabled = false
     }
 
     required init?(coder: NSCoder) {
@@ -89,6 +95,7 @@ final class SettingsView: UIView {
         UserSettings.isImperial = unsavedSettings[.isImperial]!
         UserSettings.isTwelve = unsavedSettings[.isTwelve]!
         UserSettings.isNotification = unsavedSettings[.isNotification]!
+        reloadDelegate?.reloadWeatheData()
         popDelegate?.popToRoot()
     }
 
@@ -99,8 +106,8 @@ extension SettingsView: SettingsSegmentValueChange {
         switch key {
         case "F": unsavedSettings[.isFahrenheit] = true
         case "C": unsavedSettings[.isFahrenheit] = false
-        case "Mi": unsavedSettings[.isImperial] = true
-        case "Km": unsavedSettings[.isImperial] = false
+        case "mph": unsavedSettings[.isImperial] = true
+        case "м/с": unsavedSettings[.isImperial] = false
         case "12": unsavedSettings[.isTwelve] = true
         case "24": unsavedSettings[.isTwelve] = false
         case "On": unsavedSettings[.isNotification] = true

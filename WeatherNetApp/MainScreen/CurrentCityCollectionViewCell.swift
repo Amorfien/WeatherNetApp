@@ -16,7 +16,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     static let id = "CityScreen"
 
-    private var currentWeather: CurrentWeatherData?
+    private var currentWeather: CurrentWeatherModel?
 
 
     weak var detailDelegate: DetailDelegate?
@@ -116,7 +116,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 //        self.dailyView.prepareForReuseCell()
 //    }
 
-    func fillCell(currentWeather: CurrentWeatherData?) {
+    func fillCell(currentWeather: CurrentWeatherModel?) {
 //        self.currentWeather = currentWeather
         dailyView.fillView(currentWeather: currentWeather)
     }

@@ -9,9 +9,8 @@ import UIKit
 
 final class DailyView: UIView {
 
-    let sunLayer: CAShapeLayer = {
+    private let sunLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-
         let sunFrame = UIScreen.main.bounds.width - (16 + 33) * 2
         let radius = sunFrame / 2
 //        let screenCenter = UIScreen.main.bounds.width / 2
@@ -25,24 +24,26 @@ final class DailyView: UIView {
         layer.strokeColor = #colorLiteral(red: 0.9647058824, green: 0.8666666667, blue: 0.003921568627, alpha: 1).cgColor
         layer.lineWidth = 3
         layer.fillColor = UIColor.clear.cgColor
-
+        // сплющиваю слой, т.к. неправильно отрисовал путь (полукруг вместо элипса)
+        // в таком варианте не получится пустить солнышко по траектории если понадобится ((
         layer.transform = CATransform3DMakeScale(1, 0.8, 1)
         return layer
     }()
 
-    var sum1Label = UILabel(ico: UIImage(named: "colorSunCloud")!, value: "0", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-    var sum2Label = UILabel(ico: UIImage(named: "colorWind")!, value: "3 м/с", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-    var sum3Label = UILabel(ico: UIImage(named: "colorRaindrops")!, value: "75%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: .white)
-    private lazy var summaryStack = UIStackView(arrangedSubviews: [sum1Label, sum2Label, sum3Label])
+    private let sum1Button = UIButton(title: "--%", leftImage: UIImage(named: "colorSunCloud")!)
+    private let sum2Button = UIButton(title: "- м/с", leftImage: UIImage(named: "colorWind")!)
+    private let sum3Button = UIButton(title: "--%", leftImage: UIImage(named: "colorRaindrops")!)
 
-    let curentDateLabel = UILabel(text: "17:48, пт 16 апреля", textColor: #colorLiteral(red: 0.9647058824, green: 0.8666666667, blue: 0.003921568627, alpha: 1), alignment: .center)
-    let weatherLabel = UILabel(text: "Возможен небольшой дождь", textColor: .white, alignment: .center)
-    let tempLabel = UILabel(text: " 13°", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 36)!, textColor: .white, alignment: .center)
-    let rangeTempLabel = UILabel(text: " 7°/13°", textColor: .white, alignment: .center)
-    let sunriseIco = UIImageView(image: UIImage(named: "sunrise_yellow"))
-    let sunsetIco = UIImageView(image: UIImage(named: "sunset_yellow"))
-    let sunriseLabel = UILabel(text: "05:41", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
-    let sunsetLabel = UILabel(text: "19:31", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
+    private lazy var summaryStack = UIStackView(arrangedSubviews: [sum1Button, sum2Button, sum3Button])
+
+    private let curentDateLabel = UILabel(text: "00:00, -- 00 ----", textColor: #colorLiteral(red: 0.9647058824, green: 0.8666666667, blue: 0.003921568627, alpha: 1), alignment: .center)
+    private let weatherLabel = UILabel(text: "Возможен небольшой дождь", textColor: .white, alignment: .center)
+    private let tempLabel = UILabel(text: " --°", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 36)!, textColor: .white, alignment: .center)
+    private let rangeTempLabel = UILabel(text: "--°/--°", textColor: .white, alignment: .center)
+    private let sunriseIco = UIImageView(image: UIImage(named: "sunrise_yellow"))
+    private let sunsetIco = UIImageView(image: UIImage(named: "sunset_yellow"))
+    private let sunriseLabel = UILabel(text: "00:00", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
+    private let sunsetLabel = UILabel(text: "00:00", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
 
 
     override init(frame: CGRect) {
@@ -51,14 +52,13 @@ final class DailyView: UIView {
         layer.cornerRadius = 5
 
         summaryStack.distribution = .fillEqually
-        summaryStack.spacing = 19
+//        summaryStack.spacing = 10
 
 
         layer.addSublayer(sunLayer)
         addSubviews(to: self, elements: [curentDateLabel, summaryStack, weatherLabel, tempLabel, rangeTempLabel,
                                          sunriseIco, sunsetIco, sunriseLabel, sunsetLabel])
         setupConstraints()
-        dateFormat()
 
     }
     
@@ -73,9 +73,9 @@ final class DailyView: UIView {
             curentDateLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
 
             summaryStack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            summaryStack.bottomAnchor.constraint(equalTo: curentDateLabel.topAnchor, constant: -10),
-            summaryStack.heightAnchor.constraint(equalToConstant: 30),
-//            summaryStack.widthAnchor.constraint(equalToConstant: 188),
+            summaryStack.bottomAnchor.constraint(equalTo: curentDateLabel.topAnchor, constant: -16),
+            summaryStack.heightAnchor.constraint(equalToConstant: 18),
+            summaryStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50),
 
             weatherLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             weatherLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 6),
@@ -104,34 +104,48 @@ final class DailyView: UIView {
         ])
     }
 
-    private func dateFormat() {
-        let date = Date()
+    private func dateFormat(currentDate: Bool, amStyle: Bool = false) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateFormat = "HH:mm, E d MMM"
-        let text = formatter.string(from: date)
-        curentDateLabel.text = text
+        if amStyle {
+            formatter.dateFormat = currentDate ? "hh:mm a, E d MMM" : "hh:mm a"
+        } else {
+            formatter.dateFormat = currentDate ? "HH:mm, E d MMM" : "HH:mm"
+        }
+        if currentDate {
+            formatter.timeZone = .gmt
+        }
+        return formatter
     }
 
-    func fillView(currentWeather: CurrentWeatherData?) {
+    func fillView(currentWeather: CurrentWeatherModel?) {
         guard let currentWeather else { return }
-        tempLabel.text = "\(Int(currentWeather.main?.temp?.rounded() ?? 0))°"
+        let tempCelsium = Int(currentWeather.main?.temp?.rounded() ?? 0)
+        let tempFahrenheit = tempCelsium * 9 / 5 + 32
+        tempLabel.text = UserSettings.isFahrenheit ? "\(tempFahrenheit)°F" : "\(tempCelsium)°C"
         weatherLabel.text = currentWeather.weather?[0].description?.capitalized
-        rangeTempLabel.text = "\(Int(currentWeather.main?.tempMin?.rounded() ?? 0))°/\(Int(currentWeather.main?.tempMax?.rounded() ?? 0))°"
-//        sum2Label.text = "\(currentWeather.wind?.speed?.rounded() ?? 0) м/с"
-//        sum3Label.text = "\(currentWeather.main?.humidity ?? 0)%"
-//        sum2Label.text?.append("123")
+        let minCelsium = Int(currentWeather.main?.tempMin?.rounded() ?? 0)
+        let minFahrenheit = minCelsium * 9 / 5 + 32
+        let maxCelsium = Int(currentWeather.main?.tempMax?.rounded() ?? 0)
+        let maxFahrenheit = maxCelsium * 9 / 5 + 32
+        rangeTempLabel.text = UserSettings.isFahrenheit ?
+                            "\(minFahrenheit)°/\(maxFahrenheit)°" :
+                            "\(minCelsium)°/\(maxCelsium)°"
+        sum1Button.setTitle("\(currentWeather.clouds?.all ?? 0)%", for: .normal)
+        let windRatio = UserSettings.isImperial ? 2.237 : 1
+        let ending = UserSettings.isImperial ? " mph" : " м/с"
+        let windSpeed = (currentWeather.wind?.speed?.rounded() ?? 0) * windRatio
+        sum2Button.setTitle(String(Int(windSpeed)) + ending, for: .normal)
+        sum3Button.setTitle("\(currentWeather.main?.humidity ?? 0)%", for: .normal)
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        let sunriseText = formatter.string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunrise)! + currentWeather.timezone!))
-        let sunsetText = formatter.string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunset)! + currentWeather.timezone!))
+        let sunriseText = dateFormat(currentDate: false, amStyle: UserSettings.isTwelve).string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunrise)! + currentWeather.timezone!))
+        let sunsetText = dateFormat(currentDate: false, amStyle: UserSettings.isTwelve).string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunset)! + currentWeather.timezone!))
         sunriseLabel.text = sunriseText
         sunsetLabel.text = sunsetText
 
-        formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateFormat = "HH:mm, E d MMM"
-        let currentDateText = formatter.string(from: Date(timeIntervalSince1970: currentWeather.dt! ))
+//        formatter.timeZone = .gmt
+        let localTime = Date() + currentWeather.timezone!
+        let currentDateText = dateFormat(currentDate: true, amStyle: UserSettings.isTwelve).string(from: localTime)
 
         curentDateLabel.text = currentDateText
     }

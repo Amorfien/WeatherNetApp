@@ -20,4 +20,14 @@ extension UIButton {
         setTitleColor(textColor, for: .normal)
     }
 
+    convenience init(title: String = "", font: UIFont = UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, leftImage: UIImage) {
+        self.init()
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = font
+        self.setImage(leftImage, for: .normal)
+        self.imageView?.contentMode = .scaleAspectFit
+        self.imageView?.sizeToFit()
+        self.isUserInteractionEnabled = false
+    }
+
 }
