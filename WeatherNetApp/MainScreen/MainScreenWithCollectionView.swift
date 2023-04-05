@@ -62,6 +62,7 @@ final class MainScreenWithCollectionView: UIViewController {
             }
         }
     }
+//    private var forecast: [ForecastWeatherModel] = []
 
     // MARK: - Init
     init(isGeoTracking: Bool) {
@@ -97,11 +98,12 @@ final class MainScreenWithCollectionView: UIViewController {
                 }
             }
 
-            apiManager.get5dayForecast(latitude: lat ?? 0, longitude: long ?? 0) { forecast in
-                print("---", forecast.list?.count)
-                print("---", forecast.list?.first?.main?.temp)
-                print("---", forecast.list?.last?.main?.temp)
-            }
+//            apiManager.get5dayForecast(latitude: lat ?? 0, longitude: long ?? 0) { forecast in
+//                self.forecast.insert(forecast, at: 0)
+//                print("---", forecast.list?.count)
+//                print("---", forecast.list?.first?.main?.temp)
+//                print("---", forecast.list?.last?.main?.temp)
+//            }
 
         }
 
@@ -182,13 +184,15 @@ final class MainScreenWithCollectionView: UIViewController {
             guard let cityName = alertController.textFields?.first?.text else {return}
             apiManager.getCityLocation(name: cityName) { searchCity in
                 apiManager.getCurrentWeather(latitude: searchCity.lat ?? 0, longitude: searchCity.lon ?? 0) { weather in
-
                     for city in self.cities {
                         if city.id == weather.id { return } // проверка на одинаковые города
                     }
 
-                    self.cities.append(weather)
+//                    apiManager.get5dayForecast(latitude: searchCity.lat ?? 0, longitude: searchCity.lon ?? 0) { forecast in
+//                        self.forecast.append(forecast)
+//                    }
 
+                    self.cities.append(weather)
                     DispatchQueue.main.async {              // перескок на добавленный город
                         self.selectCity(index: self.cities.count - 1)
                     }

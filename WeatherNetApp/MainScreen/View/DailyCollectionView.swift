@@ -42,7 +42,7 @@ extension DailyCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
-            cell.fillCell(text: "Местами дождь - \(indexPath.item + 1)")
+            cell.fillDailyCell(text: "Местами дождь - \(indexPath.item + 1)")
             return cell
         } else {
             return UICollectionViewCell()

@@ -120,6 +120,7 @@ final class DailyView: UIView {
 
     func fillView(currentWeather: CurrentWeatherModel?) {
         guard let currentWeather else { return }
+        sum1Button.setImage(UIImage(named: ImageDictionary.dictionary[currentWeather.weather?.first?.icon ?? "noIco"] ?? "colorSunCloud"), for: .normal)
         let tempCelsium = Int(currentWeather.main?.temp?.rounded() ?? 0)
         let tempFahrenheit = tempCelsium * 9 / 5 + 32
         tempLabel.text = UserSettings.isFahrenheit ? "\(tempFahrenheit)°F" : "\(tempCelsium)°C"

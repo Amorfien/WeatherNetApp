@@ -11,11 +11,11 @@ struct ForecastWeatherModel: Codable {
 //    let cod: String?
 //    let message, cnt: Int?
     let list: [List]?
-//    let city: City?
+//    let city: City3h?
 }
 
-//// MARK: - City
-//struct City: Codable {
+// MARK: - City
+//struct City3h: Codable {
 //    let id: Int?
 //    let name: String?
 //    let coord: Coord?

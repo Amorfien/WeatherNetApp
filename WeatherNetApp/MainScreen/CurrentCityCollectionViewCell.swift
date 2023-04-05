@@ -16,7 +16,12 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     static let id = "CityScreen"
 
-    private var currentWeather: CurrentWeatherModel?
+    private var currentWeather: CurrentWeatherModel? //{
+//        didSet {
+//            self.weatherCardsCollectionView.coordinates = (self.currentWeather?.coord?.lon ?? 0, self.currentWeather?.coord?.lat ?? 0, self.currentWeather?.timezone ?? 0)
+//        }
+//    }
+//    private var forecast: ForecastWeatherModel?
 
 
     weak var detailDelegate: DetailDelegate?
@@ -53,7 +58,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         DispatchQueue.main.async {
             self.dailyView.fillView(currentWeather: self.currentWeather)
 //            print(self.currentWeather)
-
+//            self.weatherCardsCollectionView.coordinates = (self.currentWeather?.coord?.lon ?? 0, self.currentWeather?.coord?.lat ?? 0)
+//            self.weatherCardsCollectionView.reloadData()
         }
     }
 
@@ -117,8 +123,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 //    }
 
     func fillCell(currentWeather: CurrentWeatherModel?) {
-//        self.currentWeather = currentWeather
         dailyView.fillView(currentWeather: currentWeather)
+        weatherCardsCollectionView.coordinates = (currentWeather?.coord?.lat ?? 0, currentWeather?.coord?.lon ?? 0, currentWeather?.timezone ?? 0)
     }
 
 

@@ -29,7 +29,7 @@ final class WeatherCardCell: UICollectionViewCell {
 
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "12:00"
+        label.text = "--:--"
         label.textAlignment = .center
         label.font = UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)
         return label
@@ -39,17 +39,15 @@ final class WeatherCardCell: UICollectionViewCell {
 
     private let tempLabel: UILabel = {
         let label = UILabel()
-        label.text = "25°"
+        label.text = "--°"
         label.textAlignment = .center
         label.font = UIFont(name: Fonts.Rubik.regular.rawValue, size: 16)
         return label
     }()
 
-    let icons = ["colorSun", "colorSunRain", "colorCloudy", "colorRain", "colorRaindrops", "colorStorm"]
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        weatherImageView.image = UIImage(named: icons.randomElement()!)
         weatherImageView.contentMode = .scaleAspectFit
 
         setupView()
@@ -65,7 +63,6 @@ final class WeatherCardCell: UICollectionViewCell {
         contentView.addSubview(stackView)
         stackView.addArrangedSubviews(to: stackView, elements: [timeLabel, weatherImageView, tempLabel])
         enableConstraints(elements: elements)
-//        backgroundColor = .systemBlue
         layer.borderWidth = 0.5
         layer.cornerRadius = 21
     }
@@ -81,9 +78,10 @@ final class WeatherCardCell: UICollectionViewCell {
         ])
     }
 
-    func fillCell(index: Int) {
-        tempLabel.text = " \(Int.random(in: -30...40))°"
-        timeLabel.text = "\(index + 8):00"
+    func fillCardCell(temp: Double, ico: String?, time: String?) {
+        tempLabel.text = "\(Int(temp.rounded()))°"
+        weatherImageView.image = UIImage(named: ico ?? "sun")
+        timeLabel.text = time
     }
 
 }
