@@ -23,7 +23,7 @@ final class CityListViewController: UIViewController {
         return tableView
     }()
 
-    var cityList = [(String, String)]()
+    var cityList = [(String, Int)]()
 
     var firstCityIsTracking: Bool = false
 
@@ -51,7 +51,14 @@ extension CityListViewController: UITableViewDataSource {
         cell.layer.borderWidth = 1
         cell.backgroundColor = .white.withAlphaComponent(0.75)
         cell.textLabel?.text = cityList[indexPath.section].0
-        cell.detailTextLabel?.text = cityList[indexPath.section].1
+        let temp = cityList[indexPath.section].1
+        if temp > 0 {
+            cell.detailTextLabel?.textColor = #colorLiteral(red: 0, green: 0.5603182912, blue: 0, alpha: 1)
+            cell.detailTextLabel?.text = "+\(temp)°"
+        } else {
+            cell.detailTextLabel?.textColor = temp == 0 ? .black : .systemRed
+            cell.detailTextLabel?.text = "\(temp)°"
+        }
         if self.firstCityIsTracking && indexPath.section == 0 {
             cell.imageView?.image = UIImage(systemName: "location")
         }

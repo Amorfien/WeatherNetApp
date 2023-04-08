@@ -18,7 +18,6 @@ final class WeatherCardsCollectionView: UICollectionView {
 
     var coordinates: (Double, Double, Double) = (0, 0, 0) {
         didSet {
-            print(coordinates, "🥶")
             APImanager.shared.get5dayForecast(latitude: coordinates.0, longitude: coordinates.1) { forecast in
                 self.forecastList = forecast.list
                 DispatchQueue.main.async {
@@ -45,7 +44,8 @@ final class WeatherCardsCollectionView: UICollectionView {
 
 extension WeatherCardsCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        40
+//        40
+        self.forecastList?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

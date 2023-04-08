@@ -214,7 +214,7 @@ final class MainScreenWithCollectionView: UIViewController {
         let cityListVC = CityListViewController()
         cityListVC.cityListDelegate = self
         for city in cities {
-            let temp = "\(Int(city.main?.temp?.rounded() ?? 0))°"
+            let temp = Int(city.main?.temp?.rounded() ?? 0)
             cityListVC.cityList.append((city.name ?? "--", temp))
         }
         if let sheet = cityListVC.sheetPresentationController {

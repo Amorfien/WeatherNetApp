@@ -51,7 +51,7 @@ final class DailyView: UIView {
         backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         layer.cornerRadius = 5
 
-        summaryStack.distribution = .fillEqually
+        summaryStack.distribution = .equalCentering
 //        summaryStack.spacing = 10
 
 
@@ -75,7 +75,7 @@ final class DailyView: UIView {
             summaryStack.centerXAnchor.constraint(equalTo: centerXAnchor),
             summaryStack.bottomAnchor.constraint(equalTo: curentDateLabel.topAnchor, constant: -16),
             summaryStack.heightAnchor.constraint(equalToConstant: 18),
-            summaryStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50),
+            summaryStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 65),
 
             weatherLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             weatherLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 6),
@@ -108,9 +108,9 @@ final class DailyView: UIView {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
         if amStyle {
-            formatter.dateFormat = currentDate ? "hh:mm a, E d MMM" : "hh:mm a"
+            formatter.dateFormat = currentDate ? "hh:mm a, E d MMMM" : "hh:mm a"
         } else {
-            formatter.dateFormat = currentDate ? "HH:mm, E d MMM" : "HH:mm"
+            formatter.dateFormat = currentDate ? "HH:mm, E d MMMM" : "HH:mm"
         }
         if currentDate {
             formatter.timeZone = .gmt

@@ -16,7 +16,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     static let id = "CityScreen"
 
-    private var currentWeather: CurrentWeatherModel? //{
+//    private var currentWeather: CurrentWeatherModel? //{
 //        didSet {
 //            self.weatherCardsCollectionView.coordinates = (self.currentWeather?.coord?.lon ?? 0, self.currentWeather?.coord?.lat ?? 0, self.currentWeather?.timezone ?? 0)
 //        }
@@ -49,18 +49,14 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         scrollView.addSubviews(to: scrollView, elements: [dailyView, detailButton, weatherCardsCollectionView, dailyLable, moreDaysButton, dailyCollectionView])
         enableConstraints(elements: elements)
         setupConstraints()
+        scrollView.showsVerticalScrollIndicator = false
+//        scrollView.bounces = false
         DispatchQueue.main.async {
             self.setContentSize()
         }
         moreDaysButton.titleLabel?.textAlignment = .right
         dailyCollectionView.summaryDelegate = self
 
-        DispatchQueue.main.async {
-            self.dailyView.fillView(currentWeather: self.currentWeather)
-//            print(self.currentWeather)
-//            self.weatherCardsCollectionView.coordinates = (self.currentWeather?.coord?.lon ?? 0, self.currentWeather?.coord?.lat ?? 0)
-//            self.weatherCardsCollectionView.reloadData()
-        }
     }
 
     required init?(coder: NSCoder) {
@@ -73,8 +69,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         for view in scrollView.subviews {
             contentRect = contentRect.union(view.frame)
         }
-        scrollView.contentSize.height = contentRect.maxY + 70
-//        print("---", contentRect.maxY)
+        scrollView.contentSize.height = contentRect.maxY
     }
 
 
@@ -83,7 +78,6 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
             scrollView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-//            scrollView.heightAnchor.constraint(equalToConstant: 2000),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
@@ -109,18 +103,13 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
             moreDaysButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
 
             dailyCollectionView.topAnchor.constraint(equalTo: dailyLable.bottomAnchor),
-            dailyCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            dailyCollectionView.widthAnchor.constraint(equalTo: widthAnchor),
             dailyCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dailyCollectionView.heightAnchor.constraint(equalToConstant: dailyCollectionView.numberOfCells * (dailyCollectionView.cellHeight + dailyCollectionView.inset) + dailyCollectionView.inset)
-//            dailyCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            dailyCollectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: dailyCollectionView.numberOfCells * (dailyCollectionView.cellHeight + dailyCollectionView.inset) + dailyCollectionView.inset + 80),
+            dailyCollectionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
 
         ])
     }
-
-//    override func prepareForReuse() {
-////        self.dailyView.fillView(currentWeather: self.currentWeather)
-//        self.dailyView.prepareForReuseCell()
-//    }
 
     func fillCell(currentWeather: CurrentWeatherModel?) {
         dailyView.fillView(currentWeather: currentWeather)
@@ -130,19 +119,20 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     private func detailDidTap() {
         detailDelegate?.showDetail()
-
     }
 
     private func moreDaysDidTap() {
         if moreDaysButton.titleLabel?.text == "25 дней" {
             dailyCollectionView.numberOfCells = 25
             moreDaysButton.setTitle("7 дней", for: .normal)
+            scrollView.contentSize.height += 18 * (dailyCollectionView.cellHeight + dailyCollectionView.inset) + dailyCollectionView.inset
         } else if moreDaysButton.titleLabel?.text == "7 дней" {
             dailyCollectionView.numberOfCells = 7
             moreDaysButton.setTitle("25 дней", for: .normal)
+            scrollView.contentSize.height -= 18 * (dailyCollectionView.cellHeight + dailyCollectionView.inset) + dailyCollectionView.inset
         }
         dailyCollectionView.reloadData()
-        setContentSize()//??
+        setupConstraints()
     }
 
 }

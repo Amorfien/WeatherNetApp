@@ -62,13 +62,21 @@ final class DailyCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func fillDailyCell(text: String) {
+    func fillDailyCell(text: String, indx: Int) {
 //        textLabel.text = text
         textLabel.text = textArray.randomElement()
+        inputFormatDate(indx: indx)
+    }
+
+    private func inputFormatDate(indx: Int) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM"
+        let today = Date()
+        let nextDate = Calendar.current.date(byAdding: .day, value: indx + 1, to: today)
+        dateLabel.text = dateFormatter.string(from: nextDate!)
     }
 
     private func detailButtonDidTap() {
-
     }
 
 

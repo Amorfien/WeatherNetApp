@@ -26,6 +26,7 @@ final class DailyCollectionView: UICollectionView {
         dailyLayout.sectionInset = UIEdgeInsets(top: inset, left: 0, bottom: inset, right: 0)
         register(DailyCollectionViewCell.self, forCellWithReuseIdentifier: DailyCollectionViewCell.id)
         showsVerticalScrollIndicator = false
+        isScrollEnabled = false
         dataSource = self
         delegate = self
     }
@@ -42,7 +43,7 @@ extension DailyCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
-            cell.fillDailyCell(text: "Местами дождь - \(indexPath.item + 1)")
+            cell.fillDailyCell(text: "Местами дождь - \(indexPath.item + 1)", indx: indexPath.item)
             return cell
         } else {
             return UICollectionViewCell()
