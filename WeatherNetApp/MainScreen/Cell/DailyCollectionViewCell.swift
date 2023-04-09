@@ -11,8 +11,6 @@ final class DailyCollectionViewCell: UICollectionViewCell {
 
     static let id = "DailyCard"
 
-    private let textArray = ["Местами дождь", "Преимущественно облачно даже очень", "Облачно", "Небольшой ливневый дождь", "Ливни", "Солнечно"]
-
     private let dateLabel = UILabel(text: "17/04", textColor: #colorLiteral(red: 0.6039215686, green: 0.5882352941, blue: 0.5882352941, alpha: 1))
     private let icoButton = UIButton(title: "57%", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 12)!, leftImage: UIImage(named: "colorRain")!)
     private let textLabel = UILabel(text: "Местами дождь")
@@ -62,18 +60,12 @@ final class DailyCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func fillDailyCell(text: String, indx: Int) {
-//        textLabel.text = text
-        textLabel.text = textArray.randomElement()
-        inputFormatDate(indx: indx)
-    }
-
-    private func inputFormatDate(indx: Int) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM"
-        let today = Date()
-        let nextDate = Calendar.current.date(byAdding: .day, value: indx + 1, to: today)
-        dateLabel.text = dateFormatter.string(from: nextDate!)
+    func fillDailyCell(date: String, title: String, ico: String, value: String, range: String) {
+        textLabel.text = title
+        dateLabel.text = date
+        icoButton.setImage(UIImage(named: ico), for: .normal)
+        icoButton.setTitle(value, for: .normal)
+        tempRangeLabel.text = range
     }
 
     private func detailButtonDidTap() {

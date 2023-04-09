@@ -111,9 +111,11 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func fillCell(currentWeather: CurrentWeatherModel?) {
+    func fillCityCell(currentWeather: CurrentWeatherModel?, forecast: ForecastWeatherModel?) {
         dailyView.fillView(currentWeather: currentWeather)
-        weatherCardsCollectionView.coordinates = (currentWeather?.coord?.lat ?? 0, currentWeather?.coord?.lon ?? 0, currentWeather?.timezone ?? 0)
+//        weatherCardsCollectionView.coordinates = (currentWeather?.coord?.lat ?? 0, currentWeather?.coord?.lon ?? 0, currentWeather?.timezone ?? 0)
+        weatherCardsCollectionView.fillCardsCollection(forecast: forecast)
+        dailyCollectionView.fillDailyCollection(forecast: forecast)
     }
 
 

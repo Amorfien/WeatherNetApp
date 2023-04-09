@@ -19,7 +19,7 @@ struct CurrentWeatherModel: Codable {
     let clouds: Clouds?
     let dt: Double? //
     let sys: Sys?
-    let timezone, id: Double? //
+    let timezone, id: Int? //
     let name: String?
     let cod: Int?
 }

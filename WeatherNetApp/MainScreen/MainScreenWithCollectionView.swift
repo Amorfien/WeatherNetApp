@@ -48,21 +48,21 @@ final class MainScreenWithCollectionView: UIViewController {
 
     private var cities: [CurrentWeatherModel] = [] {
         didSet {
+            print("🥶", cities.count)
             DispatchQueue.main.async {
                 self.pageControl.numberOfPages = self.cities.count
-                self.pagingCollectionView.reloadData()
-                if self.cities.count > 0 {
-                    self.zeroCitiesLabel.isHidden = true
-                    self.navigationItem.rightBarButtonItems?[1].isEnabled = true
-                } else {
-                    self.zeroCitiesLabel.isHidden = false
-                    self.navigationItem.title = nil
-                    self.navigationItem.rightBarButtonItems?[1].isEnabled = false
+                if self.locationManager != nil {
+                    self.pageControl.setIndicatorImage(UIImage(systemName: "location.circle"), forPage: 0)
+                    self.pageControl.setCurrentPageIndicatorImage(UIImage(systemName: "location.circle.fill"), forPage: 0)
                 }
             }
         }
     }
-//    private var forecast: [ForecastWeatherModel] = []
+    private var forecasts: [ForecastWeatherModel] = [] {
+        didSet {
+            print("😱", forecasts.count)
+        }
+    }
 
     // MARK: - Init
     init(isGeoTracking: Bool) {
@@ -82,35 +82,22 @@ final class MainScreenWithCollectionView: UIViewController {
     }
 
     // MARK: - Lifecycle
-    override func loadView() {
-        super.loadView()
-        let apiManager = APImanager.shared
-        let lat = locationManager?.location?.coordinate.latitude
-        let long = locationManager?.location?.coordinate.longitude
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        if locationManager != nil {
-            apiManager.getCurrentWeather(latitude: lat ?? 0, longitude: long ?? 0) { weather in
-
-                self.cities.insert(weather, at: 0)
+        if let locationManager {
+            WeatherManager.getInfoByCoord(latitude: locationManager.location?.coordinate.latitude ?? 0, longitude: locationManager.location?.coordinate.longitude ?? 0) { current, forecast in
+                self.forecasts.append(forecast)
+                self.cities.append(current)
                 DispatchQueue.main.async {
+                    self.reloading()
                     self.pageControl.setIndicatorImage(UIImage(systemName: "location.circle"), forPage: 0)
                     self.pageControl.setCurrentPageIndicatorImage(UIImage(systemName: "location.circle.fill"), forPage: 0)
                 }
             }
 
-//            apiManager.get5dayForecast(latitude: lat ?? 0, longitude: long ?? 0) { forecast in
-//                self.forecast.insert(forecast, at: 0)
-//                print("---", forecast.list?.count)
-//                print("---", forecast.list?.first?.main?.temp)
-//                print("---", forecast.list?.last?.main?.temp)
-//            }
-
         }
-
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
         setupUI()
         setupNavigationController()
@@ -144,6 +131,7 @@ final class MainScreenWithCollectionView: UIViewController {
         navigationItem.rightBarButtonItems = [geoItem, cityList]
     }
 
+
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
@@ -173,6 +161,21 @@ final class MainScreenWithCollectionView: UIViewController {
         ])
     }
 
+    // MARK: - Reloading
+    private func reloading() {
+        self.pagingCollectionView.reloadData()
+
+        self.pageControl.numberOfPages = self.cities.count
+        if self.cities.count > 0 {
+            self.zeroCitiesLabel.isHidden = true
+            self.navigationItem.rightBarButtonItems?[1].isEnabled = true
+        } else {
+            self.zeroCitiesLabel.isHidden = false
+            self.navigationItem.title = nil
+            self.navigationItem.rightBarButtonItems?[1].isEnabled = false
+        }
+    }
+
     // MARK: - Buttons actions
     @objc private func burgerButtonDidTapp() {
         navigationController?.pushViewController(SettingsViewController(), animated: true)
@@ -180,26 +183,22 @@ final class MainScreenWithCollectionView: UIViewController {
     @objc private func locationButtonDidTapp() {
         let alertController = UIAlertController(title: "Добавьте город", message: "Введите название", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) {_ in
-            let apiManager = APImanager.shared
-            guard let cityName = alertController.textFields?.first?.text else {return}
-            apiManager.getCityLocation(name: cityName) { searchCity in
-                apiManager.getCurrentWeather(latitude: searchCity.lat ?? 0, longitude: searchCity.lon ?? 0) { weather in
-                    for city in self.cities {
-                        if city.id == weather.id { return } // проверка на одинаковые города
-                    }
 
-//                    apiManager.get5dayForecast(latitude: searchCity.lat ?? 0, longitude: searchCity.lon ?? 0) { forecast in
-//                        self.forecast.append(forecast)
-//                    }
-
-                    self.cities.append(weather)
-                    DispatchQueue.main.async {              // перескок на добавленный город
-                        self.selectCity(index: self.cities.count - 1)
-                    }
+            guard let cityName = alertController.textFields?.first?.text else { return }
+            WeatherManager.getInfoByName(cityName: cityName) { current, forecast in
+                for city in self.cities {
+                    if city.id == current.id { return } // проверка на одинаковые города
+                }
+                self.forecasts.append(forecast)
+                self.cities.append(current)
+                DispatchQueue.main.async {
+                    self.reloading()
+                    self.selectCity(index: self.cities.count - 1) // перескок на добавленный город
                 }
             }
             self.dismiss(animated: true)
         }
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) {_ in
             self.dismiss(animated: true)
         }
@@ -244,7 +243,7 @@ extension MainScreenWithCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentCityCollectionViewCell.id, for: indexPath) as? CurrentCityCollectionViewCell {
-            cell.fillCell(currentWeather: cities[indexPath.item])
+            cell.fillCityCell(currentWeather: cities[indexPath.item], forecast: forecasts[indexPath.item])
             cell.detailDelegate = self
             return cell
         } else {
@@ -295,5 +294,7 @@ extension MainScreenWithCollectionView: CityListProtocol {
     }
     func deleteCity(index: Int) {
         cities.remove(at: index)
+        forecasts.remove(at: index)
+        reloading()
     }
 }

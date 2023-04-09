@@ -17,7 +17,13 @@ final class DailyCollectionView: UICollectionView {
 
     let cellHeight: CGFloat = 56
     let inset: CGFloat = 10
-    var numberOfCells: CGFloat = 7
+    var numberOfCells: CGFloat = 7//
+
+    private var forecast: ForecastWeatherModel? {
+        didSet {
+            self.reloadData()
+        }
+    }
 
     private let dailyLayout = UICollectionViewFlowLayout()
 
@@ -34,7 +40,63 @@ final class DailyCollectionView: UICollectionView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func fillDailyCollection(forecast: ForecastWeatherModel?) {
+        self.forecast = forecast
+        newDaysArray() // temp
+    }
+
+    // заполнение даты в нужном формате начиная с завтра и т.д.
+    private func futureDates(indx: Int, timezone: Int) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM"
+        dateFormatter.timeZone = .gmt
+        let today = Calendar.current.date(byAdding: .second, value: timezone, to: .now)
+        let nextDate = Calendar.current.date(byAdding: .day, value: indx + 1, to: today!)
+        return dateFormatter.string(from: nextDate!)
+    }
+
+    private func newDaysArray() -> [List] {
+        guard let forecastList = (forecast?.list) else {return []}
+        let timezone = forecast?.city?.timezone
+
+        // поиск начала нового дня
+        for (index, day) in forecastList.enumerated() {
+            if (day.dt! + timezone!) % (24 * 60 * 60) == 0 {
+                let slicedArray = [List](forecastList[index..<forecastList.count])
+                print("🤥", index)
+                print("😶‍🌫️", slicedArray.count)
+                return slicedArray
+            }
+        }
+        return []
+    }
+
+    private func forecastTemp(day: Int) -> String {
+        guard newDaysArray().count > ((day + 1) * 8) else {
+            return "??°-??°"
+        }
+        let needDay = newDaysArray()[(8 * day) ..< (8 * (day + 1))]
+        var tempDayArray: [Double] = []
+        for hour in needDay {
+            tempDayArray.append(hour.main?.temp ?? 0)
+        }
+
+        let minCelsium = Int(tempDayArray.min()?.rounded() ?? 0)
+        let minFahrenheit = minCelsium * 9 / 5 + 32
+        let maxCelsium = Int(tempDayArray.max()?.rounded() ?? 0)
+        let maxFahrenheit = maxCelsium * 9 / 5 + 32
+
+        return UserSettings.isFahrenheit ? "\(minFahrenheit)°-\(maxFahrenheit)°" : "\(minCelsium)°-\(maxCelsium)°"
+    }
+
 }
+//for newday in slicedArray {
+//
+//}
+//let tempRange = "\(tempArray.min() ?? 0)°-\(tempArray.max() ?? 0)°"
+
+
 
 extension DailyCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -43,7 +105,9 @@ extension DailyCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
-            cell.fillDailyCell(text: "Местами дождь - \(indexPath.item + 1)", indx: indexPath.item)
+            let futureDate = futureDates(indx: indexPath.item, timezone: forecast?.city?.timezone ?? 0)
+            let tempRange = forecastTemp(day: indexPath.item)
+            cell.fillDailyCell(date: futureDate, title: "1", ico: "colorRain", value: "2", range: tempRange)
             return cell
         } else {
             return UICollectionViewCell()

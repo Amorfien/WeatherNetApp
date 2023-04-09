@@ -11,22 +11,22 @@ struct ForecastWeatherModel: Codable {
 //    let cod: String?
 //    let message, cnt: Int?
     let list: [List]?
-//    let city: City3h?
+    let city: City3h?
 }
 
 // MARK: - City
-//struct City3h: Codable {
-//    let id: Int?
-//    let name: String?
-//    let coord: Coord?
-//    let country: String?
-//    let population, timezone, sunrise, sunset: Int?
-//}
-//
-//// MARK: - Coord
-//struct Coord: Codable {
-//    let lat, lon: Double?
-//}
+struct City3h: Codable {
+    let id: Int?
+    let name: String?
+    let coord: Coord3h?
+    let country: String?
+    let population, timezone, sunrise, sunset: Int?
+}
+
+// MARK: - Coord
+struct Coord3h: Codable {
+    let lat, lon: Double?
+}
 
 // MARK: - List
 struct List: Codable {

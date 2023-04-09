@@ -124,7 +124,7 @@ final class DailyView: UIView {
         let tempCelsium = Int(currentWeather.main?.temp?.rounded() ?? 0)
         let tempFahrenheit = tempCelsium * 9 / 5 + 32
         tempLabel.text = UserSettings.isFahrenheit ? "\(tempFahrenheit)°F" : "\(tempCelsium)°C"
-        weatherLabel.text = currentWeather.weather?[0].description?.capitalized
+        weatherLabel.text = currentWeather.weather?[0].description?.capitalizingFirstLetter()
         let minCelsium = Int(currentWeather.main?.tempMin?.rounded() ?? 0)
         let minFahrenheit = minCelsium * 9 / 5 + 32
         let maxCelsium = Int(currentWeather.main?.tempMax?.rounded() ?? 0)
@@ -139,13 +139,14 @@ final class DailyView: UIView {
         sum2Button.setTitle(String(Int(windSpeed)) + ending, for: .normal)
         sum3Button.setTitle("\(currentWeather.main?.humidity ?? 0)%", for: .normal)
 
-        let sunriseText = dateFormat(currentDate: false, amStyle: UserSettings.isTwelve).string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunrise)! + currentWeather.timezone!))
-        let sunsetText = dateFormat(currentDate: false, amStyle: UserSettings.isTwelve).string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunset)! + currentWeather.timezone!))
+        let timeZone = Double(currentWeather.timezone ?? 0)
+        let sunriseText = dateFormat(currentDate: false, amStyle: UserSettings.isTwelve).string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunrise)! + timeZone))
+        let sunsetText = dateFormat(currentDate: false, amStyle: UserSettings.isTwelve).string(from: Date(timeIntervalSince1970: (currentWeather.sys?.sunset)! + timeZone))
         sunriseLabel.text = sunriseText
         sunsetLabel.text = sunsetText
 
 //        formatter.timeZone = .gmt
-        let localTime = Date() + currentWeather.timezone!
+        let localTime = Date() + timeZone
         let currentDateText = dateFormat(currentDate: true, amStyle: UserSettings.isTwelve).string(from: localTime)
 
         curentDateLabel.text = currentDateText
