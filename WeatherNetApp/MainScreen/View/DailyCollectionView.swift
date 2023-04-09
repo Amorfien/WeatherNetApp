@@ -21,6 +21,13 @@ final class DailyCollectionView: UICollectionView {
 
     private var forecast: ForecastWeatherModel? {
         didSet {
+            newDaysArray()
+//            self.reloadData()
+        }
+    }
+    private var futureDays: [List] = [] {
+        didSet {
+            print(futureDays.count)
             self.reloadData()
         }
     }
@@ -43,7 +50,7 @@ final class DailyCollectionView: UICollectionView {
 
     func fillDailyCollection(forecast: ForecastWeatherModel?) {
         self.forecast = forecast
-        newDaysArray() // temp
+//        newDaysArray() // temp
     }
 
     // заполнение даты в нужном формате начиная с завтра и т.д.
@@ -56,27 +63,34 @@ final class DailyCollectionView: UICollectionView {
         return dateFormatter.string(from: nextDate!)
     }
 
-    private func newDaysArray() -> [List] {
-        guard let forecastList = (forecast?.list) else {return []}
+    private func newDaysArray() {
+        guard let forecastList = (forecast?.list) else {
+            print("NO LIST")
+            return
+        }
         let timezone = forecast?.city?.timezone
 
         // поиск начала нового дня
+        // из-за разного смещения часов в каждом городе не везде есть прогноз на 00:00
+        // поэтому ищу остаток от деления меньше чем три часа
         for (index, day) in forecastList.enumerated() {
-            if (day.dt! + timezone!) % (24 * 60 * 60) == 0 {
+            if (day.dt! + timezone!) % (24 * 60 * 60) < (3 * 60 * 60) {
                 let slicedArray = [List](forecastList[index..<forecastList.count])
                 print("🤥", index)
                 print("😶‍🌫️", slicedArray.count)
-                return slicedArray
+                futureDays = slicedArray
+                return
+            } else {
+                print("WTF?!", (day.dt! + timezone!), (day.dt! + timezone!) % (24 * 60 * 60))
             }
         }
-        return []
     }
 
     private func forecastTemp(day: Int) -> String {
-        guard newDaysArray().count > ((day + 1) * 8) else {
+        guard futureDays.count > ((day + 1) * 8) else {
             return "??°-??°"
         }
-        let needDay = newDaysArray()[(8 * day) ..< (8 * (day + 1))]
+        let needDay = futureDays[(8 * day) ..< (8 * (day + 1))]
         var tempDayArray: [Double] = []
         for hour in needDay {
             tempDayArray.append(hour.main?.temp ?? 0)
@@ -90,12 +104,55 @@ final class DailyCollectionView: UICollectionView {
         return UserSettings.isFahrenheit ? "\(minFahrenheit)°-\(maxFahrenheit)°" : "\(minCelsium)°-\(maxCelsium)°"
     }
 
-}
-//for newday in slicedArray {
-//
-//}
-//let tempRange = "\(tempArray.min() ?? 0)°-\(tempArray.max() ?? 0)°"
+    private func averageHumidity(day: Int) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "?%"
+        }
+        let needDay = futureDays[(8 * day) ..< (8 * (day + 1))]
+        var humidity: Int = 0
+        for hour in needDay {
+            humidity += hour.main?.humidity ?? 0
+        }
 
+        return "\(humidity / 8)%"
+    }
+
+    /// метод поиска самых повторяющиххся значений в массиве строк
+    private func commonElementsInArray(stringArray: [String]) -> String {
+        let dict = Dictionary(grouping: stringArray, by: {$0})
+        let newDict = dict.mapValues({$0.count})
+        return newDict.sorted(by: {$0.value > $1.value}).first?.key ?? ""
+    }
+
+    private func primaryDescription(day: Int) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "--no data available--"
+        }
+        let needDay = [List](futureDays[(8 * day) ..< (8 * (day + 1))])
+        var weatherDescription: [String] = []
+        for hour in needDay {
+            weatherDescription.append(hour.weather?.first?.description ?? "")
+        }
+        let result = commonElementsInArray(stringArray: weatherDescription)
+
+        return result
+    }
+
+    private func primaryIco(day: Int) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "fog"
+        }
+        let needDay = [List](futureDays[(8 * day) ..< (8 * (day + 1))])
+        var weatherIco: [String] = []
+        for hour in needDay {
+            weatherIco.append(hour.weather?.first?.icon ?? "fog")
+        }
+        let result = commonElementsInArray(stringArray: weatherIco)
+
+        return result
+    }
+
+}
 
 
 extension DailyCollectionView: UICollectionViewDataSource {
@@ -106,8 +163,11 @@ extension DailyCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
             let futureDate = futureDates(indx: indexPath.item, timezone: forecast?.city?.timezone ?? 0)
+            let title = primaryDescription(day: indexPath.item)
+            let ico = ImageDictionary.dictionary[primaryIco(day: indexPath.item)] ?? "fog"
             let tempRange = forecastTemp(day: indexPath.item)
-            cell.fillDailyCell(date: futureDate, title: "1", ico: "colorRain", value: "2", range: tempRange)
+            let humidity = averageHumidity(day: indexPath.item)
+            cell.fillDailyCell(date: futureDate, title: title, ico: ico, value: humidity, range: tempRange)
             return cell
         } else {
             return UICollectionViewCell()

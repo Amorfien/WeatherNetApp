@@ -8,6 +8,7 @@
 import Foundation
 
 extension String {
+    /// Большая первая буква в первом слове строки
     func capitalizingFirstLetter() -> String {
       return prefix(1).uppercased() + self.lowercased().dropFirst()
     }

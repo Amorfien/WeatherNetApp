@@ -44,9 +44,10 @@ final class DailyCollectionViewCell: UICollectionViewCell {
             dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             icoButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             icoButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+//            icoButton.widthAnchor.constraint(equalToConstant: 50),
 
             textLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 66),
+            textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 70),
 //            textLabel.trailingAnchor.constraint(equalTo: leadingAnchor, constant: -60),
             textLabel.widthAnchor.constraint(equalToConstant: 200),
 
@@ -61,7 +62,7 @@ final class DailyCollectionViewCell: UICollectionViewCell {
     }
 
     func fillDailyCell(date: String, title: String, ico: String, value: String, range: String) {
-        textLabel.text = title
+        textLabel.text = title.capitalizingFirstLetter()
         dateLabel.text = date
         icoButton.setImage(UIImage(named: ico), for: .normal)
         icoButton.setTitle(value, for: .normal)

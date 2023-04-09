@@ -16,18 +16,6 @@ final class WeatherCardsCollectionView: UICollectionView {
         return layout
     }()
 
-    // внедрение координат и часового пояса нужного города из которых получаем прогноз
-//    var coordinates: (Double, Double, Double) = (0, 0, 0) {
-//        didSet {
-//            APImanager.shared.get5dayForecast(latitude: coordinates.0, longitude: coordinates.1) { forecast in
-//                self.forecastList = forecast.list
-//                DispatchQueue.main.async {
-//                    self.reloadData()
-//                }
-//            }
-//        }
-//    }
-
     private var forecast: ForecastWeatherModel? {
         didSet {
             self.reloadData()

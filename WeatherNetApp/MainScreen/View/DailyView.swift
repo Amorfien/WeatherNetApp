@@ -145,7 +145,6 @@ final class DailyView: UIView {
         sunriseLabel.text = sunriseText
         sunsetLabel.text = sunsetText
 
-//        formatter.timeZone = .gmt
         let localTime = Date() + timeZone
         let currentDateText = dateFormat(currentDate: true, amStyle: UserSettings.isTwelve).string(from: localTime)
 
