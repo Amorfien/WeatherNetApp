@@ -36,6 +36,7 @@ final class CityListViewController: UIViewController {
 
 }
 
+// MARK: - Setup tableview
 extension CityListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
@@ -81,9 +82,6 @@ extension CityListViewController: UITableViewDelegate {
                 style: .destructive,
                 title: "Удалить"
             ) { _, _, _ in
-                //            let post = self.favoritesPosts[indexPath.row]
-                //            self.coreDataServiceLite.deletePost(predicate: NSPredicate(format: "id == %ld", post.id))
-                
                 self.cityListDelegate?.deleteCity(index: indexPath.section)
                 self.cityList.remove(at: indexPath.section)
                 self.cityListTableView.deleteSections([indexPath.section], with: .right)

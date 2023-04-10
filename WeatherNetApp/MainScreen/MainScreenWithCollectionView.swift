@@ -48,21 +48,19 @@ final class MainScreenWithCollectionView: UIViewController {
 
     private var cities: [CurrentWeatherModel] = [] {
         didSet {
-            print("🥶", cities.count)
             DispatchQueue.main.async {
                 self.pageControl.numberOfPages = self.cities.count
+                // меняем индикатор первого города, если он определен по геолокации
                 if self.locationManager != nil {
                     self.pageControl.setIndicatorImage(UIImage(systemName: "location.circle"), forPage: 0)
                     self.pageControl.setCurrentPageIndicatorImage(UIImage(systemName: "location.circle.fill"), forPage: 0)
                 }
+                // ограничение количества городов - 10шт
+                self.navigationItem.rightBarButtonItems?[0].isEnabled = self.cities.count == 10 ? false : true
             }
         }
     }
-    private var forecasts: [ForecastWeatherModel] = [] {
-        didSet {
-            print("😱", forecasts.count)
-        }
-    }
+    private var forecasts: [ForecastWeatherModel] = []
 
     // MARK: - Init
     init(isGeoTracking: Bool) {
@@ -87,7 +85,7 @@ final class MainScreenWithCollectionView: UIViewController {
         super.viewDidLoad()
 
         if let locationManager {
-            WeatherManager.getInfoByCoord(latitude: locationManager.location?.coordinate.latitude ?? 0, longitude: locationManager.location?.coordinate.longitude ?? 0) { current, forecast in
+            APImanager.shared.getInfoByCoord(latitude: locationManager.location?.coordinate.latitude ?? 0, longitude: locationManager.location?.coordinate.longitude ?? 0) { current, forecast in
                 self.forecasts.append(forecast)
                 self.cities.append(current)
                 DispatchQueue.main.async {
@@ -185,7 +183,7 @@ final class MainScreenWithCollectionView: UIViewController {
         let okAction = UIAlertAction(title: "OK", style: .default) {_ in
 
             guard let cityName = alertController.textFields?.first?.text else { return }
-            WeatherManager.getInfoByName(cityName: cityName) { current, forecast in
+            APImanager.shared.getInfoByName(cityName: cityName) { current, forecast in
                 for city in self.cities {
                     if city.id == current.id { return } // проверка на одинаковые города
                 }
@@ -235,7 +233,7 @@ final class MainScreenWithCollectionView: UIViewController {
 
 }
 
-// MARK: - Extensions
+// MARK: - Setup collectionview
 extension MainScreenWithCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cities.count
@@ -267,6 +265,7 @@ extension MainScreenWithCollectionView: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - Delegate methods
 extension MainScreenWithCollectionView: DetailDelegate {
     func showSummary() {
         print("peredacha #2")

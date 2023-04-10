@@ -45,7 +45,7 @@ final class DailyView: UIView {
     private let sunriseLabel = UILabel(text: "00:00", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
     private let sunsetLabel = UILabel(text: "00:00", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 14)!, textColor: .white)
 
-
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
@@ -65,7 +65,7 @@ final class DailyView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    // MARK: - UI
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             curentDateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -103,7 +103,7 @@ final class DailyView: UIView {
 
         ])
     }
-
+    // MARK: - private method
     private func dateFormat(currentDate: Bool, amStyle: Bool = false) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
@@ -118,6 +118,7 @@ final class DailyView: UIView {
         return formatter
     }
 
+    // MARK: - public method
     func fillView(currentWeather: CurrentWeatherModel?) {
         guard let currentWeather else { return }
         sum1Button.setImage(UIImage(named: ImageDictionary.dictionary[currentWeather.weather?.first?.icon ?? "noIco"] ?? "colorSunCloud"), for: .normal)

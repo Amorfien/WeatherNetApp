@@ -22,6 +22,7 @@ final class WeatherCardsCollectionView: UICollectionView {
         }
     }
 
+    // MARK: - Init
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: weatherCardsLayout)
         register(WeatherCardCell.self, forCellWithReuseIdentifier: WeatherCardCell.id)
@@ -34,15 +35,16 @@ final class WeatherCardsCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - public method
     func fillCardsCollection(forecast: ForecastWeatherModel?) {
         self.forecast = forecast
     }
 
 }
 
+// MARK: - setup collectionview
 extension WeatherCardsCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        40
         self.forecast?.list?.count ?? 0
     }
 
@@ -55,7 +57,6 @@ extension WeatherCardsCollectionView: UICollectionViewDataSource {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = UserSettings.isTwelve ? "hh:mm" : "HH:mm"
             dateFormatter.timeZone = .gmt
-//            let time = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval((forecast?.list?[indexPath.item].dt ?? 0) + (forecast?.city?.timezone ?? 0))))
             let localTime = Date(timeIntervalSince1970: Double((forecast?.list?[indexPath.item].dt)!) + Double((forecast?.city?.timezone)!))
             let time = dateFormatter.string(from: localTime)
             cell.fillCardCell(temp: UserSettings.isFahrenheit ? tempFahrenheit : tempCelsium, ico: icoName, time: time)

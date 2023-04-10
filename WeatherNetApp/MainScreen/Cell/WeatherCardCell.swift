@@ -45,10 +45,9 @@ final class WeatherCardCell: UICollectionViewCell {
         return label
     }()
 
-
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        weatherImageView.contentMode = .scaleAspectFit
 
         setupView()
         setupConstraints()
@@ -58,7 +57,9 @@ final class WeatherCardCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupView() {
+        weatherImageView.contentMode = .scaleAspectFit
         let elements = [stackView, timeLabel, weatherImageView, tempLabel]
         contentView.addSubview(stackView)
         stackView.addArrangedSubviews(to: stackView, elements: [timeLabel, weatherImageView, tempLabel])
@@ -78,6 +79,7 @@ final class WeatherCardCell: UICollectionViewCell {
         ])
     }
 
+    // MARK: - public method
     func fillCardCell(temp: Double, ico: String?, time: String?) {
         tempLabel.text = "\(Int(temp.rounded()))°"
         weatherImageView.image = UIImage(named: ico ?? "sun")

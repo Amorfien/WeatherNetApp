@@ -17,23 +17,22 @@ final class DailyCollectionView: UICollectionView {
 
     let cellHeight: CGFloat = 56
     let inset: CGFloat = 10
-    var numberOfCells: CGFloat = 7//
+    var numberOfCells: CGFloat = 7
 
     private var forecast: ForecastWeatherModel? {
         didSet {
             newDaysArray()
-//            self.reloadData()
         }
     }
     private var futureDays: [List] = [] {
         didSet {
-            print(futureDays.count)
             self.reloadData()
         }
     }
 
     private let dailyLayout = UICollectionViewFlowLayout()
 
+    // MARK: - init
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: dailyLayout)
         dailyLayout.sectionInset = UIEdgeInsets(top: inset, left: 0, bottom: inset, right: 0)
@@ -48,11 +47,13 @@ final class DailyCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - public method
     func fillDailyCollection(forecast: ForecastWeatherModel?) {
         self.forecast = forecast
 //        newDaysArray() // temp
     }
 
+    // MARK: - private methods
     // заполнение даты в нужном формате начиная с завтра и т.д.
     private func futureDates(indx: Int, timezone: Int) -> String {
         let dateFormatter = DateFormatter()
@@ -63,6 +64,7 @@ final class DailyCollectionView: UICollectionView {
         return dateFormatter.string(from: nextDate!)
     }
 
+    /// создание нового массива путём отсечения сеодняшнего дня
     private func newDaysArray() {
         guard let forecastList = (forecast?.list) else {
             print("NO LIST")
@@ -76,16 +78,13 @@ final class DailyCollectionView: UICollectionView {
         for (index, day) in forecastList.enumerated() {
             if (day.dt! + timezone!) % (24 * 60 * 60) < (3 * 60 * 60) {
                 let slicedArray = [List](forecastList[index..<forecastList.count])
-                print("🤥", index)
-                print("😶‍🌫️", slicedArray.count)
                 futureDays = slicedArray
                 return
-            } else {
-                print("WTF?!", (day.dt! + timezone!), (day.dt! + timezone!) % (24 * 60 * 60))
             }
         }
     }
 
+    /// получение диаапазона температур на заданный день
     private func forecastTemp(day: Int) -> String {
         guard futureDays.count > ((day + 1) * 8) else {
             return "??°-??°"
@@ -104,6 +103,7 @@ final class DailyCollectionView: UICollectionView {
         return UserSettings.isFahrenheit ? "\(minFahrenheit)°-\(maxFahrenheit)°" : "\(minCelsium)°-\(maxCelsium)°"
     }
 
+    /// получение средней влажности на заданный день
     private func averageHumidity(day: Int) -> String {
         guard futureDays.count > ((day + 1) * 8) else {
             return "?%"
@@ -124,6 +124,7 @@ final class DailyCollectionView: UICollectionView {
         return newDict.sorted(by: {$0.value > $1.value}).first?.key ?? ""
     }
 
+    /// преобладающее текстовое описание погоды на заданный день
     private func primaryDescription(day: Int) -> String {
         guard futureDays.count > ((day + 1) * 8) else {
             return "--no data available--"
@@ -138,6 +139,7 @@ final class DailyCollectionView: UICollectionView {
         return result
     }
 
+    /// преобладающая иконка погоды на заданный день
     private func primaryIco(day: Int) -> String {
         guard futureDays.count > ((day + 1) * 8) else {
             return "fog"
@@ -154,7 +156,7 @@ final class DailyCollectionView: UICollectionView {
 
 }
 
-
+// MARK: - setup collectionview
 extension DailyCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         Int(numberOfCells)
@@ -164,7 +166,7 @@ extension DailyCollectionView: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DailyCollectionViewCell.id, for: indexPath) as? DailyCollectionViewCell {
             let futureDate = futureDates(indx: indexPath.item, timezone: forecast?.city?.timezone ?? 0)
             let title = primaryDescription(day: indexPath.item)
-            let ico = ImageDictionary.dictionary[primaryIco(day: indexPath.item)] ?? "fog"
+            let ico = ImageDictionary.noNight[primaryIco(day: indexPath.item)] ?? "fog"
             let tempRange = forecastTemp(day: indexPath.item)
             let humidity = averageHumidity(day: indexPath.item)
             cell.fillDailyCell(date: futureDate, title: title, ico: ico, value: humidity, range: tempRange)

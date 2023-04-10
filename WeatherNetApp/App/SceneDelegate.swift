@@ -27,7 +27,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             geoTracking = true
         }
 
-
         self.window?.rootViewController = UINavigationController(rootViewController: geoTracking ? MainScreenWithCollectionView(isGeoTracking: true) : OnboardingViewController())
         self.window?.overrideUserInterfaceStyle = .light    //запрет тёмной темы
         self.window?.makeKeyAndVisible()

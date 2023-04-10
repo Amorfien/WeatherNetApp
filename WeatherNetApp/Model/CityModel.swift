@@ -18,6 +18,5 @@ struct CityElement: Codable {
         case localNames = "local_names"
         case lat, lon, country
     }
-
 }
-//typealias City = [CityElement]
+

@@ -40,7 +40,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     private var dailyCollectionView = DailyCollectionView()
 
-
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -63,7 +63,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-
+    // MARK: - UI
     private func setContentSize() {
         var contentRect = CGRect.zero
         for view in scrollView.subviews {
@@ -111,12 +111,14 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         ])
     }
 
+    // MARK: - public method
     func fillCityCell(currentWeather: CurrentWeatherModel?, forecast: ForecastWeatherModel?) {
         dailyView.fillView(currentWeather: currentWeather)
         weatherCardsCollectionView.fillCardsCollection(forecast: forecast)
         dailyCollectionView.fillDailyCollection(forecast: forecast)
     }
 
+    // MARK: - private methods
     private func detailDidTap() {
         detailDelegate?.showDetail()
     }
@@ -137,6 +139,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
 }
 
+// MARK: - delegates
 extension CurrentCityCollectionViewCell: SummaryDelegate {
     func tapToSummary() {
         print("peredacha #1")

@@ -51,6 +51,7 @@ final class SettingsView: UIView {
                                              font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 16)!,
                                              action: okBtnDidTap)
 
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
@@ -74,6 +75,7 @@ final class SettingsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             screenLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -90,6 +92,7 @@ final class SettingsView: UIView {
         ])
     }
 
+    // MARK: - Button action
     private func okBtnDidTap() {
         UserSettings.isFahrenheit = unsavedSettings[.isFahrenheit]!
         UserSettings.isImperial = unsavedSettings[.isImperial]!
@@ -101,6 +104,8 @@ final class SettingsView: UIView {
 
 }
 
+// MARK: - delegate method
+/// костыль, перехвавтывающий положение сегментКонтрола через тайтл
 extension SettingsView: SettingsSegmentValueChange {
     func segmentValueChange(key: String) {
         switch key {

@@ -15,6 +15,7 @@ final class SettingsViewController: UIViewController {
     private let cloudTwo = UIImageView(image: UIImage(named: "cloud1"))
     private let cloudThree = UIImageView(image: UIImage(named: "cloud2"))
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.125, green: 0.3059999943, blue: 0.7799999714, alpha: 1)
@@ -32,6 +33,7 @@ final class SettingsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .darkText
     }
 
+    // MARK: - UI
     private func setupConstraints() {
 
         NSLayoutConstraint.activate([
@@ -51,6 +53,7 @@ final class SettingsViewController: UIViewController {
         ])
     }
 
+    // MARK: - methods
     private func animation() {
         UIView.animate(withDuration: 25) {
             self.cloudOne.frame.origin.x -= 330
@@ -61,6 +64,7 @@ final class SettingsViewController: UIViewController {
 
 }
 
+// MARK: - delegate methods
 extension SettingsViewController: PopSettingsProtocol {
     func popToRoot() {
         navigationController?.popViewController(animated: true)

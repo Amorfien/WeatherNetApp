@@ -17,6 +17,7 @@ final class DailyCollectionViewCell: UICollectionViewCell {
     private let tempRangeLabel = UILabel(text: "4°-11°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 18)!, alignment: .right)
     private lazy var detailButton = SimpleButton(image: UIImage(systemName: "chevron.right")!, action: detailButtonDidTap)
 
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
@@ -28,6 +29,7 @@ final class DailyCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupView() {
         backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
         layer.cornerRadius = 5
@@ -44,7 +46,7 @@ final class DailyCollectionViewCell: UICollectionViewCell {
             dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             icoButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             icoButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-//            icoButton.widthAnchor.constraint(equalToConstant: 50),
+            icoButton.heightAnchor.constraint(equalToConstant: 24),
 
             textLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 70),
@@ -61,6 +63,7 @@ final class DailyCollectionViewCell: UICollectionViewCell {
         ])
     }
 
+    // MARK: - public method
     func fillDailyCell(date: String, title: String, ico: String, value: String, range: String) {
         textLabel.text = title.capitalizingFirstLetter()
         dateLabel.text = date
