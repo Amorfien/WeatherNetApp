@@ -10,7 +10,7 @@ import UIKit
 enum WeatherStackType: String {
     case temp = "По ощущениям"
     case wind = "Ветер"
-    case ultraviolet = "УФ индекс"
+    case ultraviolet = "Видимость"
     case rainfall = "Влажность"
     case cloud = "Облачность"
 }

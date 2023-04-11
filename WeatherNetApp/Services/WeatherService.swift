@@ -29,7 +29,7 @@ final class WeatherService {
     }
 
     /// создание нового массива путём отсечения сеодняшнего дня
-    func newDaysArray() {
+    private func newDaysArray() {
         guard let forecastList = (forecast?.list) else {
             print("NO LIST")
             return
@@ -114,6 +114,83 @@ final class WeatherService {
             weatherIco.append(hour.weather?.first?.icon ?? "fog")
         }
         let result = commonElementsInArray(stringArray: weatherIco)
+
+        return result
+    }
+
+    /// получение только дневной или только ночной температуры
+    func halfDayTemp(day: Int, isNight: Bool) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "??°"
+        }
+        let needDay = [List](futureDays[(8 * day) ..< (8 * (day + 1))])
+        let temp = isNight ? needDay[1].main?.temp : needDay[5].main?.temp
+        let celsium = Int(temp?.rounded() ?? 0)
+        let fahrenheit = celsium * 9 / 5 + 32
+
+        return UserSettings.isFahrenheit ? "\(fahrenheit)°" : "\(celsium)°"
+    }
+    /// получение только дневной или только ночной иконки
+    func halfDayIco(day: Int, isNight: Bool) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "fog"
+        }
+        let needDay = [List](futureDays[(8 * day) ..< (8 * (day + 1))])
+        let ico = isNight ? needDay[1].weather?.first?.icon : needDay[5].weather?.first?.icon
+
+        return ico ?? "fog"
+    }
+    /// получение только дневного или только ночного описания
+    func halfDayDesc(day: Int, isNight: Bool) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "?no data?"
+        }
+        let needDay = [List](futureDays[(8 * day) ..< (8 * (day + 1))])
+        let desc = needDay[isNight ? 1 : 0].weather?.first?.description?.capitalizingFirstLetter()
+
+        return desc ?? "?no data?"
+    }
+
+    /// получение только дневной или только ночной иконки
+    func halfDayValue(valueType: WeatherStackType, day: Int, isNight: Bool) -> String {
+        guard futureDays.count > ((day + 1) * 8) else {
+            return "??"
+        }
+        let needDay = [List](futureDays[(8 * day) ..< (8 * (day + 1))])
+        var result = ""
+        switch valueType {
+        case .temp:
+            let temp = isNight ? needDay[1].main?.feelsLike : needDay[5].main?.feelsLike
+            let celsium = Int(temp?.rounded() ?? 0)
+            let fahrenheit = celsium * 9 / 5 + 32
+            result = UserSettings.isFahrenheit ? "\(fahrenheit)°" : "\(celsium)°"
+        case .wind:
+            let wind = isNight ? needDay[1].wind?.speed : needDay[5].wind?.speed
+            let windSpeed = UserSettings.isImperial ? 2.237 * (wind?.rounded() ?? 0) : (wind?.rounded() ?? 0)
+            let ending = UserSettings.isImperial ? " mph, " : " м/с, "
+            var windDirectionStr: String = ""
+            if let windDirection = needDay[isNight ? 1 : 5].wind?.deg {
+                    // упрощённая модель перевода градусов в направление
+                    switch windDirection {
+                    case 0..<90: windDirectionStr = "СВ"
+                    case 90..<180: windDirectionStr = "СЗ"
+                    case 180..<270: windDirectionStr = "ЮЗ"
+                    default: windDirectionStr = "ЮВ"
+                    }
+            }
+//            let windStr = String(Int(windSpeed)) + ending + windDirectionStr
+            result = String(Int(windSpeed)) + ending + windDirectionStr
+        case .ultraviolet:
+            let visible = isNight ? needDay[1].visibility : needDay[5].visibility
+            let distance = UserSettings.isImperial ? (visible ?? 1613) / 1613 : (visible ?? 1000) / 1000
+            result = String(distance) + (UserSettings.isImperial ? " миль" : " км")
+        case .rainfall:
+            let hum = isNight ? needDay[1].main?.humidity : needDay[5].main?.humidity
+            result = "\(hum ?? 0)%"
+        case .cloud:
+            let cloud = isNight ? needDay[1].clouds?.all : needDay[5].clouds?.all
+            result = "\(cloud ?? 0)%"
+        }
 
         return result
     }

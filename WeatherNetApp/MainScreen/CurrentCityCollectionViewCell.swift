@@ -40,7 +40,11 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
     private var dailyCollectionView = DailyCollectionView()
 
-    private var forecast: ForecastWeatherModel?
+    private var forecast: ForecastWeatherModel? {
+        didSet {
+            self.dailyCollectionView.reloadData()
+        }
+    }
 
     // MARK: - Init
     override init(frame: CGRect) {

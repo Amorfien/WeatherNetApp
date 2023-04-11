@@ -30,12 +30,19 @@ final class DailySummaryViewController: UIViewController {
     let summaryNightView = SummaryView(isDay: false, "7°", "1 м/с ЮЗ", "0", "0%", "30%")
 
     private let forecast: ForecastWeatherModel?
-    private let dayIndex: Int
+    private let weatherService: WeatherService
+    private var dayIndex: Int {
+        didSet {
+            fillDayView(viewCard: summaryDayView, isNight: false)
+            fillDayView(viewCard: summaryNightView, isNight: true)
+        }
+    }
 
     // MARK: - Init
     init(forecast: ForecastWeatherModel?, dayIndex: Int) {
         self.forecast = forecast
         self.dayIndex = dayIndex
+        weatherService = WeatherService(forecast: forecast)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -64,14 +71,22 @@ final class DailySummaryViewController: UIViewController {
         view.addSubviews(to: view, elements: elements)
         scrollView.addSubviews(to: scrollView, elements: [calendarCollectionView, summaryDayView, summaryNightView])
         scrollView.contentSize.height = 1100
-        fillDayView(viewCard: summaryDayView)
-        fillDayView(viewCard: summaryNightView)
+        fillDayView(viewCard: summaryDayView, isNight: false)
+        fillDayView(viewCard: summaryNightView, isNight: true)
     }
 
-    private func fillDayView(viewCard: SummaryView) {
-        let values = ["1", "2", "3", "4", "5"]
-        summaryDayView = SummaryView(isDay: true, values[0], values[1], values[2], values[3], values[4])
-        viewCard.fillDayView(ico: "snowflake", temp: "99°", values: values)
+    private func fillDayView(viewCard: SummaryView, isNight: Bool) {
+        let values = [
+            weatherService.halfDayValue(valueType: .temp, day: dayIndex, isNight: isNight),
+            weatherService.halfDayValue(valueType: .wind, day: dayIndex, isNight: isNight),
+            weatherService.halfDayValue(valueType: .ultraviolet, day: dayIndex, isNight: isNight),
+            weatherService.halfDayValue(valueType: .rainfall, day: dayIndex, isNight: isNight),
+            weatherService.halfDayValue(valueType: .cloud, day: dayIndex, isNight: isNight),
+        ]
+        let temp = weatherService.halfDayTemp(day: dayIndex, isNight: isNight)
+        let ico = ImageDictionary.dictionary[weatherService.halfDayIco(day: dayIndex, isNight: isNight)] ?? "fog"
+        let descrip = weatherService.halfDayDesc(day: dayIndex, isNight: isNight)
+        viewCard.fillDayView(ico: ico, temp: temp, descrip: descrip, values: values)
     }
 
     private func setupNavigationController() {
@@ -110,7 +125,7 @@ final class DailySummaryViewController: UIViewController {
 // MARK: - Setup collectionView
 extension DailySummaryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        14
+        10
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -120,7 +135,6 @@ extension DailySummaryViewController: UICollectionViewDataSource {
                 collectionView.selectItem(at: IndexPath(item: dayIndex, section: 0), animated: false, scrollPosition: .centeredHorizontally)
             }
 
-            let weatherService = WeatherService(forecast: forecast)
             let futureDate = weatherService.futureDates(indx: indexPath.item, timezone: forecast?.city?.timezone ?? 0, weekDay: true)
 
             cell.fillCalendarCell(date: futureDate)
@@ -137,5 +151,6 @@ extension DailySummaryViewController: UICollectionViewDelegateFlowLayout {
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Select ", indexPath.item)
+        self.dayIndex = indexPath.item
     }
 }

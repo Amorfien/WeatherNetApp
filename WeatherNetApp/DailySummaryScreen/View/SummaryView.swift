@@ -12,7 +12,7 @@ final class SummaryView: UIView {
     private var isDay: Bool
 
     private var dayLabel = UILabel(text: "", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 18)!)
-//    private var tempLabel = UILabel(ico: UIImage(named: "colorSun")!, value: "13°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 30)!, textColor: #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1))
+
     private let icoButton = UIButton(title: "13°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 30)!, leftImage: UIImage(named: "colorSun")!)
     private var specLabel = UILabel(text: "Ливни", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)!, textColor: #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1), alignment: .center)
 
@@ -32,10 +32,6 @@ final class SummaryView: UIView {
         stack3 = WeatherStack(title: .ultraviolet, value: uvValue, separator: true)
         stack4 = WeatherStack(title: .rainfall, value: rainValue, separator: true)
         stack5 = WeatherStack(title: .cloud, value: clouddValue, separator: true)
-
-
-        
-
 
         vStack.addArrangedSubviews(to: vStack, elements: [stack1, stack2, stack3, stack4, stack5])
         super.init(frame: .zero)
@@ -71,25 +67,22 @@ final class SummaryView: UIView {
             vStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             vStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             vStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
-
-            
         ])
     }
 
     private func fillVerticalStack(values: [String]) {
         guard values.count == 5 else { return }
-        print(values)
-        stack1 = WeatherStack(title: .temp, value: values[0], separator: true)
-        stack2 = WeatherStack(title: .wind, value: values[1], separator: true)
-        stack3 = WeatherStack(title: .ultraviolet, value: values[2], separator: true)
-        stack4 = WeatherStack(title: .rainfall, value: values[3], separator: true)
-        stack5 = WeatherStack(title: .cloud, value: values[4], separator: true)
-        vStack.reloadInputViews()
+        stack1.valueLabel.text = values[0]
+        stack2.valueLabel.text = values[1]
+        stack3.valueLabel.text = values[2]
+        stack4.valueLabel.text = values[3]
+        stack5.valueLabel.text = values[4]
     }
 
-    func fillDayView(ico: String, temp: String, values: [String]) {
+    func fillDayView(ico: String, temp: String, descrip: String, values: [String]) {
         icoButton.setImage(UIImage(named: ico), for: .normal)
         icoButton.setTitle(" " + temp, for: .normal)
+        specLabel.text = descrip
 
         fillVerticalStack(values: values)
     }
