@@ -67,19 +67,20 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    private enum WeatherStack: String {
-        case temp = "Ощущается как"
-        case wind = "Ветер"
-        case rainfall = "Влажность"
-        case cloud = "Облачность"
-    }
+//    private enum WeatherStack: String {
+//        case temp = "Ощущается как"
+//        case wind = "Ветер"
+//        case rainfall = "Влажность"
+//        case cloud = "Облачность"
+//    }
 
-    private func makeHStackView(value: String, type: WeatherStack) -> UIStackView {
+    private func makeHStackView(value: String, type: WeatherStackType) -> UIStackView {
         let stackView = UIStackView()
         var imageName = ""
         switch type {
         case .temp: imageName = "colorMoon"
         case .wind: imageName = "colorWind"
+        case .ultraviolet: imageName = "colorSun"
         case .rainfall: imageName = "colorRaindrops"
         case .cloud: imageName = "colorCloudy"
         }

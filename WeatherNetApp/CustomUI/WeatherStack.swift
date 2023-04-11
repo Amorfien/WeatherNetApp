@@ -7,21 +7,20 @@
 
 import UIKit
 
+enum WeatherStackType: String {
+    case temp = "По ощущениям"
+    case wind = "Ветер"
+    case ultraviolet = "УФ индекс"
+    case rainfall = "Влажность"
+    case cloud = "Облачность"
+}
+
 final class WeatherStack: UIStackView {
-
-    enum WeatherStack: String {
-        case temp = "По ощущениям"
-        case wind = "Ветер"
-        case ultraviolet = "УФ индекс"
-        case rainfall = "Дождь"
-        case cloud = "Облачность"
-    }
-
 
     var icoLabel = UILabel()
     var valueLabel = UILabel()
 
-    init(title: WeatherStack, value: String, separator: Bool) {
+    init(title: WeatherStackType, value: String, separator: Bool) {
         super.init(frame: .zero)
 
         var imageName = ""

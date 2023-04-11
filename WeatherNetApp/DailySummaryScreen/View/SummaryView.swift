@@ -12,7 +12,8 @@ final class SummaryView: UIView {
     private var isDay: Bool
 
     private var dayLabel = UILabel(text: "", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 18)!)
-    private var tempLabel = UILabel(ico: UIImage(named: "colorSun")!, value: "13°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 30)!, textColor: #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1))
+//    private var tempLabel = UILabel(ico: UIImage(named: "colorSun")!, value: "13°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 30)!, textColor: #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1))
+    private let icoButton = UIButton(title: "13°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 30)!, leftImage: UIImage(named: "colorSun")!)
     private var specLabel = UILabel(text: "Ливни", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)!, textColor: #colorLiteral(red: 0.1529411765, green: 0.1529411765, blue: 0.1333333333, alpha: 1), alignment: .center)
 
     private let vStack: UIStackView = {
@@ -49,7 +50,8 @@ final class SummaryView: UIView {
     private func setupUI() {
         backgroundColor = #colorLiteral(red: 0.9137254902, green: 0.9294117647, blue: 0.9764705882, alpha: 1)
         layer.cornerRadius = 5
-        addSubviews(to: self, elements: [dayLabel, tempLabel, specLabel, vStack])
+        addSubviews(to: self, elements: [dayLabel, icoButton, specLabel, vStack])
+        icoButton.setTitleColor(.darkText, for: .normal)
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -57,12 +59,12 @@ final class SummaryView: UIView {
             dayLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             dayLabel.heightAnchor.constraint(equalToConstant: 20),
 
-            tempLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            tempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15),
-            tempLabel.heightAnchor.constraint(equalToConstant: 32),
+            icoButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            icoButton.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            icoButton.heightAnchor.constraint(equalToConstant: 32),
 
             specLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            specLabel.topAnchor.constraint(equalTo: tempLabel.bottomAnchor, constant: 10),
+            specLabel.topAnchor.constraint(equalTo: icoButton.bottomAnchor, constant: 10),
             specLabel.heightAnchor.constraint(equalToConstant: 20),
 
             vStack.topAnchor.constraint(equalTo: specLabel.bottomAnchor, constant: 24),
@@ -73,8 +75,22 @@ final class SummaryView: UIView {
             
         ])
     }
-//    func fillView(isDay: Bool) {
-//        self.isDay = isDay
-//        dayLabel.text = isDay ? "День" : "Ночь"
-//    }
+
+    private func fillVerticalStack(values: [String]) {
+        guard values.count == 5 else { return }
+        print(values)
+        stack1 = WeatherStack(title: .temp, value: values[0], separator: true)
+        stack2 = WeatherStack(title: .wind, value: values[1], separator: true)
+        stack3 = WeatherStack(title: .ultraviolet, value: values[2], separator: true)
+        stack4 = WeatherStack(title: .rainfall, value: values[3], separator: true)
+        stack5 = WeatherStack(title: .cloud, value: values[4], separator: true)
+        vStack.reloadInputViews()
+    }
+
+    func fillDayView(ico: String, temp: String, values: [String]) {
+        icoButton.setImage(UIImage(named: ico), for: .normal)
+        icoButton.setTitle(" " + temp, for: .normal)
+
+        fillVerticalStack(values: values)
+    }
 }

@@ -19,19 +19,18 @@ final class DailySummaryViewController: UIViewController {
     }()
     private lazy var calendarCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.caledarLayout)
-//        collectionView.backgroundColor = .orange
         collectionView.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.id)
-        collectionView.showsHorizontalScrollIndicator = false
+//        collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
     }()
 
-    let summaryDayView = SummaryView(isDay: true, "11°", "5 м/с ЗЮЗ", "4 (умеренно)", "55%", "72%")
+    var summaryDayView = SummaryView(isDay: true, "11°", "5 м/с ЗЮЗ", "4 (умеренно)", "55%", "72%")
     let summaryNightView = SummaryView(isDay: false, "7°", "1 м/с ЮЗ", "0", "0%", "30%")
 
     private let forecast: ForecastWeatherModel?
-    private let dayIndex: Int?
+    private let dayIndex: Int
 
     // MARK: - Init
     init(forecast: ForecastWeatherModel?, dayIndex: Int) {
@@ -65,6 +64,14 @@ final class DailySummaryViewController: UIViewController {
         view.addSubviews(to: view, elements: elements)
         scrollView.addSubviews(to: scrollView, elements: [calendarCollectionView, summaryDayView, summaryNightView])
         scrollView.contentSize.height = 1100
+        fillDayView(viewCard: summaryDayView)
+        fillDayView(viewCard: summaryNightView)
+    }
+
+    private func fillDayView(viewCard: SummaryView) {
+        let values = ["1", "2", "3", "4", "5"]
+        summaryDayView = SummaryView(isDay: true, values[0], values[1], values[2], values[3], values[4])
+        viewCard.fillDayView(ico: "snowflake", temp: "99°", values: values)
     }
 
     private func setupNavigationController() {
@@ -108,10 +115,15 @@ extension DailySummaryViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.id, for: indexPath) as? CalendarCollectionViewCell {
+            // select нужной даты
+            if indexPath.item == dayIndex {
+                collectionView.selectItem(at: IndexPath(item: dayIndex, section: 0), animated: false, scrollPosition: .centeredHorizontally)
+            }
 
-            collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .left)
+            let weatherService = WeatherService(forecast: forecast)
+            let futureDate = weatherService.futureDates(indx: indexPath.item, timezone: forecast?.city?.timezone ?? 0, weekDay: true)
 
-            cell.fillCalendarCell()
+            cell.fillCalendarCell(date: futureDate)
 
             return cell
         } else {
@@ -124,6 +136,6 @@ extension DailySummaryViewController: UICollectionViewDelegateFlowLayout {
         CGSize(width: 88, height: 36)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        print("Select ", indexPath.item)
     }
 }

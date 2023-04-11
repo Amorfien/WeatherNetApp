@@ -34,10 +34,8 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupView() {
-//        backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
         layer.cornerRadius = 5
         layer.borderWidth = 0.5
-
         addSubviews(to: self, elements: [dateLabel])
     }
 
@@ -45,12 +43,11 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-
         ])
     }
 
-    func fillCalendarCell() {
-
+    func fillCalendarCell(date: String) {
+        dateLabel.text = date
     }
 
 

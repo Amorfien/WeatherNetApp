@@ -106,10 +106,10 @@ extension TodayDetailsScreen: UICollectionViewDataSource {
                 dateFormatter.timeZone = .gmt
                 let localTime = Date(timeIntervalSince1970: Double((forecast?.list?[indexPath.item].dt)!) + Double((forecast?.city?.timezone)!))
                 var date = dateFormatter.string(from: localTime)
-                // чтобы даты не прописывались в каждой ячейке
+                // чтобы даты не прописывались в каждой ячейке, а только в первой и начале нового дня
                 let dt = forecast?.list?[indexPath.item].dt ?? 0
                 let timezone = forecast?.city?.timezone ?? 0
-                if indexPath.item != 0 && (dt + timezone) % 86400 > 10800 {
+                if indexPath.item != 0 && (dt + timezone) % 86400 >= 10800 {
                     date = ""
                 }
                 // форматтер для времени
