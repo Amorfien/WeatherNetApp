@@ -8,8 +8,8 @@
 import UIKit
 
 protocol DetailDelegate: AnyObject {
-    func showDetail()
-    func showSummary()
+    func showDetail(forecast: ForecastWeatherModel?)
+    func showSummary(forecast: ForecastWeatherModel?, indx: Int)
 }
 
 final class CurrentCityCollectionViewCell: UICollectionViewCell {
@@ -39,6 +39,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
     private lazy var moreDaysButton = UnderlinedButton(underlined: "25 дней", action: moreDaysDidTap)
 
     private var dailyCollectionView = DailyCollectionView()
+
+    private var forecast: ForecastWeatherModel?
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -116,11 +118,12 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
         dailyView.fillView(currentWeather: currentWeather)
         weatherCardsCollectionView.fillCardsCollection(forecast: forecast)
         dailyCollectionView.fillDailyCollection(forecast: forecast)
+        self.forecast = forecast
     }
 
     // MARK: - private methods
     private func detailDidTap() {
-        detailDelegate?.showDetail()
+        detailDelegate?.showDetail(forecast: forecast)
     }
 
     private func moreDaysDidTap() {
@@ -141,8 +144,8 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
 
 // MARK: - delegates
 extension CurrentCityCollectionViewCell: SummaryDelegate {
-    func tapToSummary() {
+    func tapToSummary(indx: Int) {
         print("peredacha #1")
-        detailDelegate?.showSummary()
+        detailDelegate?.showSummary(forecast: forecast, indx: indx)
     }
 }

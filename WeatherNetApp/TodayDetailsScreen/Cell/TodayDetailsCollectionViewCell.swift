@@ -15,7 +15,7 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
     private let dateLabel = UILabel(text: "пт 16/04", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)!)
     private let timeLabel = UILabel(text: "12:00", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, textColor: #colorLiteral(red: 0.6039215686, green: 0.5882352941, blue: 0.5882352941, alpha: 1))
     private let tempLabel = UILabel(text: "12°", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)!)
-    private let verticalStackView = UIStackView()
+    private var verticalStackView = UIStackView()
 
 
     override init(frame: CGRect) {
@@ -33,9 +33,10 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
     private func setupView() {
         backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
         blueLine.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
+        timeLabel.textAlignment = .center
         let elements = [dateLabel, timeLabel, tempLabel, verticalStackView, blueLine]
         enableConstraints(elements: elements)
-        fillVerticalStack(values: ["10°", "2 м/с ССЗ", "0%", "29%"])
+//        fillVerticalStack(values: ["10°", "2 м/с ССЗ", "0%", "29%"])//
         addSubviews(to: self, elements: elements)
 
     }
@@ -47,7 +48,8 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
             dateLabel.heightAnchor.constraint(equalToConstant: 22),
 
             timeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 8),
-            timeLabel.leadingAnchor.constraint(equalTo: dateLabel.leadingAnchor),
+            timeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2),
+            timeLabel.trailingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 73),
 
             tempLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 10),
             tempLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 22),
@@ -62,15 +64,13 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
             verticalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
             verticalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
 
-
-
         ])
     }
 
     private enum WeatherStack: String {
         case temp = "Ощущается как"
         case wind = "Ветер"
-        case rainfall = "Атмосферные осадки"
+        case rainfall = "Влажность"
         case cloud = "Облачность"
     }
 
@@ -91,19 +91,28 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
         return stackView
     }
 
-    func fillVerticalStack(values: [String]) {
+    private func fillVerticalStack(values: [String]) {
         verticalStackView.axis = .vertical
         verticalStackView.distribution = .fillEqually
+        guard values.count == 4 else { return }
         verticalStackView.addArrangedSubview(makeHStackView(value: values[0], type: .temp))
         verticalStackView.addArrangedSubview(makeHStackView(value: values[1], type: .wind))
         verticalStackView.addArrangedSubview(makeHStackView(value: values[2], type: .rainfall))
         verticalStackView.addArrangedSubview(makeHStackView(value: values[3], type: .cloud))
     }
 
-    func fillCell(text: String) {
-
+    func fillTodayCell(date: String, time: String, temp: String, values: [String]) {
+        dateLabel.text = date
+        timeLabel.text = time
+        tempLabel.text = temp
+        fillVerticalStack(values: values)
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+//        fillVerticalStack(values: [""])
+        verticalStackView = UIStackView()
+    }
 
 
 }

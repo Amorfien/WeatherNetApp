@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SummaryDelegate: AnyObject {
-    func tapToSummary()
+    func tapToSummary(indx: Int)
 }
 
 final class DailyCollectionView: UICollectionView {
@@ -54,7 +54,7 @@ final class DailyCollectionView: UICollectionView {
     }
 
     // MARK: - private methods
-    // заполнение даты в нужном формате начиная с завтра и т.д.
+    /// заполнение даты в нужном формате начиная с завтра и т.д.
     private func futureDates(indx: Int, timezone: Int) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM"
@@ -181,7 +181,6 @@ extension DailyCollectionView: UICollectionViewDelegateFlowLayout {
         CGSize(width: collectionView.bounds.width - 32, height: cellHeight)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
-        summaryDelegate?.tapToSummary()
+        summaryDelegate?.tapToSummary(indx: indexPath.item)
     }
 }

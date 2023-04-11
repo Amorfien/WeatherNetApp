@@ -26,7 +26,7 @@ final class WeatherStack: UIStackView {
 
         var imageName = ""
         switch title {
-        case .temp: imageName = "colorMoon"
+        case .temp: imageName = "colorHot"
         case .wind: imageName = "colorWind"
         case .ultraviolet: imageName = "colorSun"
         case .rainfall: imageName = "colorRaindrops"

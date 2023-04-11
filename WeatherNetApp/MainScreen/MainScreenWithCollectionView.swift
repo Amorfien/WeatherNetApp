@@ -267,14 +267,14 @@ extension MainScreenWithCollectionView: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Delegate methods
 extension MainScreenWithCollectionView: DetailDelegate {
-    func showSummary() {
+    func showSummary(forecast: ForecastWeatherModel?, indx: Int) {
         print("peredacha #2")
-        let dailySummaryViewController = DailySummaryViewController()
+        let dailySummaryViewController = DailySummaryViewController(forecast: forecast, dayIndex: indx)
         navigationController?.pushViewController(dailySummaryViewController, animated: true)
     }
 
-    func showDetail() {
-        let todayDetailsScreen = TodayDetailsScreen()
+    func showDetail(forecast: ForecastWeatherModel?) {
+        let todayDetailsScreen = TodayDetailsScreen(forecast: forecast)
         navigationController?.pushViewController(todayDetailsScreen, animated: true)
     }
 }

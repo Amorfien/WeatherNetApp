@@ -11,7 +11,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
 
     static let id = "CalendarViewCell"
 
-    private let dateLabel = UILabel(text: "16/04 ПТ", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 18)!)
+    let dateLabel = UILabel(text: "16/04 ПТ", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 18)!)
 
     override var isSelected: Bool {
         didSet {
@@ -49,10 +49,8 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-    func fillCell(index: Int) {
-        if index == 0 {
-            isSelected = true
-        }
+    func fillCalendarCell() {
+
     }
 
 

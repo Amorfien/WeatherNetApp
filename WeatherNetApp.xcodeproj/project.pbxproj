@@ -128,9 +128,9 @@
 		1818192129CB3D07008C1FA5 /* WeatherNetApp */ = {
 			isa = PBXGroup;
 			children = (
+				1841528329CDD03B007D357A /* App */,
 				1888C77629D64B9400BFEF89 /* Model */,
 				185D349729D4549100C09248 /* Services */,
-				1841528329CDD03B007D357A /* App */,
 				18246CFC29CDEF4000516B01 /* OnboardingScreen */,
 				18246CFD29CDEF5000516B01 /* SettingsScreen */,
 				18246CFE29CDEF6700516B01 /* MainScreen */,

@@ -28,6 +28,19 @@ final class TodayDetailsScreen: UIViewController {
         return collectionView
     }()
 
+    private let forecast: ForecastWeatherModel?
+
+    // MARK: - Init
+    init(forecast: ForecastWeatherModel?) {
+        self.forecast = forecast
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 //        setupNavigationController()
@@ -36,17 +49,19 @@ final class TodayDetailsScreen: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupNavigationController()
     }
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
     }
 
+    // MARK: - UI
     private func setupNavigationController() {
-        let secondaryTitle = UIBarButtonItem(title: "Прогноз на 24 часа")
-        secondaryTitle.isEnabled = false
-        navigationItem.rightBarButtonItem = secondaryTitle
-//        navigationItem.title = "Saint-Petersburg, Russia"
+        let title = (forecast?.city?.name ?? "--") + ", " + (forecast?.city?.country ?? "--")
+        navigationItem.title = title
+        navigationController?.navigationBar.topItem?.backButtonTitle = "Прогноз на 24 часа"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
@@ -67,16 +82,14 @@ final class TodayDetailsScreen: UIViewController {
 
 }
 
+// MARK: - Setup collectionView
 extension TodayDetailsScreen: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         2
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-            case 0: return 1
-        default: return 8
-        }
+        return section == 0 ? 1 : 8
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
@@ -87,6 +100,56 @@ extension TodayDetailsScreen: UICollectionViewDataSource {
             }
         } else {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayDetailsCollectionViewCell.id, for: indexPath) as? TodayDetailsCollectionViewCell {
+                // форматтер для даты
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd/MM"
+                dateFormatter.timeZone = .gmt
+                let localTime = Date(timeIntervalSince1970: Double((forecast?.list?[indexPath.item].dt)!) + Double((forecast?.city?.timezone)!))
+                var date = dateFormatter.string(from: localTime)
+                // чтобы даты не прописывались в каждой ячейке
+                let dt = forecast?.list?[indexPath.item].dt ?? 0
+                let timezone = forecast?.city?.timezone ?? 0
+                if indexPath.item != 0 && (dt + timezone) % 86400 > 10800 {
+                    date = ""
+                }
+                // форматтер для времени
+                dateFormatter.dateFormat = UserSettings.isTwelve ? "hh:mm a" : "HH:mm"
+                let time = dateFormatter.string(from: localTime)
+                // основная температура
+                let tempCelsium = Int(forecast?.list?[indexPath.item].main?.temp?.rounded() ?? 0)
+                let tempFahrenheit = tempCelsium * 9 / 5 + 32
+                let temp = UserSettings.isFahrenheit ? tempFahrenheit : tempCelsium
+                let tempStr = "\(temp)°"
+                // температура по ощущениям
+                let feelsLikeCelsium = Int(forecast?.list?[indexPath.item].main?.feelsLike?.rounded() ?? 0)
+                let feelsLikeFahrenheit = feelsLikeCelsium * 9 / 5 + 32
+                let feelsLike = UserSettings.isFahrenheit ? feelsLikeFahrenheit : feelsLikeCelsium
+                let feelsLikeStr = "\(feelsLike)°"
+                // скорость ветра и направление
+                let windSpeedMeters = forecast?.list?[indexPath.item].wind?.speed?.rounded() // добавить направление
+                let windSpeed = UserSettings.isImperial ? 2.237 * (windSpeedMeters ?? 0) : (windSpeedMeters ?? 0)
+                let ending = UserSettings.isImperial ? " mph, " : " м/с, "
+                var windDirectionStr: String = ""
+                if let windDirection = forecast?.list?[indexPath.item].wind?.deg {
+                        // упрощённая модель перевода градусов в направление
+                        switch windDirection {
+                        case 0..<90: windDirectionStr = "СВ"
+                        case 90..<180: windDirectionStr = "СЗ"
+                        case 180..<270: windDirectionStr = "ЮЗ"
+                        default: windDirectionStr = "ЮВ"
+                        }
+                }
+                let windStr = String(Int(windSpeed)) + ending + windDirectionStr
+                // влажность
+                let humidity = forecast?.list?[indexPath.item].main?.humidity
+                let humidityStr = "\(humidity ?? 0)%"
+                // облачность
+                let clouds = forecast?.list?[indexPath.item].clouds?.all
+                let cloudsStr = "\(clouds ?? 0)%"
+
+                let values: [String] = [feelsLikeStr, windStr, humidityStr, cloudsStr]
+
+                cell.fillTodayCell(date: date, time: time, temp: tempStr, values: values)
                 return cell
             } else {
                 return UICollectionViewCell()

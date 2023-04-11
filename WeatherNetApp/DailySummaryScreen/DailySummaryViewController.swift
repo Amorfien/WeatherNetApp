@@ -30,6 +30,21 @@ final class DailySummaryViewController: UIViewController {
     let summaryDayView = SummaryView(isDay: true, "11°", "5 м/с ЗЮЗ", "4 (умеренно)", "55%", "72%")
     let summaryNightView = SummaryView(isDay: false, "7°", "1 м/с ЮЗ", "0", "0%", "30%")
 
+    private let forecast: ForecastWeatherModel?
+    private let dayIndex: Int?
+
+    // MARK: - Init
+    init(forecast: ForecastWeatherModel?, dayIndex: Int) {
+        self.forecast = forecast
+        self.dayIndex = dayIndex
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -42,6 +57,7 @@ final class DailySummaryViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
 
+    // MARK: - UI
     private func setupUI() {
         view.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         scrollView.backgroundColor = .white
@@ -52,10 +68,9 @@ final class DailySummaryViewController: UIViewController {
     }
 
     private func setupNavigationController() {
-        let secondaryTitle = UIBarButtonItem(title: "Дневная погода")
-        secondaryTitle.isEnabled = false
-        navigationItem.rightBarButtonItem = secondaryTitle
-//        navigationItem.title = "Saint-Petersburg, Russia"
+        let title = (forecast?.city?.name ?? "--") + ", " + (forecast?.city?.country ?? "--")
+        navigationItem.title = title
+        navigationController?.navigationBar.topItem?.backButtonTitle = "Дневная погода"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
@@ -85,6 +100,7 @@ final class DailySummaryViewController: UIViewController {
     }
 }
 
+// MARK: - Setup collectionView
 extension DailySummaryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         14
@@ -92,11 +108,11 @@ extension DailySummaryViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.id, for: indexPath) as? CalendarCollectionViewCell {
-//            if indexPath.row == 0 {
-////                cell.backgroundColor = .blue
-//                cell.isSelected = true
-//            }
-//            cell.fillCell(index: indexPath.row)
+
+            collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .left)
+
+            cell.fillCalendarCell()
+
             return cell
         } else {
             return UICollectionViewCell()
