@@ -61,7 +61,7 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
 
             verticalStackView.topAnchor.constraint(equalTo: timeLabel.topAnchor),
             verticalStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 75),
-            verticalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            verticalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             verticalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
 
         ])

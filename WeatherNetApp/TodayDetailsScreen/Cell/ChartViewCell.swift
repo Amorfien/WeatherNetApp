@@ -14,6 +14,7 @@ final class ChartViewCell: UICollectionViewCell {
     private let chartScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
+        scrollView.showsHorizontalScrollIndicator = false
         return scrollView
     }()
 
@@ -60,7 +61,7 @@ final class ChartViewCell: UICollectionViewCell {
         let elements = [timeline, axisXline, axisYline]
         addSubviews(to: self, elements: [chartScrollView])
         addSubviews(to: chartScrollView, elements: elements)
-        chartScrollView.contentSize.width = (timeCount - 1) * timeInterval + 36
+        chartScrollView.contentSize.width = (timeCount - 1) * timeInterval + 48
     }
 
     // отрисовка повторяющихся элементов на графике и заполнение их данных
@@ -85,11 +86,11 @@ final class ChartViewCell: UICollectionViewCell {
                 rect.heightAnchor.constraint(equalToConstant: 8),
                 rect.leadingAnchor.constraint(equalTo: timeline.leadingAnchor, constant: CGFloat(indx) * timeInterval),
                 rect.centerYAnchor.constraint(equalTo: timeline.centerYAnchor),
-                timeLabel.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval),
+                timeLabel.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 6),
                 timeLabel.topAnchor.constraint(equalTo: timeline.bottomAnchor, constant: 12),
-                rainLabel.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 12),
+                rainLabel.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 18),
                 rainLabel.bottomAnchor.constraint(equalTo: timeline.topAnchor, constant: -12),
-                icoView.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 10),
+                icoView.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 16),
                 icoView.bottomAnchor.constraint(equalTo: rainLabel.topAnchor, constant: -4),
                 icoView.heightAnchor.constraint(equalToConstant: 18),
 
@@ -110,17 +111,17 @@ final class ChartViewCell: UICollectionViewCell {
             chartScrollView.topAnchor.constraint(equalTo: topAnchor),
             chartScrollView.heightAnchor.constraint(equalToConstant: 152),
 
-            timeline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 18),
+            timeline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 24),
             timeline.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -56),
             timeline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
             timeline.heightAnchor.constraint(equalToConstant: 1),
 
-            axisXline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 18),
+            axisXline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 24),
             axisXline.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -114),
             axisXline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
             axisXline.heightAnchor.constraint(equalToConstant: 0.3),
 
-            axisYline.leadingAnchor.constraint(equalTo: axisXline.leadingAnchor, constant: -3),
+            axisYline.leadingAnchor.constraint(equalTo: axisXline.leadingAnchor, constant: 0),
             axisYline.bottomAnchor.constraint(equalTo: axisXline.topAnchor),
             axisYline.widthAnchor.constraint(equalToConstant: 0.3),
             axisYline.heightAnchor.constraint(equalToConstant: 38)
@@ -142,9 +143,9 @@ final class ChartViewCell: UICollectionViewCell {
     private func chartDraw() -> CAShapeLayer {
 
         let chartPath = UIBezierPath()
-        chartPath.move(to: CGPoint(x: 0 + 18, y: 172 - Int(yCalc(temp: chartTemp[0]))))
+        chartPath.move(to: CGPoint(x: 24, y: 172 - Int(yCalc(temp: chartTemp[0]))))
         for (i, temp) in chartTemp.enumerated() {
-            chartPath.addLine(to: CGPoint(x: i * Int(timeInterval) + 18, y: 171 - Int(yCalc(temp: temp))))
+            chartPath.addLine(to: CGPoint(x: i * Int(timeInterval) + 24, y: 171 - Int(yCalc(temp: temp))))
         }
 
         let layer = CAShapeLayer()

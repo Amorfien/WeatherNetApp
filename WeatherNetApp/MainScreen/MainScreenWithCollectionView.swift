@@ -115,14 +115,14 @@ final class MainScreenWithCollectionView: UIViewController {
 
         navigationController?.navigationBar.tintColor = .darkText
 
-        let burgerItem = UIBarButtonItem(image: UIImage(systemName: "text.justify.trailing"),
+        let burgerItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"),
                                          style: .plain, target: self,
                                          action: #selector(burgerButtonDidTapp))
         navigationItem.leftBarButtonItem = burgerItem
         let geoItem = UIBarButtonItem(image: UIImage(systemName: "location.magnifyingglass"),
                                      style: .plain, target: self,
                                      action: #selector(locationButtonDidTapp))
-        let cityList = UIBarButtonItem(image: UIImage(systemName: "list.bullet.circle"),
+        let cityList = UIBarButtonItem(image: UIImage(systemName: "list.bullet"),
                                      style: .plain, target: self,
                                      action: #selector(cityListButtonDidTapp))
         cityList.isEnabled = false
