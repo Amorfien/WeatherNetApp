@@ -26,7 +26,18 @@ final class ChartViewCell: UICollectionViewCell {
     private var chartTime: [String] = []
     private var chartRain: [String] = []
     private var chartIco: [String] = []
-    private var chartTemp: [Int] = []
+    private var chartTemp: [Int] = [] {
+        didSet {
+            tmin = Double(chartTemp.min() ?? 0)
+            tmax = Double(chartTemp.max() ?? 0)
+        }
+    }
+
+    private var tmin = 0.0
+    private var tmax = 0.0
+    private var percent = 0.0
+    private let ymax = 152.0
+    private let ymin = 114.0
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -55,12 +66,6 @@ final class ChartViewCell: UICollectionViewCell {
     // отрисовка повторяющихся элементов на графике и заполнение их данных
     private func repeatSegment() {
 
-        let tmin = Double(chartTemp.min() ?? 0)
-        let tmax = Double(chartTemp.max() ?? 0)
-        var percent = 0.0
-        let ymax = 152.0
-        let ymin = 114.0
-
         for indx in 0..<Int(timeCount) {
             let rect = UIView()
             rect.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
@@ -73,11 +78,6 @@ final class ChartViewCell: UICollectionViewCell {
             let icoView = UIImageView(image: UIImage(named: self.chartIco[indx]))
             icoView.contentMode = .scaleAspectFit
             let tempLabel = UILabel(text: "\(self.chartTemp[indx])°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, alignment: .center)
-
-            /// вычисление диапозона температур и положения точки на графике
-            let tcur = Double(chartTemp[indx])
-            percent = (tcur - tmin)/(tmax - tmin + 0.01) // чтобы случайно не поделить на ноль
-            let yaxis = percent * (ymax - ymin) + ymin
 
             addSubviews(to: chartScrollView, elements: [rect, timeLabel, rainLabel, icoView, tempLabel, circle])
             NSLayoutConstraint.activate([
@@ -94,7 +94,7 @@ final class ChartViewCell: UICollectionViewCell {
                 icoView.heightAnchor.constraint(equalToConstant: 18),
 
                 circle.centerXAnchor.constraint(equalTo: timeline.leadingAnchor, constant: CGFloat(indx) * timeInterval),
-                circle.centerYAnchor.constraint(equalTo: bottomAnchor, constant: -yaxis),
+                circle.centerYAnchor.constraint(equalTo: bottomAnchor, constant: -yCalc(temp: chartTemp[indx])),
                 circle.widthAnchor.constraint(equalToConstant: 6),
                 circle.heightAnchor.constraint(equalToConstant: 6),
                 tempLabel.leadingAnchor.constraint(equalTo: timeline.leadingAnchor, constant: CGFloat(indx) * timeInterval),
@@ -135,25 +135,31 @@ final class ChartViewCell: UICollectionViewCell {
         self.chartTemp = temp
         repeatSegment()
 
-//        chartScrollView.layer.addSublayer(chartDraw(start: CGPoint(x: 0, y: 0), end: CGPoint(x: 50, y: 50)))//
+        chartScrollView.layer.addSublayer(chartDraw())//
 
     }
 
     /// пробую соединить точки на графике
-    private func chartDraw(start: CGPoint, end: CGPoint) -> CAShapeLayer {
+    private func chartDraw() -> CAShapeLayer {
 
         let chartPath = UIBezierPath()
-        chartPath.move(to: start)
-        chartPath.addLine(to: end)
-//        chartPath.close()
+        chartPath.move(to: CGPoint(x: 0 + 18, y: 172 - Int(yCalc(temp: chartTemp[0]))))
+        for (i, temp) in chartTemp.enumerated() {
+            chartPath.addLine(to: CGPoint(x: i * Int(timeInterval) + 18, y: 172 - Int(yCalc(temp: temp))))
+        }
 
         let layer = CAShapeLayer()
         layer.path = chartPath.cgPath
         layer.strokeColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1).cgColor
-        layer.lineWidth = 2
+        layer.lineWidth = 1
         layer.fillColor = UIColor.clear.cgColor
         return layer
     }
-
+    /// вычисление диапозона температур и положения точки на графике
+    private func yCalc(temp: Int) -> Double {
+        percent = (Double(temp) - tmin)/(tmax - tmin + 0.01) // чтобы случайно не поделить на ноль
+        let yaxis = percent * (ymax - ymin) + ymin
+        return yaxis
+    }
 
 }
