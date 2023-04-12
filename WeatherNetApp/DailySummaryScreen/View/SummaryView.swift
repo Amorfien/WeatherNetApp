@@ -24,6 +24,7 @@ final class SummaryView: UIView {
     }()
     private var stack1, stack2, stack3, stack4, stack5: WeatherStack
 
+    // MARK: - Init
     init(isDay: Bool, _ tempValue: String, _ windValue: String, _ uvValue: String, _ rainValue: String, _ clouddValue: String) {
         self.isDay = isDay
         dayLabel.text = isDay ? "День" : "Ночь"
@@ -43,6 +44,7 @@ final class SummaryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupUI() {
         backgroundColor = #colorLiteral(red: 0.9137254902, green: 0.9294117647, blue: 0.9764705882, alpha: 1)
         layer.cornerRadius = 5
@@ -79,6 +81,7 @@ final class SummaryView: UIView {
         stack5.valueLabel.text = values[4]
     }
 
+    // MARK: - Public method
     func fillDayView(ico: String, temp: String, descrip: String, values: [String]) {
         icoButton.setImage(UIImage(named: ico), for: .normal)
         icoButton.setTitle(" " + temp, for: .normal)

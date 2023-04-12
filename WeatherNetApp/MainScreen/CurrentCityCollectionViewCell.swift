@@ -87,7 +87,7 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            dailyView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100),
+            dailyView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 90),
             dailyView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             dailyView.centerXAnchor.constraint(equalTo: centerXAnchor),
             dailyView.heightAnchor.constraint(equalToConstant: 212),
@@ -100,9 +100,6 @@ final class CurrentCityCollectionViewCell: UICollectionViewCell {
             weatherCardsCollectionView.topAnchor.constraint(equalTo: detailButton.bottomAnchor, constant: 24),
             weatherCardsCollectionView.heightAnchor.constraint(equalToConstant: 85),
 
-//            stackView.topAnchor.constraint(equalTo: weatherCardsCollectionView.bottomAnchor, constant: 24),
-//            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-//            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             dailyLable.topAnchor.constraint(equalTo: weatherCardsCollectionView.bottomAnchor, constant: 24),
             dailyLable.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             moreDaysButton.centerYAnchor.constraint(equalTo: dailyLable.centerYAnchor),

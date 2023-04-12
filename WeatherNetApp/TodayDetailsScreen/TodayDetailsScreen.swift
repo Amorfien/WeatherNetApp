@@ -174,7 +174,9 @@ extension TodayDetailsScreen: UICollectionViewDataSource {
 
                 let values: [String] = [feelsLikeStr, windStr, humidityStr, cloudsStr]
 
-                cell.fillTodayCell(date: date, time: time, temp: tempStr, values: values)
+                let last: Bool = indexPath.item == 7 ? true : false
+
+                cell.fillTodayCell(date: date, time: time, temp: tempStr, values: values, last: last)
                 return cell
             } else {
                 return UICollectionViewCell()

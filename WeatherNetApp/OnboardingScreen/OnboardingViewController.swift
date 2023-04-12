@@ -75,6 +75,8 @@ final class OnboardingViewController: UIViewController {
     // MARK: - UI
     private func setupConstraints() {
 
+        let scaleRatio = UIScreen.main.scale < 3 ? 0.7 : 1
+
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: view.bounds.width * 0.04),
             logoImageView.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -60),
@@ -86,7 +88,7 @@ final class OnboardingViewController: UIViewController {
 
             secondLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             secondLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            secondLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 60),
+            secondLabel.topAnchor.constraint(equalTo: firstLabel.bottomAnchor, constant: 60 * scaleRatio),
 
             thirdLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             thirdLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
@@ -94,12 +96,12 @@ final class OnboardingViewController: UIViewController {
 
             locationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             locationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            locationButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -123),
+            locationButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -123 * scaleRatio),
             locationButton.heightAnchor.constraint(equalToConstant: 40),
 
-            cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -77),
+            cancelButton.topAnchor.constraint(equalTo: locationButton.bottomAnchor, constant: 25),
             cancelButton.trailingAnchor.constraint(equalTo: locationButton.trailingAnchor),
-            cancelButton.heightAnchor.constraint(equalToConstant: 40),
+            cancelButton.heightAnchor.constraint(equalToConstant: 25),
         ])
     }
 

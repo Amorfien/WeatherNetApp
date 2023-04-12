@@ -22,6 +22,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
 
     private let whiteView = UIView()
 
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
@@ -33,6 +34,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupView() {
         layer.cornerRadius = 5
         layer.borderWidth = 0.5
@@ -46,6 +48,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         ])
     }
 
+    // MARK: - Public method
     func fillCalendarCell(date: String) {
         dateLabel.text = date
     }

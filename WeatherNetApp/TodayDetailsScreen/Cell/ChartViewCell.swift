@@ -18,7 +18,8 @@ final class ChartViewCell: UICollectionViewCell {
     }()
 
     private let timeline = UIView()
-    private let axisline = UIView()
+    private let axisXline = UIView()
+    private let axisYline = UIView()
     private let timeCount: CGFloat = 40
     private let timeInterval: CGFloat = 50
 
@@ -27,6 +28,7 @@ final class ChartViewCell: UICollectionViewCell {
     private var chartIco: [String] = []
     private var chartTemp: [Int] = []
 
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
@@ -38,11 +40,13 @@ final class ChartViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupView() {
         backgroundColor = .white
         timeline.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
-        axisline.backgroundColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
-        let elements = [timeline, axisline]
+        axisXline.backgroundColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        axisYline.backgroundColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        let elements = [timeline, axisXline, axisYline]
         addSubviews(to: self, elements: [chartScrollView])
         addSubviews(to: chartScrollView, elements: elements)
         chartScrollView.contentSize.width = (timeCount - 1) * timeInterval + 36
@@ -50,6 +54,12 @@ final class ChartViewCell: UICollectionViewCell {
 
     // отрисовка повторяющихся элементов на графике и заполнение их данных
     private func repeatSegment() {
+
+        let tmin = Double(chartTemp.min() ?? 0)
+        let tmax = Double(chartTemp.max() ?? 0)
+        var percent = 0.0
+        let ymax = 152.0
+        let ymin = 114.0
 
         for indx in 0..<Int(timeCount) {
             let rect = UIView()
@@ -63,6 +73,12 @@ final class ChartViewCell: UICollectionViewCell {
             let icoView = UIImageView(image: UIImage(named: self.chartIco[indx]))
             icoView.contentMode = .scaleAspectFit
             let tempLabel = UILabel(text: "\(self.chartTemp[indx])°", font: UIFont(name: Fonts.Rubik.regular.rawValue, size: 14)!, alignment: .center)
+
+            /// вычисление диапозона температур и положения точки на графике
+            let tcur = Double(chartTemp[indx])
+            percent = (tcur - tmin)/(tmax - tmin + 0.01) // чтобы случайно не поделить на ноль
+            let yaxis = percent * (ymax - ymin) + ymin
+
             addSubviews(to: chartScrollView, elements: [rect, timeLabel, rainLabel, icoView, tempLabel, circle])
             NSLayoutConstraint.activate([
                 rect.widthAnchor.constraint(equalToConstant: 4),
@@ -77,8 +93,8 @@ final class ChartViewCell: UICollectionViewCell {
                 icoView.bottomAnchor.constraint(equalTo: rainLabel.topAnchor, constant: -4),
                 icoView.heightAnchor.constraint(equalToConstant: 18),
 
-                circle.leadingAnchor.constraint(equalTo: timeline.leadingAnchor, constant: CGFloat(indx) * timeInterval),
-                circle.centerYAnchor.constraint(equalTo: chartScrollView.topAnchor, constant: CGFloat.random(in: 20...58)),
+                circle.centerXAnchor.constraint(equalTo: timeline.leadingAnchor, constant: CGFloat(indx) * timeInterval),
+                circle.centerYAnchor.constraint(equalTo: bottomAnchor, constant: -yaxis),
                 circle.widthAnchor.constraint(equalToConstant: 6),
                 circle.heightAnchor.constraint(equalToConstant: 6),
                 tempLabel.leadingAnchor.constraint(equalTo: timeline.leadingAnchor, constant: CGFloat(indx) * timeInterval),
@@ -99,21 +115,45 @@ final class ChartViewCell: UICollectionViewCell {
             timeline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
             timeline.heightAnchor.constraint(equalToConstant: 1),
 
-            axisline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 18),
-            axisline.topAnchor.constraint(equalTo: topAnchor, constant: 56),
-            axisline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
-            axisline.heightAnchor.constraint(equalToConstant: 0.3)
+            axisXline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 18),
+            axisXline.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -114),
+            axisXline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
+            axisXline.heightAnchor.constraint(equalToConstant: 0.3),
+
+            axisYline.leadingAnchor.constraint(equalTo: axisXline.leadingAnchor, constant: -3),
+            axisYline.bottomAnchor.constraint(equalTo: axisXline.topAnchor),
+            axisYline.widthAnchor.constraint(equalToConstant: 0.3),
+            axisYline.heightAnchor.constraint(equalToConstant: 38)
         ])
     }
 
+    // MARK: - public method
     func fillChartCell(time: [String], rain: [String], ico: [String], temp: [Int]) {
         self.chartTime = time
         self.chartRain = rain
         self.chartIco = ico
         self.chartTemp = temp
         repeatSegment()
+
+//        chartScrollView.layer.addSublayer(chartDraw(start: CGPoint(x: 0, y: 0), end: CGPoint(x: 50, y: 50)))//
+
     }
 
+    /// пробую соединить точки на графике
+    private func chartDraw(start: CGPoint, end: CGPoint) -> CAShapeLayer {
+
+        let chartPath = UIBezierPath()
+        chartPath.move(to: start)
+        chartPath.addLine(to: end)
+//        chartPath.close()
+
+        let layer = CAShapeLayer()
+        layer.path = chartPath.cgPath
+        layer.strokeColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1).cgColor
+        layer.lineWidth = 2
+        layer.fillColor = UIColor.clear.cgColor
+        return layer
+    }
 
 
 }

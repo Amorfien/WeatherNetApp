@@ -19,9 +19,10 @@ final class WeatherService {
     }
 
     /// заполнение даты в нужном формате начиная с завтра и т.д.
-    func futureDates(indx: Int, timezone: Int, weekDay: Bool) -> String {
+    func futureDates(indx: Int, timezone: Int, weekDay: Bool) -> String {//
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = weekDay ? "dd/MM E" : "dd/MM"
+        dateFormatter.locale = Locale(identifier: "ru_RU")
         dateFormatter.timeZone = .gmt
         let today = Calendar.current.date(byAdding: .second, value: timezone, to: .now)
         let nextDate = Calendar.current.date(byAdding: .day, value: indx + 1, to: today!)

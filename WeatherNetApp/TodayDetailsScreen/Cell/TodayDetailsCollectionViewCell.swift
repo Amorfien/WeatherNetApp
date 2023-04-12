@@ -17,7 +17,7 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
     private let tempLabel = UILabel(text: "12°", font: UIFont(name: Fonts.Rubik.medium.rawValue, size: 18)!)
     private var verticalStackView = UIStackView()
 
-
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: .zero)
         addSubview(dateLabel)
@@ -30,13 +30,13 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UI
     private func setupView() {
         backgroundColor = #colorLiteral(red: 0.9139999747, green: 0.9330000281, blue: 0.9800000191, alpha: 1)
         blueLine.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         timeLabel.textAlignment = .center
         let elements = [dateLabel, timeLabel, tempLabel, verticalStackView, blueLine]
         enableConstraints(elements: elements)
-//        fillVerticalStack(values: ["10°", "2 м/с ССЗ", "0%", "29%"])//
         addSubviews(to: self, elements: elements)
 
     }
@@ -67,13 +67,6 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
         ])
     }
 
-//    private enum WeatherStack: String {
-//        case temp = "Ощущается как"
-//        case wind = "Ветер"
-//        case rainfall = "Влажность"
-//        case cloud = "Облачность"
-//    }
-
     private func makeHStackView(value: String, type: WeatherStackType) -> UIStackView {
         let stackView = UIStackView()
         var imageName = ""
@@ -102,16 +95,17 @@ final class TodayDetailsCollectionViewCell: UICollectionViewCell {
         verticalStackView.addArrangedSubview(makeHStackView(value: values[3], type: .cloud))
     }
 
-    func fillTodayCell(date: String, time: String, temp: String, values: [String]) {
+    // MARK: - Public method
+    func fillTodayCell(date: String, time: String, temp: String, values: [String], last: Bool) {
         dateLabel.text = date
         timeLabel.text = time
         tempLabel.text = temp
+        blueLine.backgroundColor = last ? .clear : #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
         fillVerticalStack(values: values)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-//        fillVerticalStack(values: [""])
         verticalStackView = UIStackView()
     }
 
