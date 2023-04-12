@@ -156,7 +156,9 @@ final class ChartViewCell: UICollectionViewCell {
     }
     /// вычисление диапозона температур и положения точки на графике
     private func yCalc(temp: Int) -> Double {
-        percent = (Double(temp) - tmin)/(tmax - tmin + 0.01) // чтобы случайно не поделить на ноль
+        if tmax != tmin {
+            percent = (Double(temp) - tmin)/(tmax - tmin) // чтобы случайно не поделить на ноль
+        }
         let yaxis = percent * (ymax - ymin) + ymin
         return yaxis
     }
