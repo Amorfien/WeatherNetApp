@@ -94,6 +94,31 @@ extension TodayDetailsScreen: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChartViewCell.id, for: indexPath) as? ChartViewCell {
+                var time: [String] = []
+                var rain: [String] = []
+                var ico: [String] = []
+                var temp: [Int] = []
+
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = UserSettings.isTwelve ? "hh:mm" : "HH:mm"
+                dateFormatter.timeZone = .gmt
+
+                for indx in 0..<(forecast?.list?.count ?? 0) {
+                    let localTime = Date(timeIntervalSince1970: Double((forecast?.list?[indx].dt)!) + Double((forecast?.city?.timezone)!))
+                    time.append(dateFormatter.string(from: localTime))
+
+                    let pop = forecast?.list?[indx].pop ?? 0
+                    rain.append("\(Int(pop * 100))%")
+
+                    let icoData = forecast?.list?[indx].weather?.first?.icon
+                    ico.append(ImageDictionary.dictionary[icoData ?? "noIco"] ?? "fog")
+
+                    let tempCelsium = Int(forecast?.list?[indx].main?.temp?.rounded() ?? 0)
+                    let tempFahrenheit = tempCelsium * 9 / 5 + 32
+                    temp.append(UserSettings.isFahrenheit ? tempFahrenheit : tempCelsium)
+                }
+
+                cell.fillChartCell(time: time, rain: rain, ico: ico, temp: temp)
                 return cell
             } else {
                 return UICollectionViewCell()
