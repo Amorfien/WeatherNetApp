@@ -133,10 +133,9 @@ final class ChartViewCell: UICollectionViewCell {
         self.chartRain = rain
         self.chartIco = ico
         self.chartTemp = temp
+
+        chartScrollView.layer.addSublayer(chartDraw())
         repeatSegment()
-
-        chartScrollView.layer.addSublayer(chartDraw())//
-
     }
 
     /// пробую соединить точки на графике
@@ -145,7 +144,7 @@ final class ChartViewCell: UICollectionViewCell {
         let chartPath = UIBezierPath()
         chartPath.move(to: CGPoint(x: 0 + 18, y: 172 - Int(yCalc(temp: chartTemp[0]))))
         for (i, temp) in chartTemp.enumerated() {
-            chartPath.addLine(to: CGPoint(x: i * Int(timeInterval) + 18, y: 172 - Int(yCalc(temp: temp))))
+            chartPath.addLine(to: CGPoint(x: i * Int(timeInterval) + 18, y: 171 - Int(yCalc(temp: temp))))
         }
 
         let layer = CAShapeLayer()
