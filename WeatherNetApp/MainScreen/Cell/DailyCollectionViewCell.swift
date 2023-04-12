@@ -50,16 +50,13 @@ final class DailyCollectionViewCell: UICollectionViewCell {
 
             textLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             textLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 70),
-//            textLabel.trailingAnchor.constraint(equalTo: leadingAnchor, constant: -60),
-            textLabel.widthAnchor.constraint(equalToConstant: 200),
+            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -108),
 
             detailButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             detailButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
             tempRangeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            tempRangeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -26),
-//            tempRangeLabel.leadingAnchor.constraint(equalTo: trailingAnchor, constant: -80)
-
+            tempRangeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
         ])
     }
 

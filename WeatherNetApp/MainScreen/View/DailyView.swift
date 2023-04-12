@@ -112,9 +112,7 @@ final class DailyView: UIView {
         } else {
             formatter.dateFormat = currentDate ? "HH:mm, E d MMMM" : "HH:mm"
         }
-        if currentDate {
-            formatter.timeZone = .gmt
-        }
+        formatter.timeZone = .gmt
         return formatter
     }
 

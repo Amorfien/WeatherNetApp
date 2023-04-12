@@ -50,7 +50,7 @@ final class WeatherService {
     }
 
     /// получение диаапазона температур на заданный день
-     func forecastTemp(day: Int) -> String {
+    func forecastTemp(day: Int) -> String {
         guard futureDays.count > ((day + 1) * 8) else {
             return "??°-??°"
         }
@@ -65,7 +65,7 @@ final class WeatherService {
         let maxCelsium = Int(tempDayArray.max()?.rounded() ?? 0)
         let maxFahrenheit = maxCelsium * 9 / 5 + 32
 
-        return UserSettings.isFahrenheit ? "\(minFahrenheit)°-\(maxFahrenheit)°" : "\(minCelsium)°-\(maxCelsium)°"
+        return UserSettings.isFahrenheit ? "\(minFahrenheit)°.. \(maxFahrenheit)°" : "\(minCelsium)°.. \(maxCelsium)°"
     }
 
     /// получение средней влажности на заданный день
