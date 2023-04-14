@@ -23,6 +23,7 @@ final class ChartViewCell: UICollectionViewCell {
     private let axisYline = UIView()
     private let timeCount: CGFloat = 40
     private let timeInterval: CGFloat = 50
+    private let edge: CGFloat = 24
 
     private var chartTime: [String] = []
     private var chartRain: [String] = []
@@ -38,7 +39,7 @@ final class ChartViewCell: UICollectionViewCell {
     private var tmax = 0.0
     private var percent = 0.0
     private let ymax = 152.0
-    private let ymin = 114.0
+    private let ymin = 110.0
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -56,8 +57,8 @@ final class ChartViewCell: UICollectionViewCell {
     private func setupView() {
         backgroundColor = .white
         timeline.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1)
-        axisXline.backgroundColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
-        axisYline.backgroundColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        axisXline.backgroundColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
+        axisYline.backgroundColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
         let elements = [timeline, axisXline, axisYline]
         addSubviews(to: self, elements: [chartScrollView])
         addSubviews(to: chartScrollView, elements: elements)
@@ -89,7 +90,7 @@ final class ChartViewCell: UICollectionViewCell {
                 timeLabel.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 6),
                 timeLabel.topAnchor.constraint(equalTo: timeline.bottomAnchor, constant: 12),
                 rainLabel.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 18),
-                rainLabel.bottomAnchor.constraint(equalTo: timeline.topAnchor, constant: -12),
+                rainLabel.bottomAnchor.constraint(equalTo: timeline.topAnchor, constant: -10),
                 icoView.leadingAnchor.constraint(equalTo: chartScrollView.leadingAnchor, constant: CGFloat(indx) * timeInterval + 16),
                 icoView.bottomAnchor.constraint(equalTo: rainLabel.topAnchor, constant: -4),
                 icoView.heightAnchor.constraint(equalToConstant: 18),
@@ -111,17 +112,17 @@ final class ChartViewCell: UICollectionViewCell {
             chartScrollView.topAnchor.constraint(equalTo: topAnchor),
             chartScrollView.heightAnchor.constraint(equalToConstant: 152),
 
-            timeline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 24),
+            timeline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: edge),
             timeline.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -56),
             timeline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
             timeline.heightAnchor.constraint(equalToConstant: 1),
 
-            axisXline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: 24),
-            axisXline.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -114),
-            axisXline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval),
+            axisXline.leadingAnchor.constraint(equalTo:  chartScrollView.leadingAnchor, constant: edge),
+            axisXline.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -ymin + 2.5),
+            axisXline.widthAnchor.constraint(equalToConstant: (timeCount - 1) * timeInterval + 4),
             axisXline.heightAnchor.constraint(equalToConstant: 0.3),
 
-            axisYline.leadingAnchor.constraint(equalTo: axisXline.leadingAnchor, constant: 0),
+            axisYline.leadingAnchor.constraint(equalTo: axisXline.leadingAnchor, constant: -1),
             axisYline.bottomAnchor.constraint(equalTo: axisXline.topAnchor),
             axisYline.widthAnchor.constraint(equalToConstant: 0.3),
             axisYline.heightAnchor.constraint(equalToConstant: 38)
@@ -135,25 +136,35 @@ final class ChartViewCell: UICollectionViewCell {
         self.chartIco = ico
         self.chartTemp = temp
 
-        chartScrollView.layer.addSublayer(chartDraw())
+        chartScrollView.layer.addSublayer(chartDraw()[1])
+        chartScrollView.layer.addSublayer(chartDraw()[0])
         repeatSegment()
     }
 
     /// пробую соединить точки на графике
-    private func chartDraw() -> CAShapeLayer {
+    private func chartDraw() -> [CAShapeLayer] {
 
         let chartPath = UIBezierPath()
+//        chartPath.move(to: CGPoint(x: 24, y: 172 - ymin))
         chartPath.move(to: CGPoint(x: 24, y: 172 - Int(yCalc(temp: chartTemp[0]))))
         for (i, temp) in chartTemp.enumerated() {
             chartPath.addLine(to: CGPoint(x: i * Int(timeInterval) + 24, y: 171 - Int(yCalc(temp: temp))))
         }
 
-        let layer = CAShapeLayer()
-        layer.path = chartPath.cgPath
-        layer.strokeColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1).cgColor
-        layer.lineWidth = 1
-        layer.fillColor = UIColor.clear.cgColor
-        return layer
+        let chartLayer = CAShapeLayer()
+        chartLayer.path = chartPath.cgPath
+        chartLayer.strokeColor = #colorLiteral(red: 0.1254901961, green: 0.3058823529, blue: 0.7803921569, alpha: 1).cgColor
+        chartLayer.lineWidth = 1.0
+        chartLayer.fillColor = UIColor.clear.cgColor
+
+        chartPath.addLine(to: CGPoint(x: 39 * Int(timeInterval) + 24, y: 172 - Int(ymin) + 2))
+        chartPath.addLine(to: CGPoint(x: 24, y: 172 - ymin + 2))
+        chartPath.close()
+
+        let fillLayer = CAShapeLayer()
+        fillLayer.path = chartPath.cgPath
+        fillLayer.fillColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1).cgColor
+        return [chartLayer, fillLayer]
     }
     /// вычисление диапозона температур и положения точки на графике
     private func yCalc(temp: Int) -> Double {
