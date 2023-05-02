@@ -163,7 +163,7 @@ final class ChartViewCell: UICollectionViewCell {
 
         let fillLayer = CAShapeLayer()
         fillLayer.path = chartPath.cgPath
-        fillLayer.fillColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1).cgColor
+        fillLayer.fillColor = #colorLiteral(red: 0.7680851817, green: 0.8666125536, blue: 1, alpha: 1).cgColor
         return [chartLayer, fillLayer]
     }
     /// вычисление диапозона температур и положения точки на графике

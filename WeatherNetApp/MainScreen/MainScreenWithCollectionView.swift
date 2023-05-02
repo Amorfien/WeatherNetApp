@@ -63,15 +63,8 @@ final class MainScreenWithCollectionView: UIViewController {
     private var forecasts: [ForecastWeatherModel] = []
 
     // MARK: - Init
-    init(isGeoTracking: Bool) {
-        if isGeoTracking {
-            locationManager = CLLocationManager()
-            locationManager?.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-            locationManager?.pausesLocationUpdatesAutomatically = false
-            locationManager?.startUpdatingLocation()
-        } else {
-            locationManager = nil
-        }
+    init(locationManager: CLLocationManager?) {
+        self.locationManager = locationManager
         super.init(nibName: nil, bundle: nil)
     }
     

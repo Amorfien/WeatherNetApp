@@ -10,7 +10,7 @@ import CoreLocation
 
 final class OnboardingViewController: UIViewController {
 
-    let locationManager = CLLocationManager()
+    private let locationManager: CLLocationManager
 
     private let logoImageView = UIImageView(image: UIImage(named: "onboardGirl"))
 
@@ -56,6 +56,16 @@ final class OnboardingViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelTap), for: .touchUpInside)
         return button
     }()
+
+    // MARK: - Init
+    init(locationManager: CLLocationManager) {
+        self.locationManager = locationManager
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -112,7 +122,7 @@ final class OnboardingViewController: UIViewController {
         if locationManager.authorizationStatus != .authorizedAlways || locationManager.authorizationStatus != .authorizedWhenInUse {
             locationManager.requestWhenInUseAuthorization()
         } else {
-            let mainVC = MainScreenWithCollectionView(isGeoTracking: true)
+            let mainVC = MainScreenWithCollectionView(locationManager: locationManager)
             navigationController?.pushViewController(mainVC, animated: true)
         }
 
@@ -120,7 +130,7 @@ final class OnboardingViewController: UIViewController {
 
     @objc private func cancelTap() {
 //        UserSettings.isOnboarding = true
-        let mainVC = MainScreenWithCollectionView(isGeoTracking: false)
+        let mainVC = MainScreenWithCollectionView(locationManager: nil)
         navigationController?.pushViewController(mainVC, animated: true)
     }
 
@@ -131,7 +141,7 @@ extension OnboardingViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorizedWhenInUse {
 //            UserSettings.isOnboarding = true
-            let mainVC = MainScreenWithCollectionView(isGeoTracking: true)
+            let mainVC = MainScreenWithCollectionView(locationManager: locationManager)
             navigationController?.pushViewController(mainVC, animated: true)
         }
 
